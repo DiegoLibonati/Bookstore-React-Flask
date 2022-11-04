@@ -1,6 +1,6 @@
 # Bookstore - API REST - PAGE
 
-## Installation
+## Getting Started
 
 1. Clone the repository with `git clone "repository link"`
 2. Install the requirements with: `pip install -r requirements.txt`
@@ -26,6 +26,14 @@ In which you can add books in the main section of the page with title, author, g
 5. Get all genres
 6. Error endpoint
 
+## Technologies used
+
+1. REACT JS
+2. FLASK
+3. PYTHON
+4. CSS
+5. MONGO DB
+
 ## Galery
 
 ![Bookstore](https://raw.githubusercontent.com/DiegoLibonati/DiegoLibonatiWeb/main/data/projects/Flask/Imagenes/libreriaflaskreact-0.jpg)
@@ -38,4 +46,11 @@ In which you can add books in the main section of the page with title, author, g
 
 ## Portfolio Link
 
-`https://diegolibonati.github.io/DiegoLibonatiWeb/#/projects?q=Bookstore%20API%20REST`
+`https://diegolibonati.github.io/DiegoLibonatiWeb/#/projects?q=Bookstore%20API%20REST%20page`
+
+## Video
+
+
+
+https://user-images.githubusercontent.com/99032604/199868566-3e5465a7-4aad-4773-870b-cdd744b50300.mp4
+
