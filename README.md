@@ -46,11 +46,8 @@ In which you can add books in the main section of the page with title, author, g
 
 ## Portfolio Link
 
-`https://diegolibonati.github.io/DiegoLibonatiWeb/#/projects?q=Bookstore%20API%20REST%20page`
+`https://diegolibonati.github.io/DiegoLibonatiWeb/#/projects?q=Bookstore%20API%20REST%20Page`
 
 ## Video
 
-
-
 https://user-images.githubusercontent.com/99032604/199868566-3e5465a7-4aad-4773-870b-cdd744b50300.mp4
-
