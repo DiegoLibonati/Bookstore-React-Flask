@@ -34,19 +34,9 @@ In which you can add books in the main section of the page with title, author, g
 4. CSS
 5. MONGO DB
 
-## Galery
-
-![Bookstore](https://raw.githubusercontent.com/DiegoLibonati/DiegoLibonatiWeb/main/data/projects/Flask/Imagenes/libreriaflaskreact-0.jpg)
-
-![Bookstore](https://raw.githubusercontent.com/DiegoLibonati/DiegoLibonatiWeb/main/data/projects/Flask/Imagenes/libreriaflaskreact-1.jpg)
-
-![Bookstore](https://raw.githubusercontent.com/DiegoLibonati/DiegoLibonatiWeb/main/data/projects/Flask/Imagenes/libreriaflaskreact-2.jpg)
-
-![Bookstore](https://raw.githubusercontent.com/DiegoLibonati/DiegoLibonatiWeb/main/data/projects/Flask/Imagenes/libreriaflaskreact-3.jpg)
-
 ## Portfolio Link
 
-`https://diegolibonati.github.io/DiegoLibonatiWeb/#/projects?q=Bookstore%20API%20REST%20Page`
+[`https://www.diegolibonati.com.ar/#/project/7`](https://www.diegolibonati.com.ar/#/project/7)
 
 ## Video
 
