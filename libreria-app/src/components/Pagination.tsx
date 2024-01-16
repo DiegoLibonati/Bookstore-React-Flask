@@ -1,4 +1,10 @@
-export const Pagination = ({ totalBooks, booksPerPage, paginate }) => {
+import { PaginationProps } from "../entities/entities";
+
+export const Pagination = ({
+  totalBooks,
+  booksPerPage,
+  setCurrentPage,
+}: PaginationProps): JSX.Element => {
   const pageNumbers = [];
 
   for (let i = 1; i <= Math.ceil(totalBooks / booksPerPage); i++) {
@@ -8,7 +14,7 @@ export const Pagination = ({ totalBooks, booksPerPage, paginate }) => {
   return (
     <ul className="pagination_list">
       {pageNumbers.map((number) => (
-        <li onClick={() => paginate(number)} key={number * 5478}>
+        <li onClick={() => setCurrentPage(number)} key={number * 13}>
           {number}
         </li>
       ))}

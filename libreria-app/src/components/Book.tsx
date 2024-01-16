@@ -1,7 +1,13 @@
 import React from "react";
 import { useHide } from "../hooks/useHide";
+import { BookProps } from "../entities/entities";
 
-export const Book = ({ image, title, author, description }) => {
+export const Book = ({
+  image,
+  title,
+  author,
+  description,
+}: BookProps): JSX.Element => {
   const { hide, handleHide } = useHide();
 
   return (
@@ -14,9 +20,7 @@ export const Book = ({ image, title, author, description }) => {
           <h3>{author}</h3>
           <p>{description}</p>
         </div>
-      ) : (
-        <></>
-      )}
+      ) : null}
     </article>
   );
 };

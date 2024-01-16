@@ -1,8 +1,12 @@
-import React from "react";
+import { FilterMenuProps } from "../entities/entities";
 import { useHide } from "../hooks/useHide";
 import { FilterItem } from "./FilterItem";
 
-export const FilterMenu = ({ genero, setBooks, filterName }) => {
+export const FilterMenu = ({
+  genres,
+  filterName,
+  setBooks,
+}: FilterMenuProps): JSX.Element => {
   const { hide, handleHide } = useHide();
 
   return (
@@ -10,17 +14,15 @@ export const FilterMenu = ({ genero, setBooks, filterName }) => {
       {filterName}
       {hide ? (
         <ul>
-          {genero.map((genero, index) => (
+          {genres.map((genre, index) => (
             <FilterItem
-              key={index * 5231234120}
+              key={index * 12}
               setBooks={setBooks}
-              genero={genero}
+              genre={genre}
             ></FilterItem>
           ))}
         </ul>
-      ) : (
-        <></>
-      )}
+      ) : null}
     </li>
   );
 };
