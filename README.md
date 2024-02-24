@@ -41,4 +41,4 @@ In which you can add books in the main section of the page with title, author, g
 
 ## Video
 
-https://user-images.githubusercontent.com/99032604/199868566-3e5465a7-4aad-4773-870b-cdd744b50300.mp4
+https://github.com/DiegoLibonati/Bookstore-Api-Rest-Page/assets/99032604/b9059c86-eecd-4e2f-a5c6-f891257cea32
