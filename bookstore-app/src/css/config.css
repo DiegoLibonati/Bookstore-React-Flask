@@ -5,7 +5,7 @@
   width: 100%;
 }
 
-.filter_genero_container {
+.filter_genre_container {
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -14,7 +14,7 @@
   height: auto;
 }
 
-.filter_genero_container button {
+.filter_genre_container button {
   padding: 1rem;
   font-size: 1.5rem;
   border: none;
@@ -25,12 +25,12 @@
   transition: background-color 1s;
 }
 
-.filter_genero_container button:hover {
+.filter_genre_container button:hover {
   background-color: #bf2d1ac4;
   transition: background-color 1s;
 }
 
-.filter_genero_container_list {
+.filter_genre_container_list {
   display: flex;
   align-items: flex-start;
   flex-flow: row wrap;
@@ -40,7 +40,7 @@
   background-color: #bf2e1a;
 }
 
-.filter_genero_container_list li {
+.filter_genre_container_list li {
   font-size: 1.5rem;
   background-color: #293241;
   padding: 1rem;
@@ -52,7 +52,7 @@
   transition: background-color 1s;
 }
 
-.filter_genero_container_list li:hover {
+.filter_genre_container_list li:hover {
   background-color: #293241c0;
   transition: background-color 1s;
 }

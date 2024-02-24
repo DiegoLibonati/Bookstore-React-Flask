@@ -1,9 +1,8 @@
-import React from "react";
 import { useHide } from "../hooks/useHide";
-import { useState } from "react";
 import { BsPlusCircle } from "react-icons/bs";
 import { AddBookProps, FormBook } from "../entities/entities";
 import { postBook } from "../api/postBook";
+import { useForm } from "../hooks/useForm";
 
 export const AddBook = ({
   books,
@@ -13,7 +12,7 @@ export const AddBook = ({
 }: AddBookProps): JSX.Element => {
   const { hide, handleHide } = useHide();
 
-  const [form, setForm] = useState<FormBook>({
+  const { formState, onInputChange } = useForm<FormBook>({
     title: "",
     author: "",
     genre: "",
@@ -21,30 +20,19 @@ export const AddBook = ({
     image: "",
   });
 
-  const handleChangeInput: React.ChangeEventHandler<
-    HTMLInputElement | HTMLTextAreaElement
-  > = (e) => {
-    const key = e.target.name as keyof FormBook;
-    const value = e.target.value;
-    setForm({ ...form, [key]: value });
-  };
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
 
-  const handleSubmit = async () => {
-    const body = {
-      title: form.title,
-      author: form.author,
-      description: form.description,
-      image: form.image,
-      genero: form.genre,
-    };
-
-    const result = await postBook(body);
+    const result = await postBook(formState);
 
     if (result.ok) {
-      setBooks([...books, { ...body, _id: { $oid: body.image + "123" } }]);
+      setBooks([
+        ...books,
+        { ...formState, _id: { $oid: formState.image + "123" } },
+      ]);
 
-      if (!genres.includes(body.genero)) {
-        setGenres([...genres, body.genero]);
+      if (!genres.includes(formState.genre)) {
+        setGenres([...genres, formState.genre]);
       }
     }
   };
@@ -56,42 +44,45 @@ export const AddBook = ({
       {hide ? (
         <form
           className="book_container_information"
-          onSubmit={() => handleSubmit()}
+          onSubmit={(e) => handleSubmit(e)}
         >
           <input
             type="text"
+            name="title"
             placeholder="Set title"
-            value={form.title}
-            onChange={(e) => handleChangeInput(e)}
+            value={formState.title}
+            onChange={(e) => onInputChange(e)}
           ></input>
           <input
             type="text"
+            name="author"
             placeholder="Set author"
-            value={form.author}
-            onChange={(e) => handleChangeInput(e)}
+            value={formState.author}
+            onChange={(e) => onInputChange(e)}
           ></input>
           <input
             type="text"
+            name="genre"
             placeholder="Set genre"
-            value={form.genre}
-            onChange={(e) => handleChangeInput(e)}
+            value={formState.genre}
+            onChange={(e) => onInputChange(e)}
           ></input>
           <textarea
             placeholder="Set description"
-            value={form.description}
-            onChange={(e) => handleChangeInput(e)}
+            name="description"
+            value={formState.description}
+            onChange={(e) => onInputChange(e)}
           ></textarea>
           <input
             type="text"
+            name="image"
             placeholder="Set image link"
-            value={form.image}
-            onChange={(e) => handleChangeInput(e)}
+            value={formState.image}
+            onChange={(e) => onInputChange(e)}
           ></input>
           <button type="submit">Submit</button>
         </form>
-      ) : (
-        <></>
-      )}
+      ) : null}
     </article>
   );
 };

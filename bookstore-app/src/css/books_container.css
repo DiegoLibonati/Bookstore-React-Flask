@@ -148,7 +148,7 @@
 @media only screen and (min-width: 1024px) {
   .books_container {
     align-items: flex-start;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
 
   .book_container {

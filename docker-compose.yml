@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+  bookstore-app:
+    build:
+      context: ./bookstore-app
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - TZ="America/Argentina/Buenos_Aires"
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    volumes:
+      - "./bookstore-app:/home/app"
+    depends_on:
+      - bookstore-db
+    ports:
+      - "3000:3000"
+    
+  bookstore-server:
+    build:
+      context: ./bookstore-server
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - TZ="America/Argentina/Buenos_Aires"
+      - PORT=5050
+    volumes:
+      - "./bookstore-server:/home/app"
+    depends_on:
+      - bookstore-db
+    ports:
+      - "5050:5050"
+
+  bookstore-db:
+    image: mongo
+    ports: 
+      - "27017:27017"
+    restart: always
+    volumes:
+      - db-data:/data/db
+      
+volumes: 
+  db-data:
+    driver: local

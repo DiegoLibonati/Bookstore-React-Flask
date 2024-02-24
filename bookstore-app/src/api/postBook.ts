@@ -1,13 +1,15 @@
 import { FormBook } from "../entities/entities";
+import { api_route } from "./route";
 
 export const postBook = async (
-  body: Omit<FormBook, "genre"> & { genero: string }
+  body: FormBook
 ): Promise<Response> => {
-  return await fetch("http://127.0.0.1:5000/libreria/crear", {
+  return await fetch(`${api_route}/add`, {
     method: "POST",
     body: JSON.stringify(body),
     headers: {
       "Content-Type": "application/json",
+      Accept: "application/json",
     },
   });
 };

@@ -4,7 +4,7 @@ import { Book, UseGetGenres } from "../entities/entities";
 import { getGenres } from "../api/getGenres";
 
 export const useGetGenres = (): UseGetGenres => {
-  const [genres, setGenres] = useState<Book["genero"][]>([]);
+  const [genres, setGenres] = useState<Book["genre"][]>([]);
 
   const handleGenres = async (): Promise<void> => {
     const genres = await getGenres();

@@ -6,7 +6,7 @@ export type Book = {
   author: string;
   description: string;
   image: string;
-  genero: string;
+  genre: string;
 };
 
 export type UseGetBooks = {
@@ -21,7 +21,7 @@ export type UseGetBooksByGenre = {
 };
 
 export type UseGetGenres = {
-  genres: Book["genero"][];
+  genres: Book["genre"][];
   setGenres: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
@@ -38,6 +38,16 @@ export type FormBook = {
   image: string;
 };
 
+export type UseForm<T> = {
+  formState: T;
+  onInputChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  >;
+  onResetForm: () => void;
+};
+
+// Interfaces
+
 export interface FilterMenuProps {
   genres: string[];
   filterName: string;
@@ -51,7 +61,7 @@ export interface FilterItemProps {
 
 export interface AddBookProps {
   books: Book[];
-  genres: Book["genero"][];
+  genres: Book["genre"][];
   setBooks: React.Dispatch<React.SetStateAction<Book[]>>;
   setGenres: React.Dispatch<React.SetStateAction<string[]>>;
 }

@@ -30,15 +30,15 @@ export const Main = (): JSX.Element => {
     return (
       <main className="main_container">
         <section className="config_container">
-          <article className="filter_genero_container">
+          <article className="filter_genre_container">
             <button onClick={() => handleHide()}>Filters</button>
 
             {hide ? (
-              <ul className="filter_genero_container_list">
+              <ul className="filter_genre_container_list">
                 <li onClick={() => handleBooks()}>Show All</li>
                 <FilterMenu
                   genres={genres}
-                  filterName="Genero"
+                  filterName="Genres"
                   setBooks={setBooks}
                 ></FilterMenu>
               </ul>

@@ -18,11 +18,16 @@
 }
 
 .pagination_list li {
-  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.2rem;
   color: #bf2e1a;
   cursor: pointer;
   font-weight: 900;
   background-color: #293241;
   margin: 1rem;
+  border-radius: 100%;
+  height: 3rem;
+  width: 3rem;
 }
