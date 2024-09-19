@@ -1,4 +1,4 @@
-# Bookstore - API REST - PAGE
+# Bookstore React Flask
 
 ## Getting Started
 
@@ -37,7 +37,7 @@ In which you can add books in the main section of the page with title, author, g
 
 ## Portfolio Link
 
-[`https://www.diegolibonati.com.ar/#/project/7`](https://www.diegolibonati.com.ar/#/project/7)
+[`https://www.diegolibonati.com.ar/#/project/Bookstore-React-Flask`](https://www.diegolibonati.com.ar/#/project/Bookstore-React-Flask)
 
 ## Video
 
