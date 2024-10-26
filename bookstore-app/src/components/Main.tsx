@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { useGetBooks } from "../hooks/useGetBooks";
+
+import { Book as BookT } from "../entities/entities";
+
 import { Book } from "./Book";
-import { useHide } from "../hooks/useHide";
-import { AddBook } from "./AddBook";
-import { useGetGenres } from "../hooks/useGetGenres";
 import { Pagination } from "./Pagination";
 import { FilterMenu } from "./FilterMenu";
-import { Book as BookT } from "../entities/entities";
+import { AddBook } from "./AddBook";
+
+import { useGetBooks } from "../hooks/useGetBooks";
+import { useHide } from "../hooks/useHide";
+import { useGetGenres } from "../hooks/useGetGenres";
 
 import "../css/config.css";
 import "../css/books_container.css";
@@ -26,47 +29,49 @@ export const Main = (): JSX.Element => {
 
   if (loading) {
     return <h2>Loading</h2>;
-  } else {
-    return (
-      <main className="main_container">
-        <section className="config_container">
-          <article className="filter_genre_container">
-            <button onClick={() => handleHide()}>Filters</button>
+  }
 
-            {hide ? (
-              <ul className="filter_genre_container_list">
-                <li onClick={() => handleBooks()}>Show All</li>
+  return (
+    <main className="main_container">
+      <section className="config_container">
+        <article className="filter_genre_container">
+          <button onClick={() => handleHide()}>Filters</button>
+
+          {hide ? (
+            <ul className="filter_genre_container_list">
+              <li onClick={() => handleBooks()}>Show All</li>
+              {genres?.length > 0 && (
                 <FilterMenu
                   genres={genres}
                   filterName="Genres"
                   setBooks={setBooks}
                 ></FilterMenu>
-              </ul>
-            ) : null}
-          </article>
-        </section>
+              )}
+            </ul>
+          ) : null}
+        </article>
+      </section>
 
-        <section className="books_container">
-          {currentBooks.map((book) => (
-            <Book key={book._id.$oid} {...book}></Book>
-          ))}
+      <section className="books_container">
+        {currentBooks.map((book) => (
+          <Book key={book._id.$oid} {...book}></Book>
+        ))}
 
-          <AddBook
-            books={books}
-            genres={genres}
-            setBooks={setBooks}
-            setGenres={setGenres}
-          ></AddBook>
-        </section>
+        <AddBook
+          books={books}
+          genres={genres}
+          setBooks={setBooks}
+          setGenres={setGenres}
+        ></AddBook>
+      </section>
 
-        <section className="pagination_container">
-          <Pagination
-            booksPerPage={booksPerPage}
-            totalBooks={books.length}
-            setCurrentPage={setCurrentPage}
-          ></Pagination>
-        </section>
-      </main>
-    );
-  }
+      <section className="pagination_container">
+        <Pagination
+          booksPerPage={booksPerPage}
+          totalBooks={books.length}
+          setCurrentPage={setCurrentPage}
+        ></Pagination>
+      </section>
+    </main>
+  );
 };
