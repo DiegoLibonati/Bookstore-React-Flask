@@ -1,6 +1,6 @@
-import React from "react";
-import { useHide } from "../hooks/useHide";
 import { BookProps } from "../entities/entities";
+
+import { useHide } from "../hooks/useHide";
 
 export const Book = ({
   image,
