@@ -3,8 +3,11 @@
   align-items: center;
   justify-content: center;
   flex-flow: row wrap;
-  width: 95%;
+  gap: 1rem;
+  width: 100%;
   height: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .book_container {
@@ -12,9 +15,13 @@
   align-items: center;
   justify-content: center;
   flex-flow: column wrap;
-  margin-bottom: 2rem;
   height: auto;
   width: 25rem;
+}
+
+.add_book_button {
+  background: none;
+  border: none;
 }
 
 #IconPlus {
@@ -127,6 +134,10 @@
   cursor: pointer;
 }
 
+.label_hide {
+  display: none;
+}
+
 @media only screen and (min-width: 360px) {
   .book_container {
     width: 35rem;
@@ -149,10 +160,5 @@
   .books_container {
     align-items: flex-start;
     justify-content: flex-start;
-  }
-
-  .book_container {
-    margin: 0;
-    margin: 1rem;
   }
 }
