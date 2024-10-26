@@ -1,6 +1,7 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import { Book, UseGetGenres } from "../entities/entities";
+
 import { getGenres } from "../api/getGenres";
 
 export const useGetGenres = (): UseGetGenres => {
@@ -11,7 +12,7 @@ export const useGetGenres = (): UseGetGenres => {
 
     setGenres(genres);
 
-    return
+    return;
   };
 
   useEffect(() => {

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { UseForm } from "../entities/entities";
 
 export const useForm = <T,>(initialForm: T): UseForm<T> => {

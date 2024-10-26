@@ -1,7 +1,8 @@
-import { useEffect } from "react";
-import { useState } from "react";
-import { getBooks } from "../api/getBooks";
+import { useEffect, useState } from "react";
+
 import { Book, UseGetBooks } from "../entities/entities";
+
+import { getBooks } from "../api/getBooks";
 
 export const useGetBooks = (): UseGetBooks => {
   const [books, setBooks] = useState<Book[]>([]);

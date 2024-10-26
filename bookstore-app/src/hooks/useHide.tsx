@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { UseHide } from "../entities/entities";
 
 export const useHide = (): UseHide => {
