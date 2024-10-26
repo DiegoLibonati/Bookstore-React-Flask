@@ -1,6 +1,8 @@
 import { FilterMenuProps } from "../entities/entities";
-import { useHide } from "../hooks/useHide";
+
 import { FilterItem } from "./FilterItem";
+
+import { useHide } from "../hooks/useHide";
 
 export const FilterMenu = ({
   genres,
