@@ -1,6 +1,8 @@
 import React from "react";
-import { useGetBooksByGenre } from "../hooks/useGetBooksByGenre";
+
 import { FilterItemProps } from "../entities/entities";
+
+import { useGetBooksByGenre } from "../hooks/useGetBooksByGenre";
 
 export const FilterItem = ({
   genre,
