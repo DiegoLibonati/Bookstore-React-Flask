@@ -15,7 +15,7 @@ services:
       - bookstore-db
     ports:
       - "3000:3000"
-    
+
   bookstore-server:
     build:
       context: ./bookstore-server
@@ -24,6 +24,8 @@ services:
     environment:
       - TZ="America/Argentina/Buenos_Aires"
       - PORT=5050
+      - MONGO_URI=mongodb://bookstore-db/bookstore
+      - DEBUG_MODE=true
     volumes:
       - "./bookstore-server:/home/app"
     depends_on:
@@ -33,12 +35,12 @@ services:
 
   bookstore-db:
     image: mongo
-    ports: 
+    ports:
       - "27017:27017"
     restart: always
     volumes:
       - db-data:/data/db
-      
-volumes: 
+
+volumes:
   db-data:
     driver: local
