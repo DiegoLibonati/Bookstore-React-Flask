@@ -1,13 +1,16 @@
-import "./styles.css";
+import { Fragment } from "react/jsx-runtime";
+
 import { Header } from "./components/Header";
 import { Main } from "./components/Main";
 
-function App() {
+import "./styles.css";
+
+function App(): JSX.Element {
   return (
-    <>
+    <Fragment>
       <Header></Header>
       <Main></Main>
-    </>
+    </Fragment>
   );
 }
 
