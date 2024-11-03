@@ -28,14 +28,20 @@ createServer([
     path: "/api/v1/genres",
     method: "get",
     res: () => {
-      return genres;
+      return {
+        message: "...",
+        data: genres
+      };
     },
   },
   {
     path: "/api/v1/bookstore/:genre",
     method: "get",
     res: () => {
-      return books;
+      return {
+        message: "...",
+        data: books
+      };
     },
   },
 ]);

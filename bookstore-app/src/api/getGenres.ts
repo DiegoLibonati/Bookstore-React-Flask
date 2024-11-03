@@ -9,7 +9,8 @@ export const getGenres = async (): Promise<Book["genre"][]> => {
       Accept: "application/json",
     },
   });
-  const response: Book["genre"][] = await request.json();
+  const response: { message: string; data: Book["genre"][] } =
+    await request.json();
 
-  return response;
+  return response.data;
 };

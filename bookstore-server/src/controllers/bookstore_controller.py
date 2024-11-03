@@ -1,3 +1,4 @@
+from typing import Any
 from bson import json_util, ObjectId
 
 from flask import make_response, current_app, request
@@ -5,39 +6,42 @@ from flask import make_response, current_app, request
 from utils.utils import not_accepted
 
 
-def get_books() -> tuple:
+def get_books() -> dict[str, Any]:
     books = current_app.mongo.db.books.find()
 
-    response = json_util.dumps(books)
+    data = [{**book, "_id": str(book["_id"])} for book in books]
 
-    return make_response(
-        response, 
-    200)
+    return make_response({
+        "message": "Books were successfully obtained.",
+        "data": data
+    }, 200)
 
 
-def get_books_by_genre(genre: str) -> tuple:
+def get_books_by_genre(genre: str) -> dict[str, Any]:
     books = current_app.mongo.db.books.find({
         "genre" : genre
     })
 
-    response = json_util.dumps(books)
+    data = [{**book, "_id": str(book["_id"])} for book in books]
+    
+    return make_response({
+        "message": "Books were successfully obtained.",
+        "data": data
+    }, 200)
 
-    return make_response(
-        response, 
-    200)
 
-
-def get_all_genres() -> tuple:
+def get_all_genres() -> dict[str, Any]:
     books = current_app.mongo.db.books.distinct("genre")
 
-    response = json_util.dumps(books)
+    data = json_util.loads(json_util.dumps(books))
 
-    return make_response(
-        response, 
-    200)
+    return make_response({
+        "message": "The book genres were successfully obtained.",
+        "data": data
+    }, 200)
 
 
-def add_book() -> tuple:
+def add_book() -> dict[str, Any]:
     image = request.json['image']
     title = request.json['title']
     author = request.json['author']
@@ -54,20 +58,20 @@ def add_book() -> tuple:
         'genre': genre,
     }
 
-    current_app.mongo.db.books.insert_one(response)
+    insert_result = current_app.mongo.db.books.insert_one(response)
+    response['_id'] = str(insert_result.inserted_id)
 
-    return make_response(
-        f"Added: {response}",
-    201)
+    return make_response({
+        "message": "The book was successfully added.",
+        "data": response
+    }, 201)
     
 
-def delete_book(id: str) -> tuple:
+def delete_book(id: str) -> dict[str, Any]:
     current_app.mongo.db.books.delete_one({
         "_id": ObjectId(id)
     })
 
-    response = f"{id} was deleted"
-
-    return make_response(
-        response,
-    200)
+    return make_response({
+        "message": f"{id} was deleted"
+    }, 200)

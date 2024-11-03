@@ -10,7 +10,7 @@ export const getBooks = async (): Promise<Book[]> => {
     },
   });
 
-  const response: Book[] = await request.json();
+  const response: { message: string; data: Book[] } = await request.json();
 
-  return response;
+  return response.data;
 };

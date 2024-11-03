@@ -27,7 +27,10 @@ createServer([
     path: "/api/v1/bookstore/:genre",
     method: "get",
     res: () => {
-      return books;
+      return {
+        message: "...",
+        data: books
+      };
     },
   },
 ]);
