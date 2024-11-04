@@ -1,9 +1,10 @@
 from typing import Any
-from bson import json_util, ObjectId
+from bson import json_util
+from bson import ObjectId
 
-from flask import make_response, current_app, request
-
-from utils.utils import not_accepted
+from flask import make_response
+from flask import current_app
+from flask import request
 
 
 def get_books() -> dict[str, Any]:
@@ -48,9 +49,7 @@ def add_book() -> dict[str, Any]:
     description = request.json['description']
     genre = request.json['genre']
 
-    if not image or not title or not author or not description or not genre: return not_accepted()
-
-    response = {
+    book = {
         'title':title,
         'author': author,
         'description': description,
@@ -58,12 +57,19 @@ def add_book() -> dict[str, Any]:
         'genre': genre,
     }
 
-    insert_result = current_app.mongo.db.books.insert_one(response)
-    response['_id'] = str(insert_result.inserted_id)
+    if not image or not title or not author or not description or not genre:
+        return make_response({
+            "message": "The requested book could not be added.",
+            "fields": book,
+            "data": None
+        }, 400)
+
+    insert_result = current_app.mongo.db.books.insert_one(book)
+    book['_id'] = str(insert_result.inserted_id)
 
     return make_response({
         "message": "The book was successfully added.",
-        "data": response
+        "data": book
     }, 201)
     
 

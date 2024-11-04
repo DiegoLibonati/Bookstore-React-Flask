@@ -19,14 +19,6 @@ def add_cors_headers(response):
 
 
 def load_config() -> dict[str, Any]:
-    """
-    Loads the initial configuration of the Flask application.
-
-    Arguments: -
-
-    Return: Returns a dictionary, which is the configuration of the app.
-    """
-
     # Mongo
     app.config["MONGO_URI"] = os.getenv("MONGO_URI")
     app.config['JSON_AS_ASCII'] = False
@@ -39,14 +31,6 @@ def load_config() -> dict[str, Any]:
 
 
 def load_mongo() -> None:
-    """
-    Loads the initial Mongo configuration.
-
-    Arguments: -
-
-    Return: None
-    """
-
     app.mongo = PyMongo(app)
 
 
@@ -55,14 +39,6 @@ def register_blueprints() -> None:
 
 
 def init_api() -> None:
-    """
-    Initializes the API.
-
-    Arguments: -
-
-    Return: None
-    """
-
     # Load config API
     load_config()
 
