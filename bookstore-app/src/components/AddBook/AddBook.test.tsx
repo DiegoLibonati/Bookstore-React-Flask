@@ -1,19 +1,31 @@
 import { screen, render } from "@testing-library/react";
 import user from "@testing-library/user-event";
 
-import { Book } from "../entities/entities";
+import { Book } from "../../entities/entities";
 
 import { AddBook } from "./AddBook";
 
-import { createServer } from "../test/server";
+import { createServer } from "../../test/server";
+
+const book = {
+  _id: "asd123",
+  author: "Bram Stoker",
+  description:
+    "Es una novela de fantasía gótica escrita por Bram Stoker, publicada en 1897.",
+  genre: "Novela",
+  image:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dracula-First-Edition-1897.jpg/220px-Dracula-First-Edition-1897.jpg",
+  title: "Drácula",
+};
 
 createServer([
   {
-    path: "/api/v1/bookstore/add",
+    path: "/api/v1/bookstore/books/add",
     method: "post",
     res: () => {
       return {
         ok: true,
+        data: book,
       };
     },
   },
@@ -29,21 +41,8 @@ const renderComponent = (): {
   };
 } => {
   const props = {
-    books: [
-      {
-        _id: {
-          $oid: "asd123",
-        },
-        author: "Bram Stoker",
-        description:
-          "Es una novela de fantasía gótica escrita por Bram Stoker, publicada en 1897.",
-        genre: "Novela",
-        image:
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dracula-First-Edition-1897.jpg/220px-Dracula-First-Edition-1897.jpg",
-        title: "Drácula",
-      },
-    ],
-    genres: ["Novela"],
+    books: [book],
+    genres: ["123"],
     mockSetBooks: jest.fn(),
     mockSetGenres: jest.fn(),
   };
@@ -157,14 +156,14 @@ test("A new book must be added when the form is submitted.", async () => {
   expect(props.setBooks).toHaveBeenCalledWith([
     ...props.books,
     {
-      _id: { $oid: valueText + "123" },
-      author: valueText,
-      description: valueText,
-      genre: valueText,
-      image: valueText,
-      title: valueText,
+      _id: book._id,
+      author: book.author,
+      description: book.description,
+      genre: book.genre,
+      image: book.image,
+      title: book.title,
     },
   ]);
   expect(props.setGenres).toHaveBeenCalled();
-  expect(props.setGenres).toHaveBeenCalledWith([...props.genres, valueText]);
+  expect(props.setGenres).toHaveBeenCalledWith([...props.genres, book.genre]);
 });

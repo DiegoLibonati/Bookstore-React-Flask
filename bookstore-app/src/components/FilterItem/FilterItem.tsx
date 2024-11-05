@@ -1,8 +1,13 @@
 import React from "react";
 
-import { FilterItemProps } from "../entities/entities";
+import { Book } from "../../entities/entities";
 
-import { useGetBooksByGenre } from "../hooks/useGetBooksByGenre";
+import { useGetBooksByGenre } from "../../hooks/useGetBooksByGenre";
+
+interface FilterItemProps {
+  genre: string;
+  setBooks: React.Dispatch<React.SetStateAction<Book[]>>;
+}
 
 export const FilterItem = ({
   genre,

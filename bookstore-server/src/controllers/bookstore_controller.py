@@ -6,11 +6,13 @@ from flask import make_response
 from flask import current_app
 from flask import request
 
+from utils.utils import parse_books
+
 
 def get_books() -> dict[str, Any]:
     books = current_app.mongo.db.books.find()
 
-    data = [{**book, "_id": str(book["_id"])} for book in books]
+    data = parse_books(books=books)
 
     return make_response({
         "message": "Books were successfully obtained.",
@@ -23,7 +25,7 @@ def get_books_by_genre(genre: str) -> dict[str, Any]:
         "genre" : genre
     })
 
-    data = [{**book, "_id": str(book["_id"])} for book in books]
+    data = parse_books(books=books)
     
     return make_response({
         "message": "Books were successfully obtained.",
@@ -74,10 +76,15 @@ def add_book() -> dict[str, Any]:
     
 
 def delete_book(id: str) -> dict[str, Any]:
-    current_app.mongo.db.books.delete_one({
-        "_id": ObjectId(id)
-    })
+    try:
+        current_app.mongo.db.books.delete_one({
+            "_id": ObjectId(id)
+        })
 
-    return make_response({
-        "message": f"{id} was deleted"
-    }, 200)
+        return make_response({
+            "message": f"{id} was deleted."
+        }, 200)
+    except Exception as e:
+        return make_response({
+            "message": str(e)
+        }, 400)

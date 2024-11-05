@@ -1,8 +1,16 @@
-import { FilterMenuProps } from "../entities/entities";
+import { Book } from "../../entities/entities";
 
-import { FilterItem } from "./FilterItem";
+import { FilterItem } from "../FilterItem/FilterItem";
 
-import { useHide } from "../hooks/useHide";
+import { useHide } from "../../hooks/useHide";
+
+import "./FilterMenu.css";
+
+interface FilterMenuProps {
+  genres: string[];
+  filterName: string;
+  setBooks: React.Dispatch<React.SetStateAction<Book[]>>;
+}
 
 export const FilterMenu = ({
   genres,
@@ -15,7 +23,7 @@ export const FilterMenu = ({
     <li onClick={handleHide}>
       {filterName}
       {hide ? (
-        <ul>
+        <ul className="filter_menu_list">
           {genres.map((genre, index) => (
             <FilterItem
               key={index * 12}

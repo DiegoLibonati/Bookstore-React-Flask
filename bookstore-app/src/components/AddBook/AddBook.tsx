@@ -1,10 +1,17 @@
-import { AddBookProps, FormBook } from "../entities/entities";
+import { Book, FormBook } from "../../entities/entities";
 
-import { postBook } from "../api/postBook";
-import { useForm } from "../hooks/useForm";
-import { useHide } from "../hooks/useHide";
+import { postBook } from "../../api/postBook";
+import { useForm } from "../../hooks/useForm";
+import { useHide } from "../../hooks/useHide";
 
 import { BsPlusCircle } from "react-icons/bs";
+
+interface AddBookProps {
+  books: Book[];
+  genres: Book["genre"][];
+  setBooks: React.Dispatch<React.SetStateAction<Book[]>>;
+  setGenres: React.Dispatch<React.SetStateAction<string[]>>;
+}
 
 export const AddBook = ({
   books,
@@ -26,15 +33,13 @@ export const AddBook = ({
     e.preventDefault();
 
     const result = await postBook(formState);
+    const response = await result.json();
 
     if (result.ok) {
-      setBooks([
-        ...books,
-        { ...formState, _id: { $oid: formState.image + "123" } },
-      ]);
+      setBooks([...books, { ...response.data }]);
 
-      if (!genres.includes(formState.genre)) {
-        setGenres([...genres, formState.genre]);
+      if (!genres.includes(response.data.genre)) {
+        setGenres([...genres, response.data.genre]);
       }
     }
   };

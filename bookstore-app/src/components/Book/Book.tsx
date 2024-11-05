@@ -1,6 +1,11 @@
-import { BookProps } from "../entities/entities";
+import { useHide } from "../../hooks/useHide";
 
-import { useHide } from "../hooks/useHide";
+interface BookProps {
+  image: string;
+  title: string;
+  author: string;
+  description: string;
+}
 
 export const Book = ({
   image,

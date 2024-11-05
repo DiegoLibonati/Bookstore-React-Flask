@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
 
-import { Book, UseGetBooks } from "../entities/entities";
+import { Book } from "../entities/entities";
 
 import { getBooks } from "../api/getBooks";
+
+type UseGetBooks = {
+  books: Book[];
+  loading: boolean;
+  setBooks: React.Dispatch<React.SetStateAction<Book[]>>;
+  handleBooks: () => Promise<void>;
+};
 
 export const useGetBooks = (): UseGetBooks => {
   const [books, setBooks] = useState<Book[]>([]);

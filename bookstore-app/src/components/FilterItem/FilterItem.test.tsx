@@ -1,18 +1,16 @@
 import { screen, render } from "@testing-library/react";
 import user from "@testing-library/user-event";
 
-import { Book } from "../entities/entities";
+import { Book } from "../../entities/entities";
 
 import { FilterItem } from "./FilterItem";
 
-import { createServer } from "../test/server";
+import { createServer } from "../../test/server";
 
 const genres: string[] = ["Novela"];
 const books: Book[] = [
   {
-    _id: {
-      $oid: "asd123",
-    },
+    _id: "asd123",
     author: "Bram Stoker",
     description:
       "Es una novela de fantasía gótica escrita por Bram Stoker, publicada en 1897.",
@@ -25,7 +23,7 @@ const books: Book[] = [
 
 createServer([
   {
-    path: "/api/v1/genres",
+    path: "/api/v1/bookstore/genres",
     method: "get",
     res: () => {
       return {
@@ -35,7 +33,7 @@ createServer([
     },
   },
   {
-    path: "/api/v1/bookstore/:genre",
+    path: "/api/v1/bookstore/genres/:genre",
     method: "get",
     res: () => {
       return {

@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 
-import { Book, UseGetGenres } from "../entities/entities";
+import { Book } from "../entities/entities";
 
 import { getGenres } from "../api/getGenres";
+
+type UseGetGenres = {
+  genres: Book["genre"][];
+  setGenres: React.Dispatch<React.SetStateAction<string[]>>;
+};
 
 export const useGetGenres = (): UseGetGenres => {
   const [genres, setGenres] = useState<Book["genre"][]>([]);

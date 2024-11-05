@@ -2,7 +2,7 @@ import { screen, render } from "@testing-library/react";
 
 import { Header } from "./Header";
 
-import { images } from "../assets/export";
+import { images } from "../../assets/export";
 
 const renderComponent = (): { container: HTMLElement } => {
   const { container } = render(<Header />);

@@ -1,4 +1,8 @@
-import { PaginationProps } from "../entities/entities";
+interface PaginationProps {
+  totalBooks: number;
+  booksPerPage: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+}
 
 export const Pagination = ({
   totalBooks,
