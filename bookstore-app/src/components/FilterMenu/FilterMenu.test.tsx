@@ -6,6 +6,7 @@ import { Book } from "../../entities/entities";
 import { FilterMenu } from "./FilterMenu";
 
 import { createServer } from "../../test/server";
+import { api_route_books } from "../../api/route";
 
 const books: Book[] = [
   {
@@ -22,7 +23,7 @@ const books: Book[] = [
 
 createServer([
   {
-    path: "/api/v1/bookstore/genres/:genre",
+    path: `${api_route_books}/:genre`,
     method: "get",
     res: () => {
       return {

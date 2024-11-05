@@ -1,9 +1,9 @@
 import { FormBook } from "../entities/entities";
 
-import { api_route } from "./route";
+import { api_route_books } from "./route";
 
 export const postBook = async (body: FormBook): Promise<Response> => {
-  return await fetch(`${api_route}/books/add`, {
+  return await fetch(`${api_route_books}/add`, {
     method: "POST",
     body: JSON.stringify(body),
     headers: {

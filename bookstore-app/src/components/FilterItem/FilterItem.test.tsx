@@ -6,6 +6,7 @@ import { Book } from "../../entities/entities";
 import { FilterItem } from "./FilterItem";
 
 import { createServer } from "../../test/server";
+import { api_route_books, api_route_genres } from "../../api/route";
 
 const genres: string[] = ["Novela"];
 const books: Book[] = [
@@ -23,22 +24,22 @@ const books: Book[] = [
 
 createServer([
   {
-    path: "/api/v1/bookstore/genres",
+    path: api_route_genres,
     method: "get",
     res: () => {
       return {
         message: "...",
-        data: genres
+        data: genres,
       };
     },
   },
   {
-    path: "/api/v1/bookstore/genres/:genre",
+    path: `${api_route_books}/:genre`,
     method: "get",
     res: () => {
       return {
         message: "...",
-        data: books
+        data: books,
       };
     },
   },

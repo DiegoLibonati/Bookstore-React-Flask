@@ -1,9 +1,9 @@
 import { Book } from "../entities/entities";
 
-import { api_route } from "./route";
+import { api_route_genres } from "./route";
 
 export const getGenres = async (): Promise<Book["genre"][]> => {
-  const request = await fetch(`${api_route}/genres`, {
+  const request = await fetch(`${api_route_genres}`, {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",

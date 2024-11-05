@@ -1,5 +1,4 @@
 from typing import Any
-from bson import json_util
 from bson import ObjectId
 
 from flask import make_response
@@ -29,17 +28,6 @@ def get_books_by_genre(genre: str) -> dict[str, Any]:
     
     return make_response({
         "message": "Books were successfully obtained.",
-        "data": data
-    }, 200)
-
-
-def get_all_genres() -> dict[str, Any]:
-    books = current_app.mongo.db.books.distinct("genre")
-
-    data = json_util.loads(json_util.dumps(books))
-
-    return make_response({
-        "message": "The book genres were successfully obtained.",
         "data": data
     }, 200)
 

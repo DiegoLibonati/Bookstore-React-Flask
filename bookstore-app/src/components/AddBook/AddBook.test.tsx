@@ -6,6 +6,7 @@ import { Book } from "../../entities/entities";
 import { AddBook } from "./AddBook";
 
 import { createServer } from "../../test/server";
+import { api_route_books } from "../../api/route";
 
 const book = {
   _id: "asd123",
@@ -20,7 +21,7 @@ const book = {
 
 createServer([
   {
-    path: "/api/v1/bookstore/books/add",
+    path: `${api_route_books}/add`,
     method: "post",
     res: () => {
       return {

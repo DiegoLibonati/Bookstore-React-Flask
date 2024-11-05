@@ -4,7 +4,8 @@ from typing import Any
 from flask import Flask
 from flask_pymongo import PyMongo
 
-from blueprints.v1.bookstore_route import bookstore_route
+from blueprints.v1.books_route import books_route
+from blueprints.v1.genres_route import genres_route
 
 
 app = Flask(__name__)
@@ -35,7 +36,9 @@ def load_mongo() -> None:
 
 
 def register_blueprints() -> None:
-    app.register_blueprint(bookstore_route, url_prefix="/api/v1/bookstore")
+    prefix = "/api/v1/bookstore"
+    app.register_blueprint(books_route, url_prefix=f"{prefix}/books")
+    app.register_blueprint(genres_route, url_prefix=f"{prefix}/genres")
 
 
 def init_api() -> None:
