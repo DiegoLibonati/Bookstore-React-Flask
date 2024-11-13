@@ -35,6 +35,42 @@ In which you can add books in the main section of the page with title, author, g
 5. CSS
 6. MONGO DB
 
+## Libraries used
+
+### Frontend
+1. @testing-library/dom
+2. @types/jest
+3. @types/react
+4. @types/react-dom
+5. msw
+6. @testing-library/jest-dom
+7. @testing-library/react
+8. @testing-library/user-event
+9. react-icons
+
+### Backend
+
+1. pytest
+2. pytest-env
+3. flask_pymongo
+
+## Testing
+
+### Frontend
+
+1. Join to the correct path of the clone and join to: `bookstore-app`
+2. Execute: `yarn install`
+3. Execute: `yarn test`
+
+### Backend
+
+1. Join to the correct path of the clone and join to: `bookstore-server`
+2. Execute: `python -m venv venv`
+3. Execute in Windows: `venv\Scripts\activate`
+4. Execute: `pip install -r requirements.txt`
+5. Execute: `pip install -r requirements.test.txt`
+6. Execute: `pytest`
+
 ## Portfolio Link
 
 [`https://www.diegolibonati.com.ar/#/project/Bookstore-React-Flask`](https://www.diegolibonati.com.ar/#/project/Bookstore-React-Flask)

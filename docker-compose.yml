@@ -24,7 +24,7 @@ services:
     environment:
       - TZ="America/Argentina/Buenos_Aires"
       - PORT=5050
-      - MONGO_URI=mongodb://bookstore-db/bookstore
+      - MONGO_URI=mongodb://host.docker.internal/bookstore
       - DEBUG_MODE=true
     volumes:
       - "./bookstore-server:/home/app"

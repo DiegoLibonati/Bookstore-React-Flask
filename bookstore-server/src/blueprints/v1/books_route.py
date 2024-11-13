@@ -2,10 +2,15 @@ from typing import Any
 
 from flask import Blueprint
 
-from controllers import books_controller
+from src.controllers import books_controller
 
 
 books_route = Blueprint("books_route", __name__)
+
+
+@books_route.route('/alive', methods = ['GET'])
+def alive_books() -> dict[str, Any]:
+    return books_controller.alive_books()
 
 
 @books_route.route('/', methods = ['GET'])

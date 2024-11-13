@@ -5,7 +5,16 @@ from flask import make_response
 from flask import current_app
 from flask import request
 
-from utils.utils import parse_books
+from src.utils.utils import parse_books
+
+
+def alive_books() -> dict[str, Any]:
+    return make_response({
+        "message": "I am Alive!",
+        "version_bp": "2.0.0",
+        "author": "Diego Libonati",
+        "name_bp": "Books"
+    }, 200)
 
 
 def get_books() -> dict[str, Any]:
@@ -33,11 +42,11 @@ def get_books_by_genre(genre: str) -> dict[str, Any]:
 
 
 def add_book() -> dict[str, Any]:
-    image = request.json['image']
-    title = request.json['title']
-    author = request.json['author']
-    description = request.json['description']
-    genre = request.json['genre']
+    image = request.json.get('image')
+    title = request.json.get('title')
+    author = request.json.get('author')
+    description = request.json.get('description')
+    genre = request.json.get('genre')
 
     book = {
         'title':title,

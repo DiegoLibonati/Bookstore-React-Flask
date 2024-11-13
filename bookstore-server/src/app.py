@@ -4,8 +4,8 @@ from typing import Any
 from flask import Flask
 from flask_pymongo import PyMongo
 
-from blueprints.v1.books_route import books_route
-from blueprints.v1.genres_route import genres_route
+from src.blueprints.v1.books_route import books_route
+from src.blueprints.v1.genres_route import genres_route
 
 
 app = Flask(__name__)
@@ -41,7 +41,7 @@ def register_blueprints() -> None:
     app.register_blueprint(genres_route, url_prefix=f"{prefix}/genres")
 
 
-def init_api() -> None:
+def init() -> None:
     # Load config API
     load_config()
 
@@ -51,12 +51,12 @@ def init_api() -> None:
     # Load DB - Mongo
     load_mongo()
 
+
+if __name__ == "__main__":
+    init()
+
     app.run(
         debug=app.config["DEBUG_MODE"],
         port=app.config["PORT"],
         host="0.0.0.0",
     )
-
-
-if __name__ == "__main__":
-    init_api()
