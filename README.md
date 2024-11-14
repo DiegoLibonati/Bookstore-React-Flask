@@ -69,7 +69,7 @@ In which you can add books in the main section of the page with title, author, g
 3. Execute in Windows: `venv\Scripts\activate`
 4. Execute: `pip install -r requirements.txt`
 5. Execute: `pip install -r requirements.test.txt`
-6. Execute: `pytest`
+6. Execute: `pytest --log-cli-level=INFO`
 
 ## Portfolio Link
 
