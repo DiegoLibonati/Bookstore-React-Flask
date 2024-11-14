@@ -148,7 +148,7 @@ def test_delete_book(flask_client: Flask, inserted_book_id: str) -> None:
 
 
 @pytest.mark.usefixtures("mongo_test_db")
-def test_delete_book(flask_client: Flask) -> None:
+def test_delete_wrong_book(flask_client: Flask) -> None:
     response: Response = flask_client.delete(f"{prefix_books_bp}/delete/asd")
     result = response.json
     status_code = response.status_code
