@@ -5,7 +5,7 @@ import { Book } from "../../entities/entities";
 
 import { FilterMenu } from "./FilterMenu";
 
-import { createServer } from "../../test/server";
+import { createServer } from "../../test/msw/server";
 import { api_route_books } from "../../api/route";
 
 const books: Book[] = [

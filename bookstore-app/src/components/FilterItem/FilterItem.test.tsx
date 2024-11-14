@@ -5,7 +5,7 @@ import { Book } from "../../entities/entities";
 
 import { FilterItem } from "./FilterItem";
 
-import { createServer } from "../../test/server";
+import { createServer } from "../../test/msw/server";
 import { api_route_books, api_route_genres } from "../../api/route";
 
 const genres: string[] = ["Novela"];
