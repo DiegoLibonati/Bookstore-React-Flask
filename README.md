@@ -38,21 +38,40 @@ In which you can add books in the main section of the page with title, author, g
 ## Libraries used
 
 ### Frontend
-1. @testing-library/dom
-2. @types/jest
-3. @types/react
-4. @types/react-dom
-5. msw
-6. @testing-library/jest-dom
-7. @testing-library/react
-8. @testing-library/user-event
-9. react-icons
+
+```
+"@testing-library/jest-dom": "^6.6.2",
+"@testing-library/react": "^16.0.1",
+"@testing-library/user-event": "^14.5.2",
+"react": "^18.2.0",
+"react-dom": "^18.2.0",
+"react-icons": "^4.4.0",
+"react-scripts": "5.0.1",
+"web-vitals": "^2.1.4"
+
+"@testing-library/dom": "^10.4.0",
+"@types/jest": "^29.5.13",
+"@types/react": "^18.3.11",
+"@types/react-dom": "^18.3.1",
+"msw": "^2.4.11",
+"typescript": "^5.3.3"
+```
 
 ### Backend
 
-1. pytest
-2. pytest-env
-3. flask_pymongo
+#### Requirements.txt
+
+```
+Flask
+flask_pymongo
+```
+
+#### Requirements.test.txt
+
+```
+pytest
+pytest-env
+```
 
 ## Testing
 
