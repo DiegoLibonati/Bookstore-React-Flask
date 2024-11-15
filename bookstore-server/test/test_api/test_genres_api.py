@@ -3,7 +3,7 @@ import pytest
 from flask import Flask
 from flask import Response
 
-from tests.conftest import prefix_genres_bp
+from test.conftest import prefix_genres_bp
 
 
 def test_alive_genres(flask_client: Flask) -> None:

@@ -3,7 +3,7 @@ import pytest
 from flask import Flask
 from flask import Response
 
-from tests.conftest import prefix_books_bp
+from test.conftest import prefix_books_bp
 
 
 def test_alive_books(flask_client: Flask) -> None:
