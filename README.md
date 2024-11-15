@@ -39,20 +39,26 @@ In which you can add books in the main section of the page with title, author, g
 
 ### Frontend
 
+#### Dependencies
+
 ```
-"@testing-library/jest-dom": "^6.6.2",
-"@testing-library/react": "^16.0.1",
-"@testing-library/user-event": "^14.5.2",
+"@types/jest": "^29.5.13",
+"@types/react": "^18.3.11",
+"@types/react-dom": "^18.3.1",
 "react": "^18.2.0",
 "react-dom": "^18.2.0",
 "react-icons": "^4.4.0",
 "react-scripts": "5.0.1",
 "web-vitals": "^2.1.4"
+```
 
+#### devDependencies
+
+```
+"@testing-library/jest-dom": "^6.6.2",
+"@testing-library/react": "^16.0.1",
+"@testing-library/user-event": "^14.5.2",
 "@testing-library/dom": "^10.4.0",
-"@types/jest": "^29.5.13",
-"@types/react": "^18.3.11",
-"@types/react-dom": "^18.3.1",
 "msw": "^2.4.11",
 "typescript": "^5.3.3"
 ```
