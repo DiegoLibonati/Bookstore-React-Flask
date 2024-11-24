@@ -80,6 +80,14 @@ pytest
 pytest-env
 ```
 
+## Portfolio Link
+
+[`https://www.diegolibonati.com.ar/#/project/Bookstore-React-Flask`](https://www.diegolibonati.com.ar/#/project/Bookstore-React-Flask)
+
+## Video
+
+https://github.com/DiegoLibonati/Bookstore-Api-Rest-Page/assets/99032604/b9059c86-eecd-4e2f-a5c6-f891257cea32
+
 ## Testing
 
 ### Frontend
@@ -95,11 +103,3 @@ pytest-env
 4. Execute: `pip install -r requirements.txt`
 5. Execute: `pip install -r requirements.test.txt`
 6. Execute: `pytest --log-cli-level=INFO`
-
-## Portfolio Link
-
-[`https://www.diegolibonati.com.ar/#/project/Bookstore-React-Flask`](https://www.diegolibonati.com.ar/#/project/Bookstore-React-Flask)
-
-## Video
-
-https://github.com/DiegoLibonati/Bookstore-Api-Rest-Page/assets/99032604/b9059c86-eecd-4e2f-a5c6-f891257cea32
