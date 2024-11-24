@@ -4,15 +4,15 @@ import time
 import pytest
 
 from flask import Flask
-from flask import Response
 from flask.testing import FlaskClient
 
 from src.app import app as api_app
 from src.app import init
+from src.data_access.books_repository import BookRepository
+from src.models.Book import Book
+from src.models.BookManager import BookManager
 
-
-prefix_books_bp = "/api/v1/bookstore/books"
-prefix_genres_bp = "/api/v1/bookstore/genres"
+from test.constants import BOOK_MOCK
 
 
 @pytest.fixture(scope="session")
@@ -29,7 +29,7 @@ def flask_client(flask_app: Flask) -> FlaskClient:
 
 @pytest.fixture(scope="session")
 def mongo_test_db():
-    start = subprocess.run(
+    subprocess.run(
         ["docker-compose", "up", "-d", "bookstore-db"],
         capture_output=True,
         text=True,
@@ -39,7 +39,7 @@ def mongo_test_db():
 
     yield
 
-    down = subprocess.run(
+    subprocess.run(
         ["docker-compose", "down"],
         capture_output=True,
         text=True,
@@ -49,23 +49,32 @@ def mongo_test_db():
 @pytest.fixture(scope="session")
 def dracula_book() -> dict[str, str]:
     dracula_book = {
-        "image": "https://es.wikipedia.org/wiki/Archivo:Dracula-First-Edition-1897.jpg",
-        "title": "Drácula",
-        "author": "Bram Stoker",
-        "description": "Es una novela de fantasía gótica escrita por Bram Stoker, publicada en 1897.",
-        "genre": "Terror"
+        "image": "test_image.jpg",
+        "title": "Drácula Test",
+        "author": "Bram Stoker Test",
+        "description": "Es una novela de fantasía gótica escrita por Bram Stoker, publicada en 1897. Test.",
+        "genre": "Test"
     }
 
     return dracula_book
 
 
 @pytest.fixture(scope="session")
-def inserted_book_id(flask_client: Flask, dracula_book: dict[str, str]) -> str:
-    """Fixture to insert a book and return its ID."""
-    response: Response = flask_client.post(
-        f"{prefix_books_bp}/add",
-        json=dracula_book,
-    )
-    result = response.json
-    book = result.get("data")
-    return book.get("_id")
+def book_test(dracula_book: dict[str, str]) -> dict[str, str]:
+    _id = BOOK_MOCK["not_found_flag_id"]
+    return {"_id": _id, **dracula_book}
+
+
+@pytest.fixture(scope="session")
+def book_repository(flask_app: Flask) -> BookRepository:
+    return BookRepository(db=flask_app.mongo.db)
+
+
+@pytest.fixture(scope="session")
+def book_model(book_test: dict[str, str]) -> Book:
+    return Book(**book_test)
+
+
+@pytest.fixture(scope="session")
+def book_manager_model() -> BookManager:
+    return BookManager()

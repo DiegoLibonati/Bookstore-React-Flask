@@ -1,8 +1,9 @@
 from typing import Any
-from bson import json_util
 
 from flask import make_response
 from flask import current_app
+
+from src.data_access.books_repository import BookRepository
 
 
 def alive_genres() -> dict[str, Any]:
@@ -15,11 +16,9 @@ def alive_genres() -> dict[str, Any]:
 
 
 def get_all_genres() -> dict[str, Any]:
-    books = current_app.mongo.db.books.distinct("genre")
-
-    data = json_util.loads(json_util.dumps(books))
+    books = BookRepository(db=current_app.mongo.db).get_genres()
 
     return make_response({
         "message": "The book genres were successfully obtained.",
-        "data": data
+        "data": books
     }, 200)

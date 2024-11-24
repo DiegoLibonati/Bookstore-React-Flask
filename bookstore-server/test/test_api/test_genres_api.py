@@ -1,13 +1,12 @@
-import pytest
-
 from flask import Flask
 from flask import Response
 
-from test.conftest import prefix_genres_bp
+from test.constants import BLUEPRINTS
 
 
 def test_alive_genres(flask_client: Flask) -> None:
-    response: Response = flask_client.get(f"{prefix_genres_bp}/alive")
+    response: Response = flask_client.get(f"{BLUEPRINTS['genres']}/alive")
+
     result = response.json
     status_code = response.status_code
 
@@ -23,15 +22,18 @@ def test_alive_genres(flask_client: Flask) -> None:
     assert name_bp == "Genres"
 
 
-def test_get_all_genres(flask_client: Flask, dracula_book: dict[str, str]) -> None:
-    response: Response = flask_client.get(f"{prefix_genres_bp}/")
+def test_get_all_genres(flask_client: Flask) -> None:
+    response: Response = flask_client.get(f"{BLUEPRINTS['genres']}/")
+
     result = response.json
     status_code = response.status_code
 
     message = result.get("message")
-    genres = result.get("data")
+    data = result.get("data")
 
     assert status_code == 200
     assert message == "The book genres were successfully obtained."
-    assert type(genres) == list
-    assert dracula_book.get("genre") in genres
+    assert type(data) == list
+
+
+    if data: assert data

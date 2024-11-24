@@ -3,11 +3,12 @@ import pytest
 from flask import Flask
 from flask import Response
 
-from test.conftest import prefix_books_bp
+from test.constants import BLUEPRINTS
+from test.constants import BOOK_MOCK
 
 
 def test_alive_books(flask_client: Flask) -> None:
-    response: Response = flask_client.get(f"{prefix_books_bp}/alive")
+    response: Response = flask_client.get(f"{BLUEPRINTS['books']}/alive")
     result = response.json
     status_code = response.status_code
 
@@ -25,29 +26,32 @@ def test_alive_books(flask_client: Flask) -> None:
 
 @pytest.mark.usefixtures("mongo_test_db")
 def test_add_book(flask_client: Flask, dracula_book: dict[str, str]):
+    image = dracula_book.get("image")
+    title = dracula_book.get("title")
+    author = dracula_book.get("author")
+    description = dracula_book.get("description")
+    genre = dracula_book.get("genre")
+
     response: Response = flask_client.post(
-        f"{prefix_books_bp}/add",
+        f"{BLUEPRINTS['books']}/add",
         json=dracula_book,
     )
     result = response.json
     status_code = response.status_code
 
     message = result.get("message")
-    book = result.get("data")
-
-    inserted_id = book.get("_id")
+    data = result.get("data")
 
     assert status_code == 201
-    assert inserted_id
     assert message == "The book was successfully added."
-    assert book
-    assert type(book) == dict
-    assert book.get("_id") == inserted_id
-    assert book.get("image") == dracula_book.get("image")
-    assert book.get("title") == dracula_book.get("title")
-    assert book.get("author") == dracula_book.get("author")
-    assert book.get("description") == dracula_book.get("description")
-    assert book.get("genre") == dracula_book.get("genre")
+    assert data
+    assert type(data) == dict
+    assert data.get("_id")
+    assert data.get("image") == image
+    assert data.get("title") == title
+    assert data.get("author") == author
+    assert data.get("description") == description
+    assert data.get("genre") == genre
 
 
 @pytest.mark.usefixtures("mongo_test_db")
@@ -61,7 +65,7 @@ def test_add_book_error(flask_client: Flask):
     }
 
     response: Response = flask_client.post(
-        f"{prefix_books_bp}/add",
+        f"{BLUEPRINTS['books']}/add",
         json=wrong_book,
     )
     result = response.json
@@ -69,92 +73,149 @@ def test_add_book_error(flask_client: Flask):
 
     message = result.get("message")
     book = result.get("data")
-    fields = result.get("fields")
 
     assert status_code == 400
     assert message == "The requested book could not be added."
     assert not book
-    assert fields == wrong_book
 
 
 @pytest.mark.usefixtures("mongo_test_db")
-def test_get_books(flask_client: Flask, inserted_book_id: str, dracula_book: dict[str, str]) -> None:
+def test_get_books(flask_client: Flask, dracula_book: dict[str, str]) -> None:
     book = None
 
-    response: Response = flask_client.get(f"{prefix_books_bp}/")
+    image = dracula_book.get("image")
+    title = dracula_book.get("title")
+    author = dracula_book.get("author")
+    description = dracula_book.get("description")
+    genre = dracula_book.get("genre")
+
+    response: Response = flask_client.get(f"{BLUEPRINTS['books']}/")
+    
     result = response.json
     status_code = response.status_code
 
     message = result.get("message")
-    books = result.get("data")
+    data = result.get("data")
     
-    for b in books:
-        if b.get("_id") == inserted_book_id:
-            book = b
-
     assert status_code == 200
     assert message == "Books were successfully obtained."
-    assert type(books) == list
+    assert data
+    assert type(data) == list
+
+    for book in data:
+        if book.get("title") == title and book.get("author") == author:
+            book = book
 
     assert book
-    assert type(book) == dict
-    assert book.get("_id") == inserted_book_id
-    assert book.get("image") == dracula_book.get("image")
-    assert book.get("title") == dracula_book.get("title")
-    assert book.get("author") == dracula_book.get("author")
-    assert book.get("description") == dracula_book.get("description")
-    assert book.get("genre") == dracula_book.get("genre")
+    assert book.get("_id")
+    assert book.get("title") == title
+    assert book.get("author") == author
+    assert book.get("description") == description
+    assert book.get("genre") == genre
+    assert book.get("image") == image
 
 
 @pytest.mark.usefixtures("mongo_test_db")
-def test_get_books_by_genre(flask_client: Flask, inserted_book_id: str, dracula_book: dict[str, str]) -> None:
+def test_get_books_by_genre(flask_client: Flask, dracula_book: dict[str, str]) -> None:
     book = None
 
-    response: Response = flask_client.get(f"{prefix_books_bp}/{dracula_book.get('genre')}")
+    image = dracula_book.get("image")
+    title = dracula_book.get("title")
+    author = dracula_book.get("author")
+    description = dracula_book.get("description")
+    genre = dracula_book.get("genre")
+
+    response: Response = flask_client.get(f"{BLUEPRINTS['books']}/{dracula_book.get('genre')}")
+
     result = response.json
     status_code = response.status_code
 
     message = result.get("message")
-    books = result.get("data")
+    data = result.get("data")
     
-    for b in books:
-        if b.get("_id") == inserted_book_id:
-            book = b
-
     assert status_code == 200
     assert message == "Books were successfully obtained."
-    assert type(books) == list
+    assert data
+    assert type(data) == list
     
+    for book in data:
+        if book.get("title") == title and book.get("author") == author:
+            book = book
+
     assert book
-    assert type(book) == dict
-    assert book.get("_id") == inserted_book_id
-    assert book.get("image") == dracula_book.get("image")
-    assert book.get("title") == dracula_book.get("title")
-    assert book.get("author") == dracula_book.get("author")
-    assert book.get("description") == dracula_book.get("description")
-    assert book.get("genre") == dracula_book.get("genre")
+    assert book.get("_id")
+    assert book.get("title") == title
+    assert book.get("author") == author
+    assert book.get("description") == description
+    assert book.get("genre") == genre
+    assert book.get("image") == image
 
 
 @pytest.mark.usefixtures("mongo_test_db")
-def test_delete_book(flask_client: Flask, inserted_book_id: str) -> None:
-    response: Response = flask_client.delete(f"{prefix_books_bp}/delete/{inserted_book_id}")
+def test_delete_book(flask_client: Flask, dracula_book: dict[str, str]) -> None:
+    image = dracula_book.get("image")
+    title = dracula_book.get("title")
+    author = dracula_book.get("author")
+    description = dracula_book.get("description")
+    genre = dracula_book.get("genre")
+
+    response: Response = flask_client.get(
+        f"{BLUEPRINTS['books']}/",
+    )
+
+    result = response.json
+    book_to_delete = [book for book in result.get("data") if book.get("title") == title and book.get("author") == author][0]
+
+    assert book_to_delete
+
+    id_to_delete = book_to_delete.get("_id")
+
+    response: Response = flask_client.delete(f"{BLUEPRINTS['books']}/delete/{id_to_delete}")
+
     result = response.json
     status_code = response.status_code
 
     message = result.get("message")
+    data = result.get("data")
 
     assert status_code == 200
-    assert message == f"{inserted_book_id} was deleted."
+    assert message == f"Book with id: {id_to_delete} was deleted."
+    assert isinstance(data, dict)
+
+    assert data.get("_id") == id_to_delete
+    assert data.get("title") == title
+    assert data.get("image") == image
+    assert data.get("author") == author
+    assert data.get("description") == description
+    assert data.get("genre") == genre
 
 
 @pytest.mark.usefixtures("mongo_test_db")
-def test_delete_wrong_book(flask_client: Flask) -> None:
-    response: Response = flask_client.delete(f"{prefix_books_bp}/delete/asd")
+def test_delete_book_with_not_found_id(flask_client: Flask) -> None:
+    response: Response = flask_client.delete(f"{BLUEPRINTS['books']}/delete/{BOOK_MOCK['not_found_flag_id']}")
+
+    result = response.json
+    status_code = response.status_code
+
+    message = result.get("message")
+    data = result.get("data")
+
+    assert status_code == 404
+    assert message == f"No book found with id: {BOOK_MOCK['not_found_flag_id']}."
+    assert isinstance(message, str)
+    assert not data
+
+
+@pytest.mark.usefixtures("mongo_test_db")
+def test_delete_book_with_wrong_id(flask_client: Flask) -> None:
+    response: Response = flask_client.delete(f"{BLUEPRINTS['books']}/delete/{BOOK_MOCK['wrong_flag_id']}")
+
     result = response.json
     status_code = response.status_code
 
     message = result.get("message")
 
     assert status_code == 400
-    assert type(message) == str
+    assert isinstance(message, str)
+    assert "Error deleting book:" in message
 

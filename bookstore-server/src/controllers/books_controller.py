@@ -5,7 +5,9 @@ from flask import make_response
 from flask import current_app
 from flask import request
 
-from src.utils.utils import parse_books
+from src.models.Book import Book
+from src.data_access.books_repository import BookRepository
+from src.models.BookManager import BookManager
 
 
 def alive_books() -> dict[str, Any]:
@@ -18,9 +20,12 @@ def alive_books() -> dict[str, Any]:
 
 
 def get_books() -> dict[str, Any]:
-    books = current_app.mongo.db.books.find()
+    book_manager = BookManager()
+    books = BookRepository(db=current_app.mongo.db).get_all_books()
 
-    data = parse_books(books=books)
+    book_manager.add_books(books=books)
+    
+    data = book_manager.parse_items()
 
     return make_response({
         "message": "Books were successfully obtained.",
@@ -29,11 +34,12 @@ def get_books() -> dict[str, Any]:
 
 
 def get_books_by_genre(genre: str) -> dict[str, Any]:
-    books = current_app.mongo.db.books.find({
-        "genre" : genre
-    })
+    book_manager = BookManager()
+    books = BookRepository(db=current_app.mongo.db).get_books_by_genre(genre=genre)
 
-    data = parse_books(books=books)
+    book_manager.add_books(books=books)
+    
+    data = book_manager.parse_items()
     
     return make_response({
         "message": "Books were successfully obtained.",
@@ -42,11 +48,11 @@ def get_books_by_genre(genre: str) -> dict[str, Any]:
 
 
 def add_book() -> dict[str, Any]:
-    image = request.json.get('image')
-    title = request.json.get('title')
-    author = request.json.get('author')
-    description = request.json.get('description')
-    genre = request.json.get('genre')
+    image = request.json.get('image', "").strip()
+    title = request.json.get('title', "").strip()
+    author = request.json.get('author', "").strip()
+    description = request.json.get('description', "").strip()
+    genre = request.json.get('genre', "").strip()
 
     book = {
         'title':title,
@@ -59,29 +65,40 @@ def add_book() -> dict[str, Any]:
     if not image or not title or not author or not description or not genre:
         return make_response({
             "message": "The requested book could not be added.",
-            "fields": book,
             "data": None
         }, 400)
 
-    insert_result = current_app.mongo.db.books.insert_one(book)
-    book['_id'] = str(insert_result.inserted_id)
+    id_inserted = BookRepository(db=current_app.mongo.db).insert_book(book=book)
+    book["_id"] = id_inserted
+
+    book = Book(**book)
 
     return make_response({
         "message": "The book was successfully added.",
-        "data": book
+        "data": book.to_dict()
     }, 201)
     
 
 def delete_book(id: str) -> dict[str, Any]:
     try:
-        current_app.mongo.db.books.delete_one({
-            "_id": ObjectId(id)
-        })
+        object_id = ObjectId(id)
+        document = BookRepository(db=current_app.mongo.db).get_book_by_id(book_id=object_id)
+
+        if not document: 
+            return make_response({
+                "message": f"No book found with id: {id}.",
+                "data": None
+            }, 404)
+        
+        book = Book(**document)
+
+        BookRepository(db=current_app.mongo.db).delete_book_by_id(book_id=book.id)
 
         return make_response({
-            "message": f"{id} was deleted."
+            "message": f"Book with id: {id} was deleted.",
+            "data": book.to_dict()
         }, 200)
-    except Exception as e:
+    except Exception as e: 
         return make_response({
-            "message": str(e)
+            "message": f"Error deleting book: {str(e)}"
         }, 400)
