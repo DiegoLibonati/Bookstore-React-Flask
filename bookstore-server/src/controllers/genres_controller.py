@@ -3,8 +3,6 @@ from typing import Any
 from flask import make_response
 from flask import current_app
 
-from src.data_access.books_repository import BookRepository
-
 
 def alive_genres() -> dict[str, Any]:
     return make_response({
@@ -16,7 +14,7 @@ def alive_genres() -> dict[str, Any]:
 
 
 def get_all_genres() -> dict[str, Any]:
-    books = BookRepository(db=current_app.mongo.db).get_genres()
+    books = current_app.book_repository.get_genres()
 
     return make_response({
         "message": "The book genres were successfully obtained.",

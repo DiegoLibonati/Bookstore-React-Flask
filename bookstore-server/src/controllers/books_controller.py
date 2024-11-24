@@ -6,7 +6,6 @@ from flask import current_app
 from flask import request
 
 from src.models.Book import Book
-from src.data_access.books_repository import BookRepository
 from src.models.BookManager import BookManager
 
 
@@ -21,7 +20,7 @@ def alive_books() -> dict[str, Any]:
 
 def get_books() -> dict[str, Any]:
     book_manager = BookManager()
-    books = BookRepository(db=current_app.mongo.db).get_all_books()
+    books = current_app.book_repository.get_all_books()
 
     book_manager.add_books(books=books)
     
@@ -35,7 +34,7 @@ def get_books() -> dict[str, Any]:
 
 def get_books_by_genre(genre: str) -> dict[str, Any]:
     book_manager = BookManager()
-    books = BookRepository(db=current_app.mongo.db).get_books_by_genre(genre=genre)
+    books = current_app.book_repository.get_books_by_genre(genre=genre)
 
     book_manager.add_books(books=books)
     
@@ -68,7 +67,7 @@ def add_book() -> dict[str, Any]:
             "data": None
         }, 400)
 
-    id_inserted = BookRepository(db=current_app.mongo.db).insert_book(book=book)
+    id_inserted = current_app.book_repository.insert_book(book=book)
     book["_id"] = id_inserted
 
     book = Book(**book)
@@ -82,7 +81,7 @@ def add_book() -> dict[str, Any]:
 def delete_book(id: str) -> dict[str, Any]:
     try:
         object_id = ObjectId(id)
-        document = BookRepository(db=current_app.mongo.db).get_book_by_id(book_id=object_id)
+        document = current_app.book_repository.get_book_by_id(book_id=object_id)
 
         if not document: 
             return make_response({
@@ -92,7 +91,7 @@ def delete_book(id: str) -> dict[str, Any]:
         
         book = Book(**document)
 
-        BookRepository(db=current_app.mongo.db).delete_book_by_id(book_id=book.id)
+        current_app.book_repository.delete_book_by_id(book_id=book.id)
 
         return make_response({
             "message": f"Book with id: {id} was deleted.",

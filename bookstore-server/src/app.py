@@ -6,6 +6,7 @@ from flask_pymongo import PyMongo
 
 from src.blueprints.v1.books_route import books_route
 from src.blueprints.v1.genres_route import genres_route
+from src.data_access.books_repository import BookRepository
 
 
 app = Flask(__name__)
@@ -35,6 +36,10 @@ def load_mongo() -> None:
     app.mongo = PyMongo(app)
 
 
+def load_repositories() -> None:
+    app.book_repository = BookRepository(db=app.mongo.db)
+
+
 def register_blueprints() -> None:
     prefix = "/api/v1/bookstore"
     app.register_blueprint(books_route, url_prefix=f"{prefix}/books")
@@ -50,6 +55,9 @@ def init() -> None:
 
     # Load DB - Mongo
     load_mongo()
+
+    # Load Repositories
+    load_repositories()
 
 
 if __name__ == "__main__":
