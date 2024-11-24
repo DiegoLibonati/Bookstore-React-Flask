@@ -1,0 +1,183 @@
+{
+	"info": {
+		"_postman_id": "96a8acb0-6790-4301-9cd5-a31033a61ce9",
+		"name": "Bookstore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27611586"
+	},
+	"item": [
+		{
+			"name": "Books",
+			"item": [
+				{
+					"name": "Alive",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{APP_URL}}/books/alive",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"books",
+								"alive"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Books",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{APP_URL}}/books",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Books By Genre",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{APP_URL}}/books/terror",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"books",
+								"terror"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Book",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Drácula\",\r\n    \"description\": \"Es una novela de fantasía gótica escrita por Bram Stoker, publicada en 1897.\",\r\n    \"author\": \"Bram Stoker\",\r\n    \"image\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dracula-First-Edition-1897.jpg/220px-Dracula-First-Edition-1897.jpg\",\r\n    \"genre\": \"terror\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{APP_URL}}/books/add",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"books",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Book",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{APP_URL}}/books/delete/67422c30c90c5c9e2de73e27",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"books",
+								"delete",
+								"67422c30c90c5c9e2de73e27"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Genres",
+			"item": [
+				{
+					"name": "Alive",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{APP_URL}}/genres/alive",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"genres",
+								"alive"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Genres",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{APP_URL}}/genres",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"genres"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "APP_URL",
+			"value": "http://localhost:5050/api/v1/bookstore",
+			"type": "string"
+		}
+	]
+}
