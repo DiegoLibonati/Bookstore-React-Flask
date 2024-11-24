@@ -18,8 +18,7 @@ def test_add_book(book_manager_model: BookManager, book_model: Book) -> None:
     book_manager_model.add_book(book=book_model)
 
     assert book_manager_model.books
-    assert book_model.id in book_manager_model.books.keys()
-    assert book_model in book_manager_model.books.values()
+    assert book_model in book_manager_model.books
 
 def test_add_book_with_wrong_book(book_manager_model: BookManager) -> None:
     with pytest.raises(TypeError) as exc_info:
@@ -31,7 +30,6 @@ def test_add_books(book_manager_model: BookManager, book_test: dict[str, str]) -
     book_manager_model.add_books(books=[book_test])
 
     assert book_manager_model.books
-    assert book_test.get("_id") in book_manager_model.books.keys()
     assert book_test in book_manager_model.parse_items()
 
 def test_add_books_with_wrong_books(book_manager_model: BookManager) -> None:

@@ -9,8 +9,8 @@ class BookManager(Manager[Book]):
         super().__init__(items={}, initializer=Book)
 
     @property
-    def books(self) -> dict[str, Book]:
-        return self.items
+    def books(self) -> list[Book]:
+        return self.items_values
     
     def add_book(self, book: Book) -> None:
         if not book or not isinstance(book, Book): raise TypeError("You must enter a valid book in order to add it.")
