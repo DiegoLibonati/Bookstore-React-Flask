@@ -10,14 +10,18 @@ const renderComponent = (): { container: HTMLElement } => {
   };
 };
 
-test("The library logo must be rendered.", () => {
-  renderComponent();
+describe("Header.tsx", () => {
+  describe("General Tests.", () => {
+    test("The library logo must be rendered.", () => {
+      renderComponent();
 
-  const altImageLogo = "logo";
+      const altImageLogo = "logo";
 
-  const imgElement = screen.getByAltText(altImageLogo);
+      const imgElement = screen.getByAltText(altImageLogo);
 
-  expect(imgElement).toBeInTheDocument();
-  expect(imgElement).toHaveAttribute("src", "image-mock");
-  expect(imgElement).toHaveAttribute("alt", altImageLogo);
+      expect(imgElement).toBeInTheDocument();
+      expect(imgElement).toHaveAttribute("src", "image-mock");
+      expect(imgElement).toHaveAttribute("alt", altImageLogo);
+    });
+  });
 });

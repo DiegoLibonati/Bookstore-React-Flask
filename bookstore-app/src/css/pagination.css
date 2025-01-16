@@ -1,4 +1,4 @@
-.pagination_container {
+.pagination {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7,7 +7,7 @@
   width: 100%;
 }
 
-.pagination_list {
+.pagination__list {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -17,15 +17,15 @@
   list-style: none;
 }
 
-.pagination_list li {
+.pagination__list li {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
-  color: #bf2e1a;
+  color: var(--primary-color);
   cursor: pointer;
   font-weight: 900;
-  background-color: #293241;
+  background-color: var(--secondary-color);
   margin: 1rem;
   border-radius: 100%;
   height: 3rem;

@@ -1,10 +1,10 @@
+import { BsPlusCircle } from "react-icons/bs";
+
 import { Book, FormBook } from "../../entities/entities";
 
 import { postBook } from "../../api/postBook";
 import { useForm } from "../../hooks/useForm";
 import { useHide } from "../../hooks/useHide";
-
-import { BsPlusCircle } from "react-icons/bs";
 
 interface AddBookProps {
   books: Book[];
@@ -45,11 +45,11 @@ export const AddBook = ({
   };
 
   return (
-    <article className="book_container">
+    <article className="book">
       <button
         type="button"
         aria-label="add book"
-        className="add_book_button"
+        className="add__book__btn"
         onClick={() => handleHide()}
       >
         <BsPlusCircle id="IconPlus"></BsPlusCircle>
@@ -58,10 +58,10 @@ export const AddBook = ({
       {hide ? (
         <form
           aria-label="form add book"
-          className="book_container_information"
+          className="book__information"
           onSubmit={(e) => handleSubmit(e)}
         >
-          <label htmlFor="title" className="label_hide">
+          <label htmlFor="title" className="label--hide">
             Title
           </label>
           <input
@@ -72,7 +72,7 @@ export const AddBook = ({
             value={formState.title}
             onChange={(e) => onInputChange(e)}
           ></input>
-          <label htmlFor="author" className="label_hide">
+          <label htmlFor="author" className="label--hide">
             Author
           </label>
           <input
@@ -83,7 +83,7 @@ export const AddBook = ({
             value={formState.author}
             onChange={(e) => onInputChange(e)}
           ></input>
-          <label htmlFor="genre" className="label_hide">
+          <label htmlFor="genre" className="label--hide">
             Genre
           </label>
           <input
@@ -94,7 +94,7 @@ export const AddBook = ({
             value={formState.genre}
             onChange={(e) => onInputChange(e)}
           ></input>
-          <label htmlFor="description" className="label_hide">
+          <label htmlFor="description" className="label--hide">
             Description
           </label>
           <textarea
@@ -104,7 +104,7 @@ export const AddBook = ({
             value={formState.description}
             onChange={(e) => onInputChange(e)}
           ></textarea>
-          <label htmlFor="image" className="label_hide">
+          <label htmlFor="image" className="label--hide">
             Image
           </label>
           <input

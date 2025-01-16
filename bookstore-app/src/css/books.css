@@ -1,4 +1,4 @@
-.books_container {
+.books {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,7 +10,7 @@
   padding-right: 1rem;
 }
 
-.book_container {
+.book {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,7 +19,7 @@
   width: 25rem;
 }
 
-.add_book_button {
+.add__book__btn {
   background: none;
   border: none;
 }
@@ -27,33 +27,33 @@
 #IconPlus {
   width: 100%;
   height: 40rem;
-  background-color: #293241;
+  background-color: var(--secondary-color);
   padding: 1rem;
-  color: #bf2e1a;
+  color: var(--primary-color);
   transition: color 1s;
   cursor: pointer;
 }
 
 #IconPlus:hover {
-  color: #fff;
+  color: var(--white-color);
   transition: color 1s;
 }
 
-.book_container img {
+.book img {
   width: 100%;
   height: 40rem;
   object-fit: cover;
-  background-color: #000;
+  background-color: var(--black-color);
   transition: opacity 1s;
   cursor: pointer;
 }
 
-.book_container img:hover {
+.book img:hover {
   opacity: 0.8;
   transition: opacity 1s;
 }
 
-.book_container_information {
+.book__information {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -61,85 +61,85 @@
   width: 100%;
   height: auto;
   padding: 0.5rem;
-  background-color: #bf2e1a;
+  background-color: var(--primary-color);
 }
 
-.book_container_information h2 {
+.book__information h2 {
   align-self: center;
   font-size: 2.5rem;
-  color: #fff;
+  color: var(--white-color);
   text-align: center;
   margin-bottom: 0.5rem;
 }
 
-.book_container_information h3 {
+.book__information h3 {
   align-self: center;
   font-size: 2rem;
-  color: #fff;
+  color: var(--white-color);
   text-align: center;
-  background-color: #293241;
+  background-color: var(--secondary-color);
   padding: 1rem;
   margin-bottom: 0.5rem;
 }
 
-.book_container_information p {
+.book__information p {
   font-size: 1.5rem;
-  color: #fff;
+  color: var(--white-color);
   text-align: justify;
   margin-bottom: 0.5rem;
 }
 
-.book_container_information input {
+.book__information input {
   align-self: center;
   width: 80%;
   padding: 1rem;
   font-size: 1.5rem;
   outline: none;
   margin-bottom: 0.5rem;
-  background-color: #293241;
+  background-color: var(--secondary-color);
   border: none;
-  color: #fff;
+  color: var(--white-color);
 }
 
-.book_container_information input::placeholder {
-  color: #fff;
+.book__information input::placeholder {
+  color: var(--white-color);
 }
 
-.book_container_information textarea {
+.book__information textarea {
   align-self: center;
   width: 80%;
   padding: 1rem;
   font-size: 1.5rem;
   outline: none;
   margin-bottom: 0.5rem;
-  background-color: #293241;
+  background-color: var(--secondary-color);
   border: none;
-  color: #fff;
+  color: var(--white-color);
   resize: none;
 }
 
-.book_container_information textarea::placeholder {
-  color: #fff;
+.book__information textarea::placeholder {
+  color: var(--white-color);
 }
 
-.book_container_information button {
+.book__information button {
   padding: 1rem;
   align-self: center;
   width: 80%;
   border: none;
-  background-color: #293241;
-  color: #fff;
+  background-color: var(--secondary-color);
+  color: var(--white-color);
   font-size: 1.5rem;
   letter-spacing: 0.2rem;
   cursor: pointer;
 }
 
-.label_hide {
+.label--hide {
   display: none;
 }
 
 @media only screen and (min-width: 360px) {
-  .book_container {
+  .book {
     width: 35rem;
   }
 
@@ -147,17 +147,17 @@
     height: 50rem;
   }
 
-  .book_container img {
+  .book img {
     height: 50rem;
   }
 
-  .book_container_information {
+  .book__information {
     padding: 1rem;
   }
 }
 
 @media only screen and (min-width: 1024px) {
-  .books_container {
+  .books {
     align-items: flex-start;
     justify-content: flex-start;
   }

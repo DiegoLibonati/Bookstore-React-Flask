@@ -16,7 +16,7 @@ export const Pagination = ({
   }
 
   return (
-    <ul className="pagination_list">
+    <ul className="pagination__list">
       {pageNumbers.map((number) => (
         <li onClick={() => setCurrentPage(number)} key={number * 13}>
           {number}

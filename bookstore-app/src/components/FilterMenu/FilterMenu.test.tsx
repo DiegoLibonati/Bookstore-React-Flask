@@ -1,38 +1,12 @@
 import { screen, render, within } from "@testing-library/react";
 import user from "@testing-library/user-event";
 
-import { Book } from "../../entities/entities";
-
 import { FilterMenu } from "./FilterMenu";
 
 import { createServer } from "../../tests/msw/server";
+import { books } from "../../tests/jest.constants";
+
 import { api_route_books } from "../../api/route";
-
-const books: Book[] = [
-  {
-    _id: "asd123",
-    author: "Bram Stoker",
-    description:
-      "Es una novela de fantasía gótica escrita por Bram Stoker, publicada en 1897.",
-    genre: "Novela",
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dracula-First-Edition-1897.jpg/220px-Dracula-First-Edition-1897.jpg",
-    title: "Drácula",
-  },
-];
-
-createServer([
-  {
-    path: `${api_route_books}/:genre`,
-    method: "get",
-    res: () => {
-      return {
-        message: "...",
-        data: books,
-      };
-    },
-  },
-]);
 
 const renderComponent = (): {
   container: HTMLElement;
@@ -60,28 +34,45 @@ const renderComponent = (): {
   };
 };
 
-test("The main category must be rendered.", () => {
-  const { props } = renderComponent();
+describe("FilterMenu.tsx", () => {
+  describe("General Tests.", () => {
+    createServer([
+      {
+        path: `${api_route_books}/:genre`,
+        method: "get",
+        res: () => {
+          return {
+            message: "...",
+            data: books,
+          };
+        },
+      },
+    ]);
 
-  const categoryElement = screen
-    .getAllByRole("listitem")
-    .find((item) => item.textContent === props.filterName);
+    test("The main category must be rendered.", () => {
+      const { props } = renderComponent();
 
-  expect(categoryElement).toBeInTheDocument();
-});
+      const categoryElement = screen
+        .getAllByRole("listitem")
+        .find((item) => item.textContent === props.filterName);
 
-test("The list of genres should be rendered when you click on the category or filter.", async () => {
-  const { props } = renderComponent();
+      expect(categoryElement).toBeInTheDocument();
+    });
 
-  const categoryElement = screen
-    .getAllByRole("listitem")
-    .find((item) => item.textContent === props.filterName)!;
+    test("The list of genres should be rendered when you click on the category or filter.", async () => {
+      const { props } = renderComponent();
 
-  await user.click(categoryElement);
+      const categoryElement = screen
+        .getAllByRole("listitem")
+        .find((item) => item.textContent === props.filterName)!;
 
-  const genreFilterElements = within(screen.getByRole("list")).getAllByRole(
-    "listitem"
-  );
+      await user.click(categoryElement);
 
-  expect(genreFilterElements).toHaveLength(props.genres.length);
+      const genreFilterElements = within(screen.getByRole("list")).getAllByRole(
+        "listitem"
+      );
+
+      expect(genreFilterElements).toHaveLength(props.genres.length);
+    });
+  });
 });

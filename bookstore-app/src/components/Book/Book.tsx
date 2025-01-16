@@ -16,11 +16,11 @@ export const Book = ({
   const { hide, handleHide } = useHide();
 
   return (
-    <article className="book_container">
+    <article className="book">
       <img onClick={() => handleHide()} src={image} alt={title}></img>
 
       {hide ? (
-        <div className="book_container_information">
+        <div className="book__information">
           <h2>{title}</h2>
           <h3>{author}</h3>
           <p>{description}</p>

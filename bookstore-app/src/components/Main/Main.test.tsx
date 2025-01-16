@@ -6,44 +6,9 @@ import { Book } from "../../entities/entities";
 import { Main } from "./Main";
 
 import { createServer } from "../../tests/msw/server";
+import { books, genres } from "../../tests/jest.constants";
+
 import { api_route_books, api_route_genres } from "../../api/route";
-
-const books: Book[] = [
-  {
-    _id: "asd123",
-    author: "Bram Stoker",
-    description:
-      "Es una novela de fantasía gótica escrita por Bram Stoker, publicada en 1897.",
-    genre: "Novela",
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dracula-First-Edition-1897.jpg/220px-Dracula-First-Edition-1897.jpg",
-    title: "Drácula",
-  },
-];
-const genres = ["Novela"];
-
-createServer([
-  {
-    path: api_route_books,
-    method: "get",
-    res: () => {
-      return {
-        message: "...",
-        data: books,
-      };
-    },
-  },
-  {
-    path: api_route_genres,
-    method: "get",
-    res: () => {
-      return {
-        message: "...",
-        data: genres,
-      };
-    },
-  },
-]);
 
 const renderComponent = (): {
   container: HTMLElement;
@@ -73,76 +38,125 @@ const renderComponentWithBooks = async (): Promise<{
   };
 };
 
-describe("When making API calls.", () => {
-  test("A loading must be rendered when the books have not yet been rendered.", () => {
-    renderComponent();
+describe("Main.tsx", () => {
+  describe("When making API calls.", () => {
+    createServer([
+      {
+        path: api_route_books,
+        method: "get",
+        res: () => {
+          return {
+            message: "...",
+            data: books,
+          };
+        },
+      },
+      {
+        path: api_route_genres,
+        method: "get",
+        res: () => {
+          return {
+            message: "...",
+            data: genres,
+          };
+        },
+      },
+    ]);
 
-    const loadingElement = screen.getByRole("heading", {
-      name: /loading/i,
+    test("A loading must be rendered when the books have not yet been rendered.", () => {
+      renderComponent();
+
+      const loadingElement = screen.getByRole("heading", {
+        name: /loading/i,
+      });
+
+      expect(loadingElement).toBeInTheDocument();
+    });
+  });
+
+  describe("When all API calls are terminated.", () => {
+    createServer([
+      {
+        path: api_route_books,
+        method: "get",
+        res: () => {
+          return {
+            message: "...",
+            data: books,
+          };
+        },
+      },
+      {
+        path: api_route_genres,
+        method: "get",
+        res: () => {
+          return {
+            message: "...",
+            data: genres,
+          };
+        },
+      },
+    ]);
+
+    test("A Filters button must be rendered.", async () => {
+      await renderComponentWithBooks();
+
+      const filtersButton = screen.getByRole("button", {
+        name: /filters/i,
+      });
+
+      expect(filtersButton).toBeInTheDocument();
     });
 
-    expect(loadingElement).toBeInTheDocument();
-  });
-});
+    test("A Show All button and a Genres button should be rendered as the main category.", async () => {
+      await renderComponentWithBooks();
 
-describe("When all API calls are terminated.", () => {
-  test("A Filters button must be rendered.", async () => {
-    await renderComponentWithBooks();
+      const filtersButton = screen.getByRole("button", {
+        name: /filters/i,
+      });
 
-    const filtersButton = screen.getByRole("button", {
-      name: /filters/i,
+      expect(filtersButton).toBeInTheDocument();
+
+      await user.click(filtersButton);
+
+      const listItemsElements = screen.getAllByRole("listitem");
+      const showAllButton = listItemsElements.find(
+        (item) => item.textContent === "Show All"
+      );
+      const genresButton = listItemsElements.find(
+        (item) => item.textContent === "Genres"
+      );
+
+      expect(showAllButton).toBeInTheDocument();
+      expect(genresButton).toBeInTheDocument();
     });
 
-    expect(filtersButton).toBeInTheDocument();
-  });
+    test("The total number of books plus the add book card must be rendered.", async () => {
+      const currentPage = 1;
+      const booksPerPage = 7;
 
-  test("A Show All button and a Genres button should be rendered as the main category.", async () => {
-    await renderComponentWithBooks();
+      const { container } = await renderComponentWithBooks();
 
-    const filtersButton = screen.getByRole("button", {
-      name: /filters/i,
+      // eslint-disable-next-line
+      const bookElements = container.querySelectorAll(".book");
+
+      const indexOfLastBook: number = currentPage * booksPerPage;
+      const indexOfFirstBook: number = indexOfLastBook - booksPerPage;
+      const currentBooks: Book[] = books.slice(
+        indexOfFirstBook,
+        indexOfLastBook
+      );
+
+      expect(bookElements).toHaveLength(currentBooks.length + 1);
     });
 
-    expect(filtersButton).toBeInTheDocument();
+    test("The paging component must be rendered.", async () => {
+      const { container } = await renderComponentWithBooks();
 
-    await user.click(filtersButton);
+      // eslint-disable-next-line
+      const paginationContainer = container.querySelector(".pagination");
 
-    const listItemsElements = screen.getAllByRole("listitem");
-    const showAllButton = listItemsElements.find(
-      (item) => item.textContent === "Show All"
-    );
-    const genresButton = listItemsElements.find(
-      (item) => item.textContent === "Genres"
-    );
-
-    expect(showAllButton).toBeInTheDocument();
-    expect(genresButton).toBeInTheDocument();
-  });
-
-  test("The total number of books plus the add book card must be rendered.", async () => {
-    const currentPage = 1;
-    const booksPerPage = 7;
-
-    const { container } = await renderComponentWithBooks();
-
-    // eslint-disable-next-line
-    const bookElements = container.querySelectorAll(".book_container");
-
-    const indexOfLastBook: number = currentPage * booksPerPage;
-    const indexOfFirstBook: number = indexOfLastBook - booksPerPage;
-    const currentBooks: Book[] = books.slice(indexOfFirstBook, indexOfLastBook);
-
-    expect(bookElements).toHaveLength(currentBooks.length + 1);
-  });
-
-  test("The paging component must be rendered.", async () => {
-    const { container } = await renderComponentWithBooks();
-
-    // eslint-disable-next-line
-    const paginationContainer = container.querySelector(
-      ".pagination_container"
-    );
-
-    expect(paginationContainer).toBeInTheDocument();
+      expect(paginationContainer).toBeInTheDocument();
+    });
   });
 });

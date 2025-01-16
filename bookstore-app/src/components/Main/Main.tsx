@@ -12,8 +12,8 @@ import { useHide } from "../../hooks/useHide";
 import { useGetGenres } from "../../hooks/useGetGenres";
 
 import "../../css/config.css";
-import "../../css/books_container.css";
-import "../../css/pagination_container.css";
+import "../../css/books.css";
+import "../../css/pagination.css";
 
 export const Main = (): JSX.Element => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -32,13 +32,13 @@ export const Main = (): JSX.Element => {
   }
 
   return (
-    <main className="main_container">
-      <section className="config_container">
-        <article className="filter_genre_container">
+    <main className="main">
+      <section className="filter">
+        <article className="filter__genre">
           <button onClick={() => handleHide()}>Filters</button>
 
           {hide ? (
-            <ul className="filter_genre_container_list">
+            <ul className="filter__genre__list">
               <li onClick={() => handleBooks()}>Show All</li>
               {genres?.length > 0 && (
                 <FilterMenu
@@ -52,7 +52,7 @@ export const Main = (): JSX.Element => {
         </article>
       </section>
 
-      <section className="books_container">
+      <section className="books">
         {currentBooks.map((book) => (
           <Book key={book._id} {...book}></Book>
         ))}
@@ -65,7 +65,7 @@ export const Main = (): JSX.Element => {
         ></AddBook>
       </section>
 
-      <section className="pagination_container">
+      <section className="pagination">
         <Pagination
           booksPerPage={booksPerPage}
           totalBooks={books.length}

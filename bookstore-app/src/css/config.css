@@ -1,11 +1,11 @@
-.config_container {
+.filter {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   padding: 1rem;
   width: 100%;
 }
 
-.filter_genre_container {
+.filter__genre {
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -14,45 +14,44 @@
   height: auto;
 }
 
-.filter_genre_container button {
+.filter__genre button {
   padding: 1rem;
   font-size: 1.5rem;
   border: none;
-  background-color: #bf2e1a;
-  color: #fff;
+  background-color: var(--primary-color);
+  color: var(--white-color);
   outline: none;
   cursor: pointer;
   transition: background-color 1s;
 }
 
-.filter_genre_container button:hover {
-  background-color: #bf2d1ac4;
+.filter__genre button:hover {
+  background-color: var(--primary-color);
   transition: background-color 1s;
 }
 
-.filter_genre_container_list {
+.filter__genre__list {
   display: flex;
   align-items: flex-start;
   flex-flow: row wrap;
   width: 100%;
-  list-style: none;
   padding: 1rem;
-  background-color: #bf2e1a;
+  background-color: var(--primary-color);
 }
 
-.filter_genre_container_list li {
+.filter__genre__list li {
   font-size: 1.5rem;
-  background-color: #293241;
+  background-color: var(--secondary-color);
   padding: 1rem;
   margin-right: 1rem;
-  color: #fff;
+  color: var(--white-color);
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
   cursor: pointer;
   transition: background-color 1s;
 }
 
-.filter_genre_container_list li:hover {
-  background-color: #293241c0;
+.filter__genre__list li:hover {
+  background-color: var(--secondary-color);
   transition: background-color 1s;
 }

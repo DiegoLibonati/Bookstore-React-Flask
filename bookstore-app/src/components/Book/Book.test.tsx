@@ -36,30 +36,34 @@ const renderComponent = (): {
   };
 };
 
-test("The book cover must be rendered when the component is rendered.", () => {
-  const { props } = renderComponent();
+describe("Book.tsx", () => {
+  describe("General Tests.", () => {
+    test("The book cover must be rendered when the component is rendered.", () => {
+      const { props } = renderComponent();
 
-  const imgElement = screen.getByAltText(new RegExp(props.title));
+      const imgElement = screen.getByAltText(new RegExp(props.title));
 
-  expect(imgElement).toBeInTheDocument();
-});
+      expect(imgElement).toBeInTheDocument();
+    });
 
-test("The title, description and author should be rendered when you click on the book cover.", async () => {
-  const { props } = renderComponent();
+    test("The title, description and author should be rendered when you click on the book cover.", async () => {
+      const { props } = renderComponent();
 
-  const imgElement = screen.getByAltText(new RegExp(props.title));
+      const imgElement = screen.getByAltText(new RegExp(props.title));
 
-  await user.click(imgElement);
+      await user.click(imgElement);
 
-  const title = screen.getByRole("heading", {
-    name: props.title,
+      const title = screen.getByRole("heading", {
+        name: props.title,
+      });
+      const author = screen.getByRole("heading", {
+        name: props.author,
+      });
+      const description = screen.getByText(props.description);
+
+      expect(title).toBeInTheDocument();
+      expect(author).toBeInTheDocument();
+      expect(description).toBeInTheDocument();
+    });
   });
-  const author = screen.getByRole("heading", {
-    name: props.author,
-  });
-  const description = screen.getByText(props.description);
-
-  expect(title).toBeInTheDocument();
-  expect(author).toBeInTheDocument();
-  expect(description).toBeInTheDocument();
 });

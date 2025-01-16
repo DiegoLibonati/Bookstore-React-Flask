@@ -1,4 +1,4 @@
-.filter_menu_list {
+.filter__menu__list {
   display: flex;
   flex-direction: row;
 }

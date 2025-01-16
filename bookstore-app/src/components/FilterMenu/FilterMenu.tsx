@@ -23,7 +23,7 @@ export const FilterMenu = ({
     <li onClick={handleHide}>
       {filterName}
       {hide ? (
-        <ul className="filter_menu_list">
+        <ul className="filter__menu__list">
           {genres.map((genre, index) => (
             <FilterItem
               key={index * 12}
