@@ -1,3 +1,5 @@
+import "./Pagination.css";
+
 interface PaginationProps {
   totalBooks: number;
   booksPerPage: number;
@@ -18,7 +20,11 @@ export const Pagination = ({
   return (
     <ul className="pagination__list">
       {pageNumbers.map((number) => (
-        <li onClick={() => setCurrentPage(number)} key={number * 13}>
+        <li
+          onClick={() => setCurrentPage(number)}
+          key={number * 13}
+          className="pagination__item"
+        >
           {number}
         </li>
       ))}

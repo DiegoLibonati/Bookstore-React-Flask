@@ -1,11 +1,11 @@
-.filter {
+.filters-wrapper {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   padding: 1rem;
   width: 100%;
 }
 
-.filter__genre {
+.filters {
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -14,7 +14,7 @@
   height: auto;
 }
 
-.filter__genre button {
+.filters__btn {
   padding: 1rem;
   font-size: 1.5rem;
   border: none;
@@ -25,12 +25,12 @@
   transition: background-color 1s;
 }
 
-.filter__genre button:hover {
+.filters__btn:hover {
   background-color: var(--primary-color);
   transition: background-color 1s;
 }
 
-.filter__genre__list {
+.filters__menus {
   display: flex;
   align-items: flex-start;
   flex-flow: row wrap;
@@ -39,7 +39,7 @@
   background-color: var(--primary-color);
 }
 
-.filter__genre__list li {
+.filters__menus-show-all {
   font-size: 1.5rem;
   background-color: var(--secondary-color);
   padding: 1rem;
@@ -48,10 +48,5 @@
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
   cursor: pointer;
-  transition: background-color 1s;
-}
-
-.filter__genre__list li:hover {
-  background-color: var(--secondary-color);
   transition: background-color 1s;
 }

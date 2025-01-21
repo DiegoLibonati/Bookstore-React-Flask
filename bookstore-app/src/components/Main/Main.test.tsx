@@ -147,7 +147,7 @@ describe("Main.tsx", () => {
         indexOfLastBook
       );
 
-      expect(bookElements).toHaveLength(currentBooks.length + 1);
+      expect(bookElements).toHaveLength(currentBooks.length);
     });
 
     test("The paging component must be rendered.", async () => {

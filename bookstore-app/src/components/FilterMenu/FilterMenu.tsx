@@ -20,10 +20,10 @@ export const FilterMenu = ({
   const { hide, handleHide } = useHide();
 
   return (
-    <li onClick={handleHide}>
+    <li onClick={handleHide} className="filter-menu">
       {filterName}
       {hide ? (
-        <ul className="filter__menu__list">
+        <ul className="filter-menu__items">
           {genres.map((genre, index) => (
             <FilterItem
               key={index * 12}

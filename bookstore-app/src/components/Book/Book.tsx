@@ -1,5 +1,7 @@
 import { useHide } from "../../hooks/useHide";
 
+import "./Book.css";
+
 interface BookProps {
   image: string;
   title: string;
@@ -17,13 +19,18 @@ export const Book = ({
 
   return (
     <article className="book">
-      <img onClick={() => handleHide()} src={image} alt={title}></img>
+      <img
+        onClick={() => handleHide()}
+        src={image}
+        alt={title}
+        className="book__img"
+      ></img>
 
       {hide ? (
         <div className="book__information">
-          <h2>{title}</h2>
-          <h3>{author}</h3>
-          <p>{description}</p>
+          <h2 className="book__title">{title}</h2>
+          <h3 className="book__author">{author}</h3>
+          <p className="book__description">{description}</p>
         </div>
       ) : null}
     </article>

@@ -6,6 +6,8 @@ import { postBook } from "../../api/postBook";
 import { useForm } from "../../hooks/useForm";
 import { useHide } from "../../hooks/useHide";
 
+import "./AddBook.css";
+
 interface AddBookProps {
   books: Book[];
   genres: Book["genre"][];
@@ -45,23 +47,29 @@ export const AddBook = ({
   };
 
   return (
-    <article className="book">
+    <article className="add-book">
       <button
         type="button"
         aria-label="add book"
-        className="add__book__btn"
+        className="add-book__btn"
         onClick={() => handleHide()}
       >
-        <BsPlusCircle id="IconPlus"></BsPlusCircle>
+        <BsPlusCircle
+          id="AddBookIconPlus"
+          className="add-book__btn-icon"
+        ></BsPlusCircle>
       </button>
 
       {hide ? (
         <form
           aria-label="form add book"
-          className="book__information"
+          className="add-book__form"
           onSubmit={(e) => handleSubmit(e)}
         >
-          <label htmlFor="title" className="label--hide">
+          <label
+            htmlFor="title"
+            className="add-book__form-label add-book__form-label--hide"
+          >
             Title
           </label>
           <input
@@ -69,10 +77,14 @@ export const AddBook = ({
             type="text"
             name="title"
             placeholder="Set title"
+            className="add-book__form-input"
             value={formState.title}
             onChange={(e) => onInputChange(e)}
           ></input>
-          <label htmlFor="author" className="label--hide">
+          <label
+            htmlFor="author"
+            className="add-book__form-label add-book__form-label--hide"
+          >
             Author
           </label>
           <input
@@ -80,10 +92,14 @@ export const AddBook = ({
             type="text"
             name="author"
             placeholder="Set author"
+            className="add-book__form-input"
             value={formState.author}
             onChange={(e) => onInputChange(e)}
           ></input>
-          <label htmlFor="genre" className="label--hide">
+          <label
+            htmlFor="genre"
+            className="add-book__form-label add-book__form-label--hide"
+          >
             Genre
           </label>
           <input
@@ -91,20 +107,28 @@ export const AddBook = ({
             type="text"
             name="genre"
             placeholder="Set genre"
+            className="add-book__form-input"
             value={formState.genre}
             onChange={(e) => onInputChange(e)}
           ></input>
-          <label htmlFor="description" className="label--hide">
+          <label
+            htmlFor="description"
+            className="add-book__form-label add-book__form-label--hide"
+          >
             Description
           </label>
           <textarea
             id="description"
             placeholder="Set description"
             name="description"
+            className="add-book__form-textarea"
             value={formState.description}
             onChange={(e) => onInputChange(e)}
           ></textarea>
-          <label htmlFor="image" className="label--hide">
+          <label
+            htmlFor="image"
+            className="add-book__form-label add-book__form-label--hide"
+          >
             Image
           </label>
           <input
@@ -112,10 +136,17 @@ export const AddBook = ({
             type="text"
             name="image"
             placeholder="Set image link"
+            className="add-book__form-input"
             value={formState.image}
             onChange={(e) => onInputChange(e)}
           ></input>
-          <button type="submit">Submit</button>
+          <button
+            type="submit"
+            aria-label="submit"
+            className="add-book__form-submit"
+          >
+            Submit
+          </button>
         </form>
       ) : null}
     </article>

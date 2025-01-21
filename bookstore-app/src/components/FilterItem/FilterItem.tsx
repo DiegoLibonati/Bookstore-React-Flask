@@ -4,6 +4,8 @@ import { Book } from "../../entities/entities";
 
 import { useGetBooksByGenre } from "../../hooks/useGetBooksByGenre";
 
+import "./FilterItem.css";
+
 interface FilterItemProps {
   genre: string;
   setBooks: React.Dispatch<React.SetStateAction<Book[]>>;
@@ -19,5 +21,9 @@ export const FilterItem = ({
     setBooks(books);
   };
 
-  return <li onClick={(e) => handleFilter(e)}>{genre}</li>;
+  return (
+    <li onClick={(e) => handleFilter(e)} className="filter-menu__item">
+      {genre}
+    </li>
+  );
 };

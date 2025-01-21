@@ -2,7 +2,7 @@
 
 :root {
   --primary-font: "Prompt", Helvetica, sans-serif;
-  --base-font-size: 0.625rem;
+  --base-font-size: 10px;
   --primary-color: #bf2e1a;
   --secondary-color: #293241;
   --white-color: #ffffff;

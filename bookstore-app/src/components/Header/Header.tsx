@@ -1,11 +1,15 @@
 import { images } from "../../assets/export";
 
-import "../../css/header.css";
+import "./Header.css";
 
 export const Header = (): JSX.Element => {
   return (
-    <header className="header">
-      <img className="header__logo" src={images.libraryLogo} alt="logo"></img>
+    <header className="header-wrapper">
+      <img
+        className="header-wrapper__logo"
+        src={images.libraryLogo}
+        alt="logo"
+      ></img>
     </header>
   );
 };

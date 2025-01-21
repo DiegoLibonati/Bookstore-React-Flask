@@ -1,12 +1,3 @@
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-flow: column wrap;
-  height: auto;
-  width: 100%;
-}
-
 .pagination__list {
   display: flex;
   align-items: center;
@@ -17,7 +8,7 @@
   list-style: none;
 }
 
-.pagination__list li {
+.pagination__item {
   display: flex;
   align-items: center;
   justify-content: center;

@@ -11,9 +11,10 @@ import { useGetBooks } from "../../hooks/useGetBooks";
 import { useHide } from "../../hooks/useHide";
 import { useGetGenres } from "../../hooks/useGetGenres";
 
-import "../../css/config.css";
-import "../../css/books.css";
-import "../../css/pagination.css";
+import "./Main.css";
+import "./Filters.css";
+import "./Books.css";
+import "./Pagination.css";
 
 export const Main = (): JSX.Element => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -32,14 +33,25 @@ export const Main = (): JSX.Element => {
   }
 
   return (
-    <main className="main">
-      <section className="filter">
-        <article className="filter__genre">
-          <button onClick={() => handleHide()}>Filters</button>
+    <main className="main-app">
+      <section className="filters-wrapper">
+        <article className="filters">
+          <button
+            onClick={() => handleHide()}
+            aria-label="filters"
+            className="filters__btn"
+          >
+            Filters
+          </button>
 
           {hide ? (
-            <ul className="filter__genre__list">
-              <li onClick={() => handleBooks()}>Show All</li>
+            <ul className="filters__menus">
+              <li
+                onClick={() => handleBooks()}
+                className="filters__menus-show-all"
+              >
+                Show All
+              </li>
               {genres?.length > 0 && (
                 <FilterMenu
                   genres={genres}

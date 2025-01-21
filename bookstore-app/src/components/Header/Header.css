@@ -1,4 +1,4 @@
-.header {
+.header-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -8,7 +8,7 @@
   box-shadow: 0 0.938rem 0.625rem -0.938rem var(--secondary-color);
 }
 
-.header__logo {
+.header-wrapper__logo {
   height: 8rem;
   width: 14rem;
 }
