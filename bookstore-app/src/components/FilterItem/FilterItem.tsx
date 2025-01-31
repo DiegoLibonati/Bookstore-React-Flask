@@ -22,7 +22,7 @@ export const FilterItem = ({
   };
 
   return (
-    <li onClick={(e) => handleFilter(e)} className="filter-menu__item">
+    <li onClick={(e) => handleFilter(e)} className="filter-item">
       {genre}
     </li>
   );

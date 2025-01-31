@@ -1,4 +1,4 @@
-.filter-menu__item {
+.filter-item {
   font-size: 1.5rem;
   background-color: var(--secondary-color);
   padding: 1rem;
@@ -10,7 +10,7 @@
   transition: background-color 1s;
 }
 
-.filter-menu__item:hover {
+.filter-item:hover {
   background-color: var(--secondary-color);
   transition: background-color 1s;
 }

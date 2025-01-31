@@ -1,4 +1,4 @@
-.pagination__list {
+.pagination-list {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -8,7 +8,7 @@
   list-style: none;
 }
 
-.pagination__item {
+.pagination-list__item {
   display: flex;
   align-items: center;
   justify-content: center;

@@ -39,7 +39,7 @@
   background-color: var(--primary-color);
 }
 
-.filters__menus-show-all {
+.filters__show-all {
   font-size: 1.5rem;
   background-color: var(--secondary-color);
   padding: 1rem;

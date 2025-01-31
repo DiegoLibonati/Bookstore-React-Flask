@@ -18,12 +18,12 @@ export const Pagination = ({
   }
 
   return (
-    <ul className="pagination__list">
+    <ul className="pagination-list">
       {pageNumbers.map((number) => (
         <li
           onClick={() => setCurrentPage(number)}
           key={number * 13}
-          className="pagination__item"
+          className="pagination-list__item"
         >
           {number}
         </li>

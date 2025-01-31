@@ -48,7 +48,7 @@ export const Main = (): JSX.Element => {
             <ul className="filters__menus">
               <li
                 onClick={() => handleBooks()}
-                className="filters__menus-show-all"
+                className="filters__show-all"
               >
                 Show All
               </li>
