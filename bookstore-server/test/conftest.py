@@ -28,7 +28,7 @@ def flask_client(flask_app: Flask) -> FlaskClient:
 
 
 @pytest.fixture(scope="session")
-def mongo_test_db():
+def mongo_test_db() -> None:
     subprocess.run(
         ["docker-compose", "up", "-d", "bookstore-db"],
         capture_output=True,

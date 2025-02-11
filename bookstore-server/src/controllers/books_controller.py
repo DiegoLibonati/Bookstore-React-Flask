@@ -1,15 +1,15 @@
-from typing import Any
 from bson import ObjectId
 
 from flask import make_response
 from flask import current_app
 from flask import request
+from flask import Response
 
 from src.models.Book import Book
 from src.models.BookManager import BookManager
 
 
-def alive_books() -> dict[str, Any]:
+def alive_books() -> Response:
     return make_response({
         "message": "I am Alive!",
         "version_bp": "2.0.0",
@@ -18,7 +18,7 @@ def alive_books() -> dict[str, Any]:
     }, 200)
 
 
-def get_books() -> dict[str, Any]:
+def get_books() -> Response:
     book_manager = BookManager()
     books = current_app.book_repository.get_all_books()
 
@@ -32,7 +32,7 @@ def get_books() -> dict[str, Any]:
     }, 200)
 
 
-def get_books_by_genre(genre: str) -> dict[str, Any]:
+def get_books_by_genre(genre: str) -> Response:
     book_manager = BookManager()
     books = current_app.book_repository.get_books_by_genre(genre=genre)
 
@@ -46,7 +46,7 @@ def get_books_by_genre(genre: str) -> dict[str, Any]:
     }, 200)
 
 
-def add_book() -> dict[str, Any]:
+def add_book() -> Response:
     image = request.json.get('image', "").strip()
     title = request.json.get('title', "").strip()
     author = request.json.get('author', "").strip()
@@ -78,7 +78,7 @@ def add_book() -> dict[str, Any]:
     }, 201)
     
 
-def delete_book(id: str) -> dict[str, Any]:
+def delete_book(id: str) -> Response:
     try:
         object_id = ObjectId(id)
         document = current_app.book_repository.get_book_by_id(book_id=object_id)

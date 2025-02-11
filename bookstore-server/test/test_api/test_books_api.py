@@ -25,7 +25,7 @@ def test_alive_books(flask_client: Flask) -> None:
 
 
 @pytest.mark.usefixtures("mongo_test_db")
-def test_add_book(flask_client: Flask, dracula_book: dict[str, str]):
+def test_add_book(flask_client: Flask, dracula_book: dict[str, str]) -> None:
     image = dracula_book.get("image")
     title = dracula_book.get("title")
     author = dracula_book.get("author")
@@ -55,7 +55,7 @@ def test_add_book(flask_client: Flask, dracula_book: dict[str, str]):
 
 
 @pytest.mark.usefixtures("mongo_test_db")
-def test_add_book_error(flask_client: Flask):
+def test_add_book_error(flask_client: Flask) -> None:
     wrong_book = {
         "author": "",
         "title": "",
