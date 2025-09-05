@@ -4,10 +4,10 @@
 
 1. Clone the repository with `git clone "repository link"`
 2. Join to `bookstore-app` folder and execute: `npm install` or `yarn install` in the terminal
-3. Go to the previous folder and execute: `docker-compose build --no-cache` in the terminal
-4. Once built, you must execute the command: `docker-compose up --force-recreate` in the terminal
+3. Go to the previous folder and execute: `docker-compose -f dev.docker-compose.yml build --no-cache` in the terminal
+4. Once built, you must execute the command: `docker-compose -f dev.docker-compose.yml up --force-recreate` in the terminal
 
-NOTE: You have to be standing in the folder containing the: `docker-compose.yml` and you need to install `Docker Desktop` if you are in Windows.
+NOTE: You have to be standing in the folder containing the: `dev.docker-compose.yml` and you need to install `Docker Desktop` if you are in Windows.
 
 ## Description
 
@@ -43,9 +43,6 @@ In which you can add books in the main section of the page with title, author, g
 #### Dependencies
 
 ```
-"@types/jest": "^29.5.13"
-"@types/react": "^18.3.11"
-"@types/react-dom": "^18.3.1"
 "react": "^18.2.0"
 "react-dom": "^18.2.0"
 "react-icons": "^4.4.0"
@@ -56,16 +53,19 @@ In which you can add books in the main section of the page with title, author, g
 #### devDependencies
 
 ```
+"@types/jest": "^29.5.13"
+"@types/react": "^18.3.11"
+"@types/react-dom": "^18.3.1"
+"@testing-library/dom": "^10.4.0"
 "@testing-library/jest-dom": "^6.6.2"
 "@testing-library/react": "^16.0.1"
 "@testing-library/user-event": "^14.5.2"
-"@testing-library/dom": "^10.4.0"
-"msw": "^2.4.11"
-"typescript": "^5.3.3"
 "jest": "^29.7.0"
 "jest-environment-jsdom": "^29.7.0"
 "jest-fixed-jsdom": "^0.0.9"
+"msw": "^2.4.11"
 "ts-jest": "^29.2.5"
+"typescript": "^4.9.5"
 ```
 
 ### Backend

@@ -3,8 +3,8 @@ import user from "@testing-library/user-event";
 
 import { FilterMenu } from "./FilterMenu";
 
-import { createServer } from "../../tests/msw/server";
-import { books } from "../../tests/jest.constants";
+import { createServer } from "../../../tests/msw/server";
+import { books } from "../../../tests/jest.constants";
 
 import { api_route_books } from "../../api/route";
 

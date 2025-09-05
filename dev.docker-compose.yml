@@ -3,7 +3,7 @@ services:
   bookstore-app:
     build:
       context: ./bookstore-app
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.development
     restart: always
     environment:
       - TZ="America/Argentina/Buenos_Aires"
@@ -19,7 +19,7 @@ services:
   bookstore-server:
     build:
       context: ./bookstore-server
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.development
     restart: always
     environment:
       - TZ="America/Argentina/Buenos_Aires"

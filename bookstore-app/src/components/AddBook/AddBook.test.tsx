@@ -5,8 +5,8 @@ import { Book } from "../../entities/entities";
 
 import { AddBook } from "./AddBook";
 
-import { createServer } from "../../tests/msw/server";
-import { bookDracula } from "../../tests/jest.constants";
+import { createServer } from "../../../tests/msw/server";
+import { bookDracula } from "../../../tests/jest.constants";
 
 import { api_route_books } from "../../api/route";
 
