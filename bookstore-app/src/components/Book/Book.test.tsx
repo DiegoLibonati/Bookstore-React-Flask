@@ -1,17 +1,16 @@
 import { screen, render } from "@testing-library/react";
 import user from "@testing-library/user-event";
 
-import { Book } from "./Book";
+import { BookProps } from "@src/entities/props";
 
-const renderComponent = (): {
+import { Book } from "@src/components/Book/Book";
+
+type RenderComponent = {
   container: HTMLElement;
-  props: {
-    author: string;
-    description: string;
-    image: string;
-    title: string;
-  };
-} => {
+  props: BookProps;
+};
+
+const renderComponent = (): RenderComponent => {
   const props = {
     author: "Bram Stoker",
     description:

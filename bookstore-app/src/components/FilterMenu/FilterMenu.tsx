@@ -1,16 +1,10 @@
-import { Book } from "../../entities/entities";
+import { FilterMenuProps } from "@src/entities/props";
 
-import { FilterItem } from "../FilterItem/FilterItem";
+import { FilterItem } from "@src/components/FilterItem/FilterItem";
 
-import { useHide } from "../../hooks/useHide";
+import { useHide } from "@src/hooks/useHide";
 
-import "./FilterMenu.css";
-
-interface FilterMenuProps {
-  genres: string[];
-  filterName: string;
-  setBooks: React.Dispatch<React.SetStateAction<Book[]>>;
-}
+import "@src/components/FilterMenu/FilterMenu.css";
 
 export const FilterMenu = ({
   genres,

@@ -1,6 +1,6 @@
-import { images } from "../../assets/export";
+import { images } from "@src/assets/export";
 
-import "./Header.css";
+import "@src/components/Header/Header.css";
 
 export const Header = (): JSX.Element => {
   return (

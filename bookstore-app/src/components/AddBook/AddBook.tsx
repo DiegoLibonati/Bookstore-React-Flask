@@ -1,19 +1,13 @@
 import { BsPlusCircle } from "react-icons/bs";
 
-import { Book, FormBook } from "../../entities/entities";
+import { FormBook } from "@src/entities/entities";
+import { AddBookProps } from "@src/entities/props";
 
-import { postBook } from "../../api/postBook";
-import { useForm } from "../../hooks/useForm";
-import { useHide } from "../../hooks/useHide";
+import { postBook } from "@src/api/postBook";
+import { useForm } from "@src/hooks/useForm";
+import { useHide } from "@src/hooks/useHide";
 
-import "./AddBook.css";
-
-interface AddBookProps {
-  books: Book[];
-  genres: Book["genre"][];
-  setBooks: React.Dispatch<React.SetStateAction<Book[]>>;
-  setGenres: React.Dispatch<React.SetStateAction<string[]>>;
-}
+import "@src/components/AddBook/AddBook.css";
 
 export const AddBook = ({
   books,
@@ -34,14 +28,13 @@ export const AddBook = ({
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    const result = await postBook(formState);
-    const response = await result.json();
+    const newBook = await postBook(formState);
 
-    if (result.ok) {
-      setBooks([...books, { ...response.data }]);
+    if (newBook) {
+      setBooks([...books, { ...newBook }]);
 
-      if (!genres.includes(response.data.genre)) {
-        setGenres([...genres, response.data.genre]);
+      if (!genres.includes(newBook.genre)) {
+        setGenres([...genres, newBook.genre]);
       }
     }
   };

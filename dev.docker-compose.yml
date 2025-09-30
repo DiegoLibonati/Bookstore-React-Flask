@@ -1,46 +1,69 @@
-version: "3.9"
 services:
   bookstore-app:
     build:
       context: ./bookstore-app
       dockerfile: Dockerfile.development
     restart: always
-    environment:
-      - TZ="America/Argentina/Buenos_Aires"
-      - CHOKIDAR_USEPOLLING=true
-      - WATCHPACK_POLLING=true
+    env_file:
+      - ./bookstore-app/.env
     volumes:
-      - "./bookstore-app:/home/app"
+      - ./bookstore-app:/home/app
+      - /home/app/node_modules
     depends_on:
       - bookstore-db
     ports:
       - "3000:3000"
+    networks:
+     - bookstore-net
 
   bookstore-server:
     build:
       context: ./bookstore-server
       dockerfile: Dockerfile.development
     restart: always
-    environment:
-      - TZ="America/Argentina/Buenos_Aires"
-      - PORT=5050
-      - MONGO_URI=mongodb://host.docker.internal/bookstore
-      - DEBUG_MODE=true
+    env_file:
+      - ./bookstore-server/.env
     volumes:
       - "./bookstore-server:/home/app"
     depends_on:
       - bookstore-db
     ports:
       - "5050:5050"
+    networks:
+      - bookstore-net
 
   bookstore-db:
     image: mongo
+    restart: always
     ports:
       - "27017:27017"
-    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secret123
+      MONGO_INITDB_DATABASE: bookstore
     volumes:
       - db-data:/data/db
+    networks:
+      - bookstore-net
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://admin:secret123@bookstore-db:27017/bookstore?authSource=admin
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin123
+    depends_on:
+      - bookstore-db
+    networks:
+      - bookstore-net
 
 volumes:
   db-data:
     driver: local
+
+networks:
+  bookstore-net:
+    driver: bridge

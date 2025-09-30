@@ -1,5 +1,3 @@
-// Types
-
 export type Book = {
   _id: string;
   title: string;
@@ -16,5 +14,3 @@ export type FormBook = {
   description: string;
   image: string;
 };
-
-// Interfaces

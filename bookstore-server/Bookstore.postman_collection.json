@@ -10,7 +10,7 @@
 			"name": "Books",
 			"item": [
 				{
-					"name": "Alive",
+					"name": "GET - Alive",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -25,10 +25,55 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Ok.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{APP_URL}}/books/alive",
+									"host": [
+										"{{APP_URL}}"
+									],
+									"path": [
+										"books",
+										"alive"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "Werkzeug/3.1.3 Python/3.11.13"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 29 Sep 2025 14:46:35 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "97"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"I am Alive!\",\n    \"version_bp\": \"2.0.0\",\n    \"author\": \"Diego Libonati\",\n    \"name_bp\": \"Books\"\n}"
+						}
+					]
 				},
 				{
-					"name": "Get Books",
+					"name": "GET - Get Books",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -42,7 +87,51 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Ok.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{APP_URL}}/books",
+									"host": [
+										"{{APP_URL}}"
+									],
+									"path": [
+										"books"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "Werkzeug/3.1.3 Python/3.11.13"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 29 Sep 2025 17:25:37 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1140"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": \"SUCCESS_GET_ALL_BOOKS\",\n    \"message\": \"Books were successfully obtained.\",\n    \"data\": [\n        {\n            \"title\": \"Drácula\",\n            \"image\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dracula-First-Edition-1897.jpg/220px-Dracula-First-Edition-1897.jpg\",\n            \"author\": \"Bram Stoker\",\n            \"description\": \"Es una novela de fantasía gótica escrita por Bram Stoker, publicada en 1897.\",\n            \"genre\": \"terror\",\n            \"_id\": \"68daa58a4093a1237e0936b8\"\n        },\n        {\n            \"title\": \"Drácula2\",\n            \"image\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dracula-First-Edition-1897.jpg/220px-Dracula-First-Edition-1897.jpg\",\n            \"author\": \"Bram Stoker\",\n            \"description\": \"Es una novela de fantasía gótica escrita por Bram Stoker, publicada en 1897.\",\n            \"genre\": \"terror\",\n            \"_id\": \"68daa694bbc31e8d748471f0\"\n        },\n        {\n            \"title\": \"Drácula3\",\n            \"image\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dracula-First-Edition-1897.jpg/220px-Dracula-First-Edition-1897.jpg\",\n            \"author\": \"Bram Stoker\",\n            \"description\": \"Es una novela de fantasía gótica escrita por Bram Stoker, publicada en 1897.\",\n            \"genre\": \"terror\",\n            \"_id\": \"68daa6f9c4b987f1f9a30962\"\n        }\n    ]\n}"
+						}
+					]
 				},
 				{
 					"name": "Get Books By Genre",
@@ -60,16 +149,124 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Ok.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{APP_URL}}/books/terror",
+									"host": [
+										"{{APP_URL}}"
+									],
+									"path": [
+										"books",
+										"terror"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "Werkzeug/3.1.3 Python/3.11.13"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 29 Sep 2025 17:31:32 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1140"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": \"SUCCESS_GET_ALL_BOOKS\",\n    \"message\": \"Books were successfully obtained.\",\n    \"data\": [\n        {\n            \"title\": \"Drácula\",\n            \"image\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dracula-First-Edition-1897.jpg/220px-Dracula-First-Edition-1897.jpg\",\n            \"author\": \"Bram Stoker\",\n            \"description\": \"Es una novela de fantasía gótica escrita por Bram Stoker, publicada en 1897.\",\n            \"genre\": \"terror\",\n            \"_id\": \"68daa58a4093a1237e0936b8\"\n        },\n        {\n            \"title\": \"Drácula2\",\n            \"image\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dracula-First-Edition-1897.jpg/220px-Dracula-First-Edition-1897.jpg\",\n            \"author\": \"Bram Stoker\",\n            \"description\": \"Es una novela de fantasía gótica escrita por Bram Stoker, publicada en 1897.\",\n            \"genre\": \"terror\",\n            \"_id\": \"68daa694bbc31e8d748471f0\"\n        },\n        {\n            \"title\": \"Drácula3\",\n            \"image\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dracula-First-Edition-1897.jpg/220px-Dracula-First-Edition-1897.jpg\",\n            \"author\": \"Bram Stoker\",\n            \"description\": \"Es una novela de fantasía gótica escrita por Bram Stoker, publicada en 1897.\",\n            \"genre\": \"terror\",\n            \"_id\": \"68daa6f9c4b987f1f9a30962\"\n        }\n    ]\n}"
+						}
+					]
 				},
 				{
-					"name": "Add Book",
+					"name": "GET - Get Genres",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{APP_URL}}/books/genres",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"books",
+								"genres"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Ok.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{APP_URL}}/books/genres",
+									"host": [
+										"{{APP_URL}}"
+									],
+									"path": [
+										"books",
+										"genres"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "Werkzeug/3.1.3 Python/3.11.13"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 29 Sep 2025 17:59:18 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "123"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": \"SUCCESS_GET_ALL_GENRES\",\n    \"message\": \"The book genres were successfully obtained.\",\n    \"data\": [\n        \"ciencia\",\n        \"terror\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "POST - Add Book",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Drácula\",\r\n    \"description\": \"Es una novela de fantasía gótica escrita por Bram Stoker, publicada en 1897.\",\r\n    \"author\": \"Bram Stoker\",\r\n    \"image\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dracula-First-Edition-1897.jpg/220px-Dracula-First-Edition-1897.jpg\",\r\n    \"genre\": \"terror\"\r\n}",
+							"raw": "{\r\n    \"title\": \"Drácula De Mentira\",\r\n    \"description\": \"Es una novela de fantasía gótica escrita por Bram Stoker, publicada en 1897.\",\r\n    \"author\": \"Bram Stoker\",\r\n    \"image\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dracula-First-Edition-1897.jpg/220px-Dracula-First-Edition-1897.jpg\",\r\n    \"genre\": \"ciencia\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -77,76 +274,132 @@
 							}
 						},
 						"url": {
-							"raw": "{{APP_URL}}/books/add",
+							"raw": "{{APP_URL}}/books",
 							"host": [
 								"{{APP_URL}}"
 							],
 							"path": [
-								"books",
-								"add"
+								"books"
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Ok.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Drácula3\",\r\n    \"description\": \"Es una novela de fantasía gótica escrita por Bram Stoker, publicada en 1897.\",\r\n    \"author\": \"Bram Stoker\",\r\n    \"image\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dracula-First-Edition-1897.jpg/220px-Dracula-First-Edition-1897.jpg\",\r\n    \"genre\": \"terror\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{APP_URL}}/books",
+									"host": [
+										"{{APP_URL}}"
+									],
+									"path": [
+										"books"
+									]
+								}
+							},
+							"status": "CREATED",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "Werkzeug/3.1.3 Python/3.11.13"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 29 Sep 2025 15:34:17 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "433"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": \"SUCCESS_ADD_BOOK\",\n    \"message\": \"The book was successfully added.\",\n    \"data\": {\n        \"_id\": \"68daa6f9c4b987f1f9a30962\",\n        \"title\": \"Drácula3\",\n        \"image\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dracula-First-Edition-1897.jpg/220px-Dracula-First-Edition-1897.jpg\",\n        \"author\": \"Bram Stoker\",\n        \"description\": \"Es una novela de fantasía gótica escrita por Bram Stoker, publicada en 1897.\",\n        \"genre\": \"terror\"\n    }\n}"
+						}
+					]
 				},
 				{
-					"name": "Delete Book",
+					"name": "DELETE - Delete Book",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{APP_URL}}/books/delete/67422c30c90c5c9e2de73e27",
+							"raw": "{{APP_URL}}/books/68daa6f9c4b987f1f9a30962",
 							"host": [
 								"{{APP_URL}}"
 							],
 							"path": [
 								"books",
-								"delete",
-								"67422c30c90c5c9e2de73e27"
+								"68daa6f9c4b987f1f9a30962"
 							]
 						}
 					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Genres",
-			"item": [
-				{
-					"name": "Alive",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{APP_URL}}/genres/alive",
-							"host": [
-								"{{APP_URL}}"
+					"response": [
+						{
+							"name": "Ok.",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{APP_URL}}/books/68daa6f9c4b987f1f9a30962",
+									"host": [
+										"{{APP_URL}}"
+									],
+									"path": [
+										"books",
+										"68daa6f9c4b987f1f9a30962"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "Werkzeug/3.1.3 Python/3.11.13"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 29 Sep 2025 17:51:56 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "76"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
 							],
-							"path": [
-								"genres",
-								"alive"
-							]
+							"cookie": [],
+							"body": "{\n    \"code\": \"SUCCESS_DELETE_BOOK\",\n    \"message\": \"Book was successfully deleted.\"\n}"
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Genres",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{APP_URL}}/genres",
-							"host": [
-								"{{APP_URL}}"
-							],
-							"path": [
-								"genres"
-							]
-						}
-					},
-					"response": []
+					]
 				}
 			]
 		}
@@ -157,6 +410,7 @@
 			"script": {
 				"type": "text/javascript",
 				"packages": {},
+				"requests": {},
 				"exec": [
 					""
 				]
@@ -167,6 +421,7 @@
 			"script": {
 				"type": "text/javascript",
 				"packages": {},
+				"requests": {},
 				"exec": [
 					""
 				]
@@ -176,8 +431,7 @@
 	"variable": [
 		{
 			"key": "APP_URL",
-			"value": "http://localhost:5050/api/v1/bookstore",
-			"type": "string"
+			"value": "http://localhost:5050/api/v1"
 		}
 	]
 }

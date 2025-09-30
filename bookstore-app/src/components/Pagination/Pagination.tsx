@@ -1,10 +1,6 @@
-import "./Pagination.css";
+import { PaginationProps } from "@src/entities/props";
 
-interface PaginationProps {
-  totalBooks: number;
-  booksPerPage: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-}
+import "@src/components/Pagination/Pagination.css";
 
 export const Pagination = ({
   totalBooks,

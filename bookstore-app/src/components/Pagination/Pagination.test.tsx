@@ -1,16 +1,17 @@
 import { screen, render } from "@testing-library/react";
 import user from "@testing-library/user-event";
 
-import { Pagination } from "./Pagination";
+import { Pagination } from "@src/components/Pagination/Pagination";
+import { PaginationProps } from "@src/entities/props";
 
-const renderComponent = (): {
+type RenderComponent = {
   container: HTMLElement;
   props: {
-    totalBooks: number;
-    booksPerPage: number;
     setCurrentPage: jest.Mock;
-  };
-} => {
+  } & PaginationProps;
+};
+
+const renderComponent = (): RenderComponent => {
   const totalBooks = 12;
   const booksPerPage = 6;
   const mockSetCurrentPage = jest.fn();

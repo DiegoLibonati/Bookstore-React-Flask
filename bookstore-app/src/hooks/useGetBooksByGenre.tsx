@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { Book } from "../entities/entities";
+import { Book } from "@src/entities/entities";
+import { UseGetBooksByGenre } from "@src/entities/hooks";
 
-import { getBooksByGenre } from "../api/getBooksByGenre";
-
-type UseGetBooksByGenre = {
-  books: Book[];
-};
+import { getBooksByGenre } from "@src/api/getBooksByGenre";
 
 export const useGetBooksByGenre = (genre: string): UseGetBooksByGenre => {
   const [books, setBooks] = useState<Book[]>([]);

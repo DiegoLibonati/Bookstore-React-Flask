@@ -1,18 +1,20 @@
 import { screen, render } from "@testing-library/react";
 import user from "@testing-library/user-event";
 
-import { Book } from "../../entities/entities";
+import { Book } from "@src/entities/entities";
 
-import { Main } from "./Main";
+import { Main } from "@src/components/Main/Main";
 
-import { createServer } from "../../../tests/msw/server";
-import { books, genres } from "../../../tests/jest.constants";
+import { createServer } from "@tests/msw/server";
+import { books, genres } from "@tests/jest.constants";
 
-import { api_route_books, api_route_genres } from "../../api/route";
+import { apiRouteBooks } from "@src/api/route";
 
-const renderComponent = (): {
+type RenderComponent = {
   container: HTMLElement;
-} => {
+};
+
+const renderComponent = (): RenderComponent => {
   const { container } = render(<Main />);
 
   return {
@@ -42,7 +44,7 @@ describe("Main.tsx", () => {
   describe("When making API calls.", () => {
     createServer([
       {
-        path: api_route_books,
+        path: `${apiRouteBooks}/`,
         method: "get",
         res: () => {
           return {
@@ -52,7 +54,7 @@ describe("Main.tsx", () => {
         },
       },
       {
-        path: api_route_genres,
+        path: `${apiRouteBooks}/genres`,
         method: "get",
         res: () => {
           return {
@@ -77,7 +79,7 @@ describe("Main.tsx", () => {
   describe("When all API calls are terminated.", () => {
     createServer([
       {
-        path: api_route_books,
+        path: `${apiRouteBooks}/`,
         method: "get",
         res: () => {
           return {
@@ -87,7 +89,7 @@ describe("Main.tsx", () => {
         },
       },
       {
-        path: api_route_genres,
+        path: `${apiRouteBooks}/genres`,
         method: "get",
         res: () => {
           return {

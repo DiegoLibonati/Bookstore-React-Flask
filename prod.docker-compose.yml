@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  bookstore-app:
+    build:
+      context: ./bookstore-app
+      dockerfile: Dockerfile.production
+    restart: always
+    env_file:
+      - ./bookstore-app/.env
+    depends_on:
+      - bookstore-server
+    ports:
+      - "80:80"
+    networks:
+      - bookstore-net
+
+  bookstore-server:
+    build:
+      context: ./bookstore-server
+      dockerfile: Dockerfile.production
+    restart: always
+    env_file:
+      - ./bookstore-server/.env
+    depends_on:
+      - bookstore-db
+    ports:
+      - "5050:5050"
+    networks:
+      - bookstore-net
+
+  bookstore-db:
+    image: mongo:6
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secret123
+      MONGO_INITDB_DATABASE: bookstore
+    volumes:
+      - db-data:/data/db
+    networks:
+      - bookstore-net
+
+volumes:
+  db-data:
+    driver: local
+
+networks:
+  bookstore-net:
+    driver: bridge

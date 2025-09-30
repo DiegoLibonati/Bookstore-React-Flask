@@ -1,23 +1,27 @@
 import { screen, render } from "@testing-library/react";
 import user from "@testing-library/user-event";
 
-import { FilterItem } from "./FilterItem";
+import { FilterItemProps } from "@src/entities/props";
 
-import { createServer } from "../../../tests/msw/server";
-import { books, genres } from "../../../tests/jest.constants";
+import { FilterItem } from "@src/components/FilterItem/FilterItem";
 
-import { api_route_books, api_route_genres } from "../../api/route";
+import { createServer } from "@tests/msw/server";
+import { books, genres } from "@tests/jest.constants";
 
-const renderComponent = async (): Promise<{
+import { apiRouteBooks } from "@src/api/route";
+
+type RenderComponent = {
   container: HTMLElement;
-  genre: string;
-  mockSetBooks: jest.Mock;
-}> => {
+  genre: FilterItemProps["genre"];
+  setBooks: jest.Mock;
+};
+
+const renderComponent = async (): Promise<RenderComponent> => {
   const genre = "terror";
-  const mockSetBooks = jest.fn();
+  const setBooks = jest.fn();
 
   const { container } = render(
-    <FilterItem genre={genre} setBooks={mockSetBooks} />
+    <FilterItem genre={genre} setBooks={setBooks} />
   );
 
   await screen.findByRole("listitem");
@@ -25,7 +29,7 @@ const renderComponent = async (): Promise<{
   return {
     container: container,
     genre: genre,
-    mockSetBooks: mockSetBooks,
+    setBooks: setBooks,
   };
 };
 
@@ -33,7 +37,7 @@ describe("FilterItem.tsx", () => {
   describe("General Tests.", () => {
     createServer([
       {
-        path: api_route_genres,
+        path: `${apiRouteBooks}/genres`,
         method: "get",
         res: () => {
           return {
@@ -43,7 +47,7 @@ describe("FilterItem.tsx", () => {
         },
       },
       {
-        path: `${api_route_books}/:genre`,
+        path: `${apiRouteBooks}/:genre`,
         method: "get",
         res: () => {
           return {
@@ -63,14 +67,14 @@ describe("FilterItem.tsx", () => {
     });
 
     test("The setBooks function must be executed only once with the books of the selected filter.", async () => {
-      const { mockSetBooks } = await renderComponent();
+      const { setBooks } = await renderComponent();
 
       const genreElement = screen.getByRole("listitem");
 
       await user.click(genreElement);
 
-      expect(mockSetBooks).toHaveBeenCalledTimes(1);
-      expect(mockSetBooks).toHaveBeenCalledWith(books);
+      expect(setBooks).toHaveBeenCalledTimes(1);
+      expect(setBooks).toHaveBeenCalledWith(books);
     });
   });
 });

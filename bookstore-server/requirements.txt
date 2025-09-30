@@ -1,2 +1,5 @@
-Flask
-flask_pymongo
+Flask==3.1.2
+Flask-PyMongo==3.0.1
+pydantic==2.11.9
+gunicorn==23.0.0
+pre-commit==4.3.0

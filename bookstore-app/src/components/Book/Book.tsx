@@ -1,13 +1,8 @@
-import { useHide } from "../../hooks/useHide";
+import { BookProps } from "@src/entities/props";
 
-import "./Book.css";
+import { useHide } from "@src/hooks/useHide";
 
-interface BookProps {
-  image: string;
-  title: string;
-  author: string;
-  description: string;
-}
+import "@src/components/Book/Book.css";
 
 export const Book = ({
   image,

@@ -1,4 +1,4 @@
-import { Book } from "../src/entities/entities";
+import { Book } from "@src/entities/entities";
 
 export const bookDracula = {
   _id: "asd123",

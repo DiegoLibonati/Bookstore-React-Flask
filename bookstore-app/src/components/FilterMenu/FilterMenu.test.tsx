@@ -1,27 +1,27 @@
 import { screen, render, within } from "@testing-library/react";
 import user from "@testing-library/user-event";
 
-import { FilterMenu } from "./FilterMenu";
+import { FilterMenuProps } from "@src/entities/props";
 
-import { createServer } from "../../../tests/msw/server";
-import { books } from "../../../tests/jest.constants";
+import { FilterMenu } from "@src/components/FilterMenu/FilterMenu";
 
-import { api_route_books } from "../../api/route";
+import { createServer } from "@tests/msw/server";
+import { books } from "@tests/jest.constants";
 
-const renderComponent = (): {
+import { apiRouteBooks } from "@src/api/route";
+
+type RenderComponent = {
   container: HTMLElement;
-  props: { genres: string[]; filterName: string; setBooks: jest.Mock };
-} => {
+  props: { setBooks: jest.Mock } & FilterMenuProps;
+};
+
+const renderComponent = (): RenderComponent => {
   const genres = ["Novela", "Terror"];
   const filterName = "Genres";
-  const mockSetBooks = jest.fn();
+  const setBooks = jest.fn();
 
   const { container } = render(
-    <FilterMenu
-      genres={genres}
-      filterName={filterName}
-      setBooks={mockSetBooks}
-    />
+    <FilterMenu genres={genres} filterName={filterName} setBooks={setBooks} />
   );
 
   return {
@@ -29,7 +29,7 @@ const renderComponent = (): {
     props: {
       genres: genres,
       filterName: filterName,
-      setBooks: mockSetBooks,
+      setBooks: setBooks,
     },
   };
 };
@@ -38,7 +38,7 @@ describe("FilterMenu.tsx", () => {
   describe("General Tests.", () => {
     createServer([
       {
-        path: `${api_route_books}/:genre`,
+        path: `${apiRouteBooks}/:genre`,
         method: "get",
         res: () => {
           return {

@@ -1,20 +1,20 @@
 import { useState } from "react";
 
-import { Book as BookT } from "../../entities/entities";
+import { Book as BookT } from "@src/entities/entities";
 
-import { Book } from "../Book/Book";
-import { Pagination } from "../Pagination/Pagination";
-import { FilterMenu } from "../FilterMenu/FilterMenu";
-import { AddBook } from "../AddBook/AddBook";
+import { Book } from "@src/components/Book/Book";
+import { Pagination } from "@src/components/Pagination/Pagination";
+import { FilterMenu } from "@src/components/FilterMenu/FilterMenu";
+import { AddBook } from "@src/components/AddBook/AddBook";
 
-import { useGetBooks } from "../../hooks/useGetBooks";
-import { useHide } from "../../hooks/useHide";
-import { useGetGenres } from "../../hooks/useGetGenres";
+import { useGetBooks } from "@src/hooks/useGetBooks";
+import { useHide } from "@src/hooks/useHide";
+import { useGetGenres } from "@src/hooks/useGetGenres";
 
-import "./Main.css";
-import "./Filters.css";
-import "./Books.css";
-import "./Pagination.css";
+import "@src/components/Main/Main.css";
+import "@src/components/Main/Filters.css";
+import "@src/components/Main/Books.css";
+import "@src/components/Main/Pagination.css";
 
 export const Main = (): JSX.Element => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -46,10 +46,7 @@ export const Main = (): JSX.Element => {
 
           {hide ? (
             <ul className="filters__menus">
-              <li
-                onClick={() => handleBooks()}
-                className="filters__show-all"
-              >
+              <li onClick={() => handleBooks()} className="filters__show-all">
                 Show All
               </li>
               {genres?.length > 0 && (

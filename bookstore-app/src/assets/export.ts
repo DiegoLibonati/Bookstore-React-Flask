@@ -1,4 +1,4 @@
-import libraryLogo from "./libreria.png";
+import libraryLogo from "@src/assets/libreria.png";
 
 export const images = {
   libraryLogo: libraryLogo,

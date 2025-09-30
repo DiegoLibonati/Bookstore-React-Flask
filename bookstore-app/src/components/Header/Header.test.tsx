@@ -1,8 +1,10 @@
 import { screen, render } from "@testing-library/react";
 
-import { Header } from "./Header";
+import { Header } from "@src/components/Header/Header";
 
-const renderComponent = (): { container: HTMLElement } => {
+type RenderComponent = { container: HTMLElement };
+
+const renderComponent = (): RenderComponent => {
   const { container } = render(<Header />);
 
   return {

@@ -1,7 +1,7 @@
 import { Fragment } from "react/jsx-runtime";
 
-import { Header } from "./components/Header/Header";
-import { Main } from "./components/Main/Main";
+import { Header } from "@src/components/Header/Header";
+import { Main } from "@src/components/Main/Main";
 
 function App(): JSX.Element {
   return (

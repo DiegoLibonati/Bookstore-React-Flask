@@ -1,37 +1,37 @@
 import { screen, render } from "@testing-library/react";
 import user from "@testing-library/user-event";
 
-import { Book } from "../../entities/entities";
+import { AddBookProps } from "@src/entities/props";
 
-import { AddBook } from "./AddBook";
+import { AddBook } from "@src/components/AddBook/AddBook";
 
-import { createServer } from "../../../tests/msw/server";
-import { bookDracula } from "../../../tests/jest.constants";
+import { createServer } from "@tests/msw/server";
+import { bookDracula } from "@tests/jest.constants";
 
-import { api_route_books } from "../../api/route";
+import { apiRouteBooks } from "@src/api/route";
 
-const renderComponent = (): {
+type RenderComponent = {
   container: HTMLElement;
   props: {
-    books: Book[];
-    genres: string[];
     setBooks: jest.Mock;
     setGenres: jest.Mock;
-  };
-} => {
+  } & AddBookProps;
+};
+
+const renderComponent = (): RenderComponent => {
   const props = {
     books: [bookDracula],
     genres: ["123"],
-    mockSetBooks: jest.fn(),
-    mockSetGenres: jest.fn(),
+    setBooks: jest.fn(),
+    setGenres: jest.fn(),
   };
 
   const { container } = render(
     <AddBook
       books={props.books}
       genres={props.genres}
-      setBooks={props.mockSetBooks}
-      setGenres={props.mockSetGenres}
+      setBooks={props.setBooks}
+      setGenres={props.setGenres}
     />
   );
 
@@ -40,8 +40,8 @@ const renderComponent = (): {
     props: {
       books: props.books,
       genres: props.genres,
-      setBooks: props.mockSetBooks,
-      setGenres: props.mockSetGenres,
+      setBooks: props.setBooks,
+      setGenres: props.setGenres,
     },
   };
 };
@@ -50,7 +50,7 @@ describe("AddBook.tsx", () => {
   describe("General Tests.", () => {
     createServer([
       {
-        path: `${api_route_books}/add`,
+        path: `${apiRouteBooks}/`,
         method: "post",
         res: () => {
           return {
