@@ -26,16 +26,21 @@ def test_create_bookmodel_missing_fields(
     assert missing_field in str(exc.value)
 
 
-def test_create_bookmodel_invalid_type(dracula_book: dict[str, str]) -> None:
-    data = {
-        "title": 123,
-        "image": dracula_book.get("image"),
-        "author": dracula_book.get("author"),
-        "description": dracula_book.get("description"),
-        "genre": dracula_book.get("genre"),
-    }
+@pytest.mark.parametrize(
+    "invalid_field,invalid_value",
+    [
+        ("title", 123),
+        ("author", ""),
+        ("description", "   "),
+    ],
+)
+def test_create_bookmodel_invalid_values(
+    dracula_book: dict[str, str], invalid_field: str, invalid_value: str
+) -> None:
+    data = dracula_book.copy()
+    data[invalid_field] = invalid_value
+
     with pytest.raises(ValidationError) as exc:
         BookModel(**data)
 
-    assert "title" in str(exc.value)
-    assert "string_type" in str(exc.value) or "str type expected" in str(exc.value)
+    assert invalid_field in str(exc.value)
