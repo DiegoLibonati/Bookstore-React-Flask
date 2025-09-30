@@ -67,7 +67,7 @@ def test_get_all_genres_unique_list() -> None:
 def test_delete_book_by_id_success() -> None:
     _id = ObjectId()
     with patch(
-        "src.services.book_service.BookDAO.find_by_id", return_value={"_id": _id}
+        "src.services.book_service.BookDAO.find_one_by_id", return_value={"_id": _id}
     ), patch(
         "src.services.book_service.BookDAO.delete_one_by_id", return_value="deleted"
     ) as mock_delete:
@@ -78,7 +78,7 @@ def test_delete_book_by_id_success() -> None:
 
 def test_delete_book_by_id_not_found() -> None:
     _id = ObjectId()
-    with patch("src.services.book_service.BookDAO.find_by_id", return_value=None):
+    with patch("src.services.book_service.BookDAO.find_one_by_id", return_value=None):
         with pytest.raises(NotFoundAPIError) as exc:
             BookService.delete_book_by_id(_id)
         assert exc.value.code == CODE_NOT_FOUND_BOOK

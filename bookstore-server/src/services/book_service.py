@@ -41,7 +41,7 @@ class BookService:
 
     @staticmethod
     def delete_book_by_id(_id: ObjectId) -> DeleteResult:
-        existing = BookDAO.find_by_id(_id)
+        existing = BookDAO.find_one_by_id(_id)
 
         if not existing:
             raise NotFoundAPIError(

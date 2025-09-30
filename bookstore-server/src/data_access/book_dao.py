@@ -20,13 +20,14 @@ class BookDAO:
         return BookDAO.parse_books(list(mongo.db.books.find({"genre": genre})))
 
     @staticmethod
-    def find_by_id(_id: ObjectId) -> dict[str, Any] | None:
+    def find_one_by_id(_id: ObjectId) -> dict[str, Any] | None:
         return mongo.db.books.find_one({"_id": ObjectId(_id)})
 
     @staticmethod
     def find_one_by_title_and_author(title: str, author: str) -> dict[str, Any] | None:
         return mongo.db.books.find_one({"title": title, "author": author})
 
+    @staticmethod
     def delete_one_by_id(_id: ObjectId) -> DeleteResult:
         return mongo.db.books.delete_one({"_id": ObjectId(_id)})
 

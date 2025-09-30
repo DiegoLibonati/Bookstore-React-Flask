@@ -41,7 +41,7 @@ def test_find_by_id(book_test: dict[str, str]) -> None:
     with patch("src.data_access.book_dao.mongo") as mock_mongo:
         mock_mongo.db.books.find_one.return_value = book_test
 
-        result = BookDAO.find_by_id(book_test["_id"])
+        result = BookDAO.find_one_by_id(book_test["_id"])
 
         mock_mongo.db.books.find_one.assert_called_once_with({"_id": book_test["_id"]})
         assert result == book_test
