@@ -1,5 +1,7 @@
 from unittest.mock import MagicMock, patch
 
+from bson import ObjectId
+
 from src.data_access.book_dao import BookDAO
 
 
@@ -43,8 +45,10 @@ def test_find_by_id(book_test: dict[str, str]) -> None:
 
         result = BookDAO.find_one_by_id(book_test["_id"])
 
-        mock_mongo.db.books.find_one.assert_called_once_with({"_id": book_test["_id"]})
-        assert result == book_test
+        mock_mongo.db.books.find_one.assert_called_once_with(
+            {"_id": ObjectId(book_test["_id"])}
+        )
+        assert result["_id"] == str(book_test["_id"])
 
 
 def test_find_one_by_title_and_author(book_test: dict[str, str]) -> None:
@@ -56,7 +60,9 @@ def test_find_one_by_title_and_author(book_test: dict[str, str]) -> None:
         mock_mongo.db.books.find_one.assert_called_once_with(
             {"title": "Drácula", "author": "Bram Stoker"}
         )
-        assert result == book_test
+        assert result["_id"] == str(book_test["_id"])
+        assert result["title"] == book_test["title"]
+        assert result["author"] == book_test["author"]
 
 
 def test_delete_one_by_id(book_test: dict[str, str]) -> None:
@@ -67,7 +73,7 @@ def test_delete_one_by_id(book_test: dict[str, str]) -> None:
         result = BookDAO.delete_one_by_id(book_test["_id"])
 
         mock_mongo.db.books.delete_one.assert_called_once_with(
-            {"_id": book_test["_id"]}
+            {"_id": ObjectId(book_test["_id"])}
         )
         assert result == mock_result
 

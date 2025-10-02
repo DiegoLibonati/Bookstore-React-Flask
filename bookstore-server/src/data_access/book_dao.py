@@ -21,11 +21,13 @@ class BookDAO:
 
     @staticmethod
     def find_one_by_id(_id: ObjectId) -> dict[str, Any] | None:
-        return mongo.db.books.find_one({"_id": ObjectId(_id)})
+        return BookDAO.parse_book(mongo.db.books.find_one({"_id": ObjectId(_id)}))
 
     @staticmethod
     def find_one_by_title_and_author(title: str, author: str) -> dict[str, Any] | None:
-        return mongo.db.books.find_one({"title": title, "author": author})
+        return BookDAO.parse_book(
+            mongo.db.books.find_one({"title": title, "author": author})
+        )
 
     @staticmethod
     def delete_one_by_id(_id: ObjectId) -> DeleteResult:
@@ -33,7 +35,14 @@ class BookDAO:
 
     @staticmethod
     def parse_books(books: list[dict[str, Any]]) -> list[dict[str, Any]]:
-        return [
-            {**{k: v for k, v in book.items() if k != "_id"}, "_id": str(book["_id"])}
-            for book in books
-        ]
+        return [BookDAO.parse_book(book) for book in books]
+
+    @staticmethod
+    def parse_book(book: dict[str, Any]) -> dict[str, Any]:
+        if not book:
+            return None
+
+        return {
+            **{k: v for k, v in book.items() if k != "_id"},
+            "_id": str(book["_id"]),
+        }

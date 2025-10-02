@@ -4,10 +4,10 @@ WORKDIR /home/app
 
 COPY . .
 
-RUN rm -rf node_modules && rm -rf yarn.lock
+RUN rm -rf node_modules && rm -rf package-lock.json
 
-RUN yarn install
+RUN npm install
 
 EXPOSE 3000
 
-CMD ["yarn", "run", "dev", "--host"]
+CMD ["npm", "run", "dev"]

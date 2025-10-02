@@ -1,5 +1,3 @@
-import subprocess
-import time
 from test.constants import BOOK_MOCK
 
 import pytest
@@ -62,27 +60,6 @@ def error_app() -> FlaskClient:
 
     app.register_blueprint(bp)
     return app.test_client()
-
-
-@pytest.fixture(scope="session")
-def mongo_test_db() -> None:
-    subprocess.run(
-        ["docker-compose", "-f", "dev.docker-compose.yml", "up", "-d", "bookstore-db"],
-        check=True,
-        capture_output=True,
-        text=True,
-    )
-
-    time.sleep(5)
-
-    yield
-
-    subprocess.run(
-        ["docker-compose", "-f", "dev.docker-compose.yml", "down"],
-        check=True,
-        capture_output=True,
-        text=True,
-    )
 
 
 @pytest.fixture(scope="session")
