@@ -1,4 +1,4 @@
-import { images } from "@src/assets/export";
+import assets from "@src/assets/export";
 
 import "@src/components/Header/Header.css";
 
@@ -7,7 +7,7 @@ export const Header = (): JSX.Element => {
     <header className="header-wrapper">
       <img
         className="header-wrapper__logo"
-        src={images.libraryLogo}
+        src={assets.images.libraryLogo}
         alt="logo"
       ></img>
     </header>

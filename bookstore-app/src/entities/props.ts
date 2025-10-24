@@ -1,3 +1,5 @@
+import { Book } from "@src/entities/app";
+
 export interface AddBookProps {
   books: Book[];
   genres: Book["genre"][];

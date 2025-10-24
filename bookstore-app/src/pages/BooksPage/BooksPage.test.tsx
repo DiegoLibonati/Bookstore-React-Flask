@@ -1,21 +1,21 @@
 import { screen, render } from "@testing-library/react";
 import user from "@testing-library/user-event";
 
-import { Book } from "@src/entities/entities";
+import { Book } from "@src/entities/app";
 
-import { Main } from "@src/components/Main/Main";
+import { BooksPage } from "@src/pages/BooksPage/BooksPage";
+
+import { booksApi } from "@src/api/books";
 
 import { createServer } from "@tests/msw/server";
 import { books, genres } from "@tests/jest.constants";
-
-import { apiRouteBooks } from "@src/api/route";
 
 type RenderComponent = {
   container: HTMLElement;
 };
 
 const renderComponent = (): RenderComponent => {
-  const { container } = render(<Main />);
+  const { container } = render(<BooksPage />);
 
   return {
     container: container,
@@ -29,7 +29,7 @@ const renderComponentWithBooks = async (): Promise<{
 }> => {
   const book = books[0];
   const genre = genres[0];
-  const { container } = render(<Main />);
+  const { container } = render(<BooksPage />);
 
   await screen.findByAltText(book.title);
 
@@ -40,11 +40,11 @@ const renderComponentWithBooks = async (): Promise<{
   };
 };
 
-describe("Main.tsx", () => {
+describe("BooksPage.tsx", () => {
   describe("When making API calls.", () => {
     createServer([
       {
-        path: `${apiRouteBooks}/`,
+        path: `${booksApi}/`,
         method: "get",
         res: () => {
           return {
@@ -54,7 +54,7 @@ describe("Main.tsx", () => {
         },
       },
       {
-        path: `${apiRouteBooks}/genres`,
+        path: `${booksApi}/genres`,
         method: "get",
         res: () => {
           return {
@@ -79,7 +79,7 @@ describe("Main.tsx", () => {
   describe("When all API calls are terminated.", () => {
     createServer([
       {
-        path: `${apiRouteBooks}/`,
+        path: `${booksApi}/`,
         method: "get",
         res: () => {
           return {
@@ -89,7 +89,7 @@ describe("Main.tsx", () => {
         },
       },
       {
-        path: `${apiRouteBooks}/genres`,
+        path: `${booksApi}/genres`,
         method: "get",
         res: () => {
           return {
@@ -139,8 +139,7 @@ describe("Main.tsx", () => {
 
       const { container } = await renderComponentWithBooks();
 
-      // eslint-disable-next-line
-      const bookElements = container.querySelectorAll(".book");
+      const bookElements = container.querySelectorAll<HTMLElement>(".book");
 
       const indexOfLastBook: number = currentPage * booksPerPage;
       const indexOfFirstBook: number = indexOfLastBook - booksPerPage;
@@ -155,8 +154,8 @@ describe("Main.tsx", () => {
     test("The paging component must be rendered.", async () => {
       const { container } = await renderComponentWithBooks();
 
-      // eslint-disable-next-line
-      const paginationContainer = container.querySelector(".pagination");
+      const paginationContainer =
+        container.querySelector<HTMLElement>(".pagination");
 
       expect(paginationContainer).toBeInTheDocument();
     });

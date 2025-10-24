@@ -2,7 +2,7 @@ import React from "react";
 
 import { FilterItemProps } from "@src/entities/props";
 
-import { useGetBooksByGenre } from "@src/hooks/useGetBooksByGenre";
+import { getBooksByGenre } from "@src/api/get/getBooksByGenre";
 
 import "@src/components/FilterItem/FilterItem.css";
 
@@ -10,10 +10,10 @@ export const FilterItem = ({
   genre,
   setBooks,
 }: FilterItemProps): JSX.Element => {
-  const { books } = useGetBooksByGenre(genre);
+  const handleFilter: React.MouseEventHandler<HTMLLIElement> = async () => {
+    const responseBooksByGenre = await getBooksByGenre(genre);
 
-  const handleFilter: React.MouseEventHandler<HTMLLIElement> = () => {
-    setBooks(books);
+    setBooks(responseBooksByGenre);
   };
 
   return (

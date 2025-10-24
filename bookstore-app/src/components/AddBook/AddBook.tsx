@@ -1,11 +1,12 @@
 import { BsPlusCircle } from "react-icons/bs";
 
-import { FormBook } from "@src/entities/entities";
+import { FormBook } from "@src/entities/forms";
 import { AddBookProps } from "@src/entities/props";
 
-import { postBook } from "@src/api/postBook";
 import { useForm } from "@src/hooks/useForm";
 import { useHide } from "@src/hooks/useHide";
+
+import { postBook } from "@src/api/post/postBook";
 
 import "@src/components/AddBook/AddBook.css";
 

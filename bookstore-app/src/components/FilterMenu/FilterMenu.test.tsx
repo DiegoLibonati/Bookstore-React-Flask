@@ -5,10 +5,10 @@ import { FilterMenuProps } from "@src/entities/props";
 
 import { FilterMenu } from "@src/components/FilterMenu/FilterMenu";
 
+import { booksApi } from "@src/api/books";
+
 import { createServer } from "@tests/msw/server";
 import { books } from "@tests/jest.constants";
-
-import { apiRouteBooks } from "@src/api/route";
 
 type RenderComponent = {
   container: HTMLElement;
@@ -38,7 +38,7 @@ describe("FilterMenu.tsx", () => {
   describe("General Tests.", () => {
     createServer([
       {
-        path: `${apiRouteBooks}/:genre`,
+        path: `${booksApi}/:genre`,
         method: "get",
         res: () => {
           return {

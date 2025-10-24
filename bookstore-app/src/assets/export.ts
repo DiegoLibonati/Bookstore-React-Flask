@@ -1,5 +1,7 @@
-import libraryLogo from "@src/assets/libreria.png";
+import libraryLogo from "@src/assets/images/libreria.png";
 
-export const images = {
-  libraryLogo: libraryLogo,
+const assets = {
+  images: { libraryLogo: libraryLogo },
 };
+
+export default assets;

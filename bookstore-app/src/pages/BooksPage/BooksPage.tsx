@@ -1,32 +1,59 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { Book as BookT } from "@src/entities/entities";
+import { Book as BookT } from "@src/entities/app";
 
 import { Book } from "@src/components/Book/Book";
 import { Pagination } from "@src/components/Pagination/Pagination";
 import { FilterMenu } from "@src/components/FilterMenu/FilterMenu";
 import { AddBook } from "@src/components/AddBook/AddBook";
 
-import { useGetBooks } from "@src/hooks/useGetBooks";
 import { useHide } from "@src/hooks/useHide";
-import { useGetGenres } from "@src/hooks/useGetGenres";
 
-import "@src/components/Main/Main.css";
-import "@src/components/Main/Filters.css";
-import "@src/components/Main/Books.css";
-import "@src/components/Main/Pagination.css";
+import { getBooks } from "@src/api/get/getBooks";
+import { getGenres } from "@src/api/get/getGenres";
 
-export const Main = (): JSX.Element => {
+import "@src/assets/css/Filters.css";
+import "@src/assets/css/Books.css";
+import "@src/assets/css/Pagination.css";
+
+import "@src/pages/BooksPage/BooksPage.css";
+
+export const BooksPage = (): JSX.Element => {
+  const [books, setBooks] = useState<BookT[]>([]);
+  const [genres, setGenres] = useState<BookT["genre"][]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [booksPerPage] = useState<number>(7);
 
-  const { loading, books, handleBooks, setBooks } = useGetBooks();
   const { hide, handleHide } = useHide();
-  const { genres, setGenres } = useGetGenres();
 
   const indexOfLastBook: number = currentPage * booksPerPage;
   const indexOfFirstBook: number = indexOfLastBook - booksPerPage;
   const currentBooks: BookT[] = books.slice(indexOfFirstBook, indexOfLastBook);
+
+  const handleGetBooks = async () => {
+    if (!loading) setLoading(true);
+
+    const responseBooks = await getBooks();
+
+    setBooks(responseBooks);
+    setLoading(false);
+  };
+
+  const handleGetGenres = async () => {
+    if (!loading) setLoading(true);
+
+    const responseGenres = await getGenres();
+
+    setGenres(responseGenres);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    handleGetBooks();
+    handleGetGenres();
+  }, []);
 
   if (loading) {
     return <h2>Loading</h2>;
@@ -46,7 +73,7 @@ export const Main = (): JSX.Element => {
 
           {hide ? (
             <ul className="filters__menus">
-              <li onClick={() => handleBooks()} className="filters__show-all">
+              <li onClick={handleGetBooks} className="filters__show-all">
                 Show All
               </li>
               {genres?.length > 0 && (

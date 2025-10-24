@@ -1,13 +1,14 @@
 import { Fragment } from "react/jsx-runtime";
 
 import { Header } from "@src/components/Header/Header";
-import { Main } from "@src/components/Main/Main";
+
+import { BooksPage } from "@src/pages/BooksPage/BooksPage";
 
 function App(): JSX.Element {
   return (
     <Fragment>
       <Header></Header>
-      <Main></Main>
+      <BooksPage></BooksPage>
     </Fragment>
   );
 }

@@ -5,10 +5,10 @@ import { AddBookProps } from "@src/entities/props";
 
 import { AddBook } from "@src/components/AddBook/AddBook";
 
+import { booksApi } from "@src/api/books";
+
 import { createServer } from "@tests/msw/server";
 import { bookDracula } from "@tests/jest.constants";
-
-import { apiRouteBooks } from "@src/api/route";
 
 type RenderComponent = {
   container: HTMLElement;
@@ -50,7 +50,7 @@ describe("AddBook.tsx", () => {
   describe("General Tests.", () => {
     createServer([
       {
-        path: `${apiRouteBooks}/`,
+        path: `${booksApi}/`,
         method: "post",
         res: () => {
           return {
