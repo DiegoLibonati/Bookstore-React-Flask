@@ -11,9 +11,10 @@ export const FilterItem = ({
   setBooks,
 }: FilterItemProps): JSX.Element => {
   const handleFilter: React.MouseEventHandler<HTMLLIElement> = async () => {
-    const responseBooksByGenre = await getBooksByGenre(genre);
+    const response = await getBooksByGenre(genre);
+    const books = response.data;
 
-    setBooks(responseBooksByGenre);
+    setBooks(books);
   };
 
   return (

@@ -1,8 +1,8 @@
-import { Book } from "@src/entities/app";
+import { GetGenresResponse } from "@src/entities/responses";
 
 import { booksApi } from "@src/api/books";
 
-export const getGenres = async (): Promise<Book["genre"][]> => {
+export const getGenres = async (): Promise<GetGenresResponse> => {
   try {
     const response = await fetch(`${booksApi}/genres`, {
       method: "GET",
@@ -16,10 +16,9 @@ export const getGenres = async (): Promise<Book["genre"][]> => {
       throw new Error("Error fetching genres.");
     }
 
-    const data = await response.json();
-    const genres = data.data as Book["genre"][];
+    const data: GetGenresResponse = await response.json();
 
-    return genres;
+    return data;
   } catch (e) {
     throw new Error(`Error fetching genres: ${e}.`);
   }

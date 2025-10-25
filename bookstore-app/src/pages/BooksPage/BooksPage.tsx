@@ -36,17 +36,19 @@ export const BooksPage = (): JSX.Element => {
     if (!loading) setLoading(true);
 
     const responseBooks = await getBooks();
+    const books = responseBooks.data;
 
-    setBooks(responseBooks);
+    setBooks(books);
     setLoading(false);
   };
 
   const handleGetGenres = async () => {
     if (!loading) setLoading(true);
 
-    const responseGenres = await getGenres();
+    const response = await getGenres();
+    const genres = response.data;
 
-    setGenres(responseGenres);
+    setGenres(genres);
     setLoading(false);
   };
 

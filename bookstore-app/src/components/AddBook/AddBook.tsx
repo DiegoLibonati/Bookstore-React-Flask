@@ -29,7 +29,8 @@ export const AddBook = ({
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    const newBook = await postBook(formState);
+    const response = await postBook(formState);
+    const newBook = response.data;
 
     if (newBook) {
       setBooks([...books, { ...newBook }]);

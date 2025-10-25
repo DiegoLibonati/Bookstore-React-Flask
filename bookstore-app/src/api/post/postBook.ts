@@ -1,9 +1,9 @@
-import { Book } from "@src/entities/app";
+import { PostBookResponse } from "@src/entities/responses";
 import { FormBook } from "@src/entities/forms";
 
 import { booksApi } from "@src/api/books";
 
-export const postBook = async (body: FormBook): Promise<Book> => {
+export const postBook = async (body: FormBook): Promise<PostBookResponse> => {
   try {
     const response = await fetch(`${booksApi}/`, {
       method: "POST",
@@ -18,10 +18,9 @@ export const postBook = async (body: FormBook): Promise<Book> => {
       throw new Error("Error adding book.");
     }
 
-    const data = await response.json();
-    const book = data.data as Book;
+    const data: PostBookResponse = await response.json();
 
-    return book;
+    return data;
   } catch (e) {
     throw new Error(`Error adding book: ${e}.`);
   }
