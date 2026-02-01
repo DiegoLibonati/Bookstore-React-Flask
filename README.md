@@ -145,9 +145,14 @@ AUTHOR: Diego Libonati
 
 1. `TZ`: Refers to the timezone setting for the container.
 2. `VITE_API_URL`: Refers to the base URL of the backend API the frontend consumes.
-3. `MONGO_URI`: Refers to the connection URI for the MongoDB database, including user, password, host, port, database name, and auth source.
-4. `HOST`: Refers to the network interface where the backend API listens (e.g., 0.0.0.0 to allow external connections).
-5. `PORT`: Refers to the port on which the backend API is exposed.
+3. `MONGO_HOST`: Specifies the hostname or address where the MongoDB server is located. In this case, `host.docker.internal` allows a Docker container to connect to the host machine.
+4. `MONGO_PORT`: Defines the port on which the MongoDB server is listening for connections. The default MongoDB port is `27017`.
+5. `MONGO_USER`: Indicates the username for authenticating with the MongoDB database.
+6. `MONGO_PASS`: Contains the password associated with the user specified in `MONGO_USER` for authentication.
+7. `MONGO_DB_NAME`: Specifies the name of the database to which the application will connect within the MongoDB server.
+8. `MONGO_AUTH_SOURCE`: Defines the database where the user credentials will be verified. Typically set to `admin` when the credentials were created in that database.
+9. `HOST`: Refers to the network interface where the backend API listens (e.g., 0.0.0.0 to allow external connections).
+10. `PORT`: Refers to the port on which the backend API is exposed.
 
 ```ts
 # Frontend Envs
@@ -158,7 +163,12 @@ VITE_API_URL=http://host.docker.internal:5050
 # Backend Envs
 TZ=America/Argentina/Buenos_Aires
 
-MONGO_URI=mongodb://admin:secret123@bookstore-db:27017/bookstore?authSource=admin
+MONGO_HOST=host.docker.internal
+MONGO_PORT=27017
+MONGO_USER=admin
+MONGO_PASS=secret123
+MONGO_DB_NAME=bookstore
+MONGO_AUTH_SOURCE=admin
 
 HOST=0.0.0.0
 PORT=5050

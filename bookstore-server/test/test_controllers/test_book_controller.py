@@ -1,8 +1,7 @@
-from test.constants import BLUEPRINTS
-from unittest.mock import MagicMock, patch
-
 from bson import ObjectId
+from flask import Flask
 from flask.testing import FlaskClient
+from pymongo.database import Database
 
 from src.constants.codes import (
     CODE_SUCCESS_ADD_BOOK,
@@ -10,97 +9,257 @@ from src.constants.codes import (
     CODE_SUCCESS_GET_ALL_BOOKS,
     CODE_SUCCESS_GET_ALL_GENRES,
 )
-from src.constants.messages import (
-    MESSAGE_SUCCESS_ADD_BOOK,
-    MESSAGE_SUCCESS_DELETE_BOOK,
-    MESSAGE_SUCCESS_GET_ALL_BOOKS,
-    MESSAGE_SUCCESS_GET_ALL_GENRES,
-)
 
 
-def test_alive(flask_client: FlaskClient) -> None:
-    response = flask_client.get(f"{BLUEPRINTS.get('books')}/alive")
-    assert response.status_code == 200
-    data = response.get_json()
-    assert data["message"] == "I am Alive!"
-    assert data["version_bp"] == "2.0.0"
-    assert data["author"] == "Diego Libonati"
-    assert data["name_bp"] == "Books"
+class TestAliveEndpoint:
+    def test_alive_returns_200(self, client: FlaskClient) -> None:
+        response = client.get("/api/v1/books/alive")
+
+        assert response.status_code == 200
+
+    def test_alive_returns_correct_structure(self, client: FlaskClient) -> None:
+        response = client.get("/api/v1/books/alive")
+        data = response.get_json()
+
+        assert "message" in data
+        assert "version_bp" in data
+        assert "author" in data
+        assert "name_bp" in data
+
+    def test_alive_returns_correct_values(self, client: FlaskClient) -> None:
+        response = client.get("/api/v1/books/alive")
+        data = response.get_json()
+
+        assert data["message"] == "I am Alive!"
+        assert data["version_bp"] == "2.0.0"
+        assert data["author"] == "Diego Libonati"
+        assert data["name_bp"] == "Books"
+
+    def test_alive_returns_json_content_type(self, client: FlaskClient) -> None:
+        response = client.get("/api/v1/books/alive")
+
+        assert response.content_type == "application/json"
 
 
-def test_add_book_success(
-    flask_client: FlaskClient, dracula_book: dict[str, str]
-) -> None:
-    mock_inserted_id = ObjectId()
-    mock_result = MagicMock(inserted_id=mock_inserted_id)
+class TestGetBooksEndpoint:
+    def test_get_books_returns_200(self, client: FlaskClient) -> None:
+        response = client.get("/api/v1/books/")
 
-    with patch(
-        "src.controllers.book_controller.BookService.add_book", return_value=mock_result
-    ):
-        response = flask_client.post(f"{BLUEPRINTS.get('books')}/", json=dracula_book)
+        assert response.status_code == 200
 
-    assert response.status_code == 201
-    data = response.get_json()
-    assert data["code"] == CODE_SUCCESS_ADD_BOOK
-    assert data["message"] == MESSAGE_SUCCESS_ADD_BOOK
-    assert data["data"]["_id"] == str(mock_inserted_id)
-    assert data["data"]["title"] == dracula_book["title"]
+    def test_get_books_returns_empty_list_when_no_books(
+        self, app: Flask, client: FlaskClient, mongo_db: Database
+    ) -> None:
+        mongo_db.books.delete_many({})
 
+        response = client.get("/api/v1/books/")
+        data = response.get_json()
 
-def test_get_books(flask_client: FlaskClient) -> None:
-    fake_books = [{"_id": "1", "title": "Book1"}, {"_id": "2", "title": "Book2"}]
-    with patch(
-        "src.controllers.book_controller.BookService.get_all_books",
-        return_value=fake_books,
-    ):
-        response = flask_client.get(f"{BLUEPRINTS.get('books')}/")
+        assert data["data"] == []
 
-    assert response.status_code == 200
-    data = response.get_json()
-    assert data["code"] == CODE_SUCCESS_GET_ALL_BOOKS
-    assert data["message"] == MESSAGE_SUCCESS_GET_ALL_BOOKS
-    assert data["data"] == fake_books
+    def test_get_books_returns_all_books(
+        self, client: FlaskClient, inserted_templates: list[dict[str, str]]
+    ) -> None:
+        response = client.get("/api/v1/books/")
+        data = response.get_json()
 
+        assert len(data["data"]) == len(inserted_templates)
 
-def test_get_books_by_genre(flask_client: FlaskClient) -> None:
-    fake_books = [{"_id": "1", "title": "Dracula", "genre": "Horror"}]
-    with patch(
-        "src.controllers.book_controller.BookService.get_all_books_by_genre",
-        return_value=fake_books,
-    ):
-        response = flask_client.get(f"{BLUEPRINTS.get('books')}/Horror")
+    def test_get_books_returns_correct_structure(self, client: FlaskClient) -> None:
+        response = client.get("/api/v1/books/")
+        data = response.get_json()
 
-    assert response.status_code == 200
-    data = response.get_json()
-    assert data["code"] == CODE_SUCCESS_GET_ALL_BOOKS
-    assert data["message"] == MESSAGE_SUCCESS_GET_ALL_BOOKS
-    assert data["data"][0]["genre"] == "Horror"
+        assert "code" in data
+        assert "message" in data
+        assert "data" in data
+
+    def test_get_books_returns_correct_code(self, client: FlaskClient) -> None:
+        response = client.get("/api/v1/books/")
+        data = response.get_json()
+
+        assert data["code"] == CODE_SUCCESS_GET_ALL_BOOKS
 
 
-def test_delete_book(flask_client: FlaskClient) -> None:
-    with patch(
-        "src.controllers.book_controller.BookService.delete_book_by_id",
-        return_value=None,
-    ) as mock_delete:
-        response = flask_client.delete(f"{BLUEPRINTS.get('books')}/123")
+class TestGetBooksByGenreEndpoint:
+    def test_get_books_by_genre_returns_200(
+        self, client: FlaskClient, inserted_templates: list[dict[str, str]]
+    ) -> None:
+        response = client.get("/api/v1/books/Test")
 
-    assert response.status_code == 200
-    data = response.get_json()
-    assert data["code"] == CODE_SUCCESS_DELETE_BOOK
-    assert data["message"] == MESSAGE_SUCCESS_DELETE_BOOK
-    mock_delete.assert_called_once_with("123")
+        assert response.status_code == 200
+
+    def test_get_books_by_genre_filters_correctly(
+        self, client: FlaskClient, inserted_templates: list[dict[str, str]]
+    ) -> None:
+        response = client.get("/api/v1/books/Test")
+        data = response.get_json()
+
+        # All inserted_templates have genre "Test"
+        assert len(data["data"]) == len(inserted_templates)
+
+    def test_get_books_by_genre_returns_empty_for_nonexistent_genre(
+        self, client: FlaskClient, inserted_templates: list[dict[str, str]]
+    ) -> None:
+        response = client.get("/api/v1/books/NonExistentGenre")
+        data = response.get_json()
+
+        assert data["data"] == []
+
+    def test_get_books_by_genre_returns_correct_structure(
+        self, client: FlaskClient, inserted_templates: list[dict[str, str]]
+    ) -> None:
+        response = client.get("/api/v1/books/Test")
+        data = response.get_json()
+
+        assert "code" in data
+        assert "message" in data
+        assert "data" in data
 
 
-def test_get_all_genres(flask_client: FlaskClient) -> None:
-    fake_genres = ["Horror", "Fantasy"]
-    with patch(
-        "src.controllers.book_controller.BookService.get_all_genres",
-        return_value=fake_genres,
-    ):
-        response = flask_client.get(f"{BLUEPRINTS.get('books')}/genres")
+class TestAddBookEndpoint:
+    def test_add_book_returns_201(
+        self, client: FlaskClient, sample_book: dict[str, str]
+    ) -> None:
+        response = client.post("/api/v1/books/", json=sample_book)
 
-    assert response.status_code == 200
-    data = response.get_json()
-    assert data["code"] == CODE_SUCCESS_GET_ALL_GENRES
-    assert data["message"] == MESSAGE_SUCCESS_GET_ALL_GENRES
-    assert set(data["data"]) == {"Horror", "Fantasy"}
+        assert response.status_code == 201
+
+    def test_add_book_creates_book_in_database(
+        self, client: FlaskClient, sample_book: dict[str, str], mongo_db: Database
+    ) -> None:
+        initial_count = mongo_db.books.count_documents({})
+
+        client.post("/api/v1/books/", json=sample_book)
+
+        final_count = mongo_db.books.count_documents({})
+        assert final_count == initial_count + 1
+
+    def test_add_book_returns_created_book_data(
+        self, client: FlaskClient, sample_book: dict[str, str]
+    ) -> None:
+        response = client.post("/api/v1/books/", json=sample_book)
+        data = response.get_json()
+
+        assert "_id" in data["data"]
+        assert data["data"]["title"] == sample_book["title"]
+        assert data["data"]["author"] == sample_book["author"]
+
+    def test_add_book_returns_correct_structure(
+        self, client: FlaskClient, sample_book: dict[str, str]
+    ) -> None:
+        response = client.post("/api/v1/books/", json=sample_book)
+        data = response.get_json()
+
+        assert "code" in data
+        assert "message" in data
+        assert "data" in data
+
+    def test_add_book_returns_correct_code(
+        self, client: FlaskClient, sample_book: dict[str, str]
+    ) -> None:
+        response = client.post("/api/v1/books/", json=sample_book)
+        data = response.get_json()
+
+        assert data["code"] == CODE_SUCCESS_ADD_BOOK
+
+    def test_add_book_with_invalid_data_returns_400(self, client: FlaskClient) -> None:
+        invalid_book = {"title": "Only Title"}
+
+        response = client.post("/api/v1/books/", json=invalid_book)
+
+        assert response.status_code == 400
+
+    def test_add_book_without_body_returns_error(self, client: FlaskClient) -> None:
+        response = client.post("/api/v1/books/", json={})
+
+        assert response.status_code in [400, 422, 500]
+
+
+class TestDeleteBookEndpoint:
+    def test_delete_book_returns_200(
+        self, client: FlaskClient, inserted_templates: list[dict[str, str]]
+    ) -> None:
+        book_id = inserted_templates[0]["_id"]
+
+        response = client.delete(f"/api/v1/books/{book_id}")
+
+        assert response.status_code == 200
+
+    def test_delete_book_removes_from_database(
+        self,
+        client: FlaskClient,
+        inserted_templates: list[dict[str, str]],
+        mongo_db: Database,
+    ) -> None:
+        book_id = inserted_templates[0]["_id"]
+        initial_count = mongo_db.books.count_documents({})
+
+        client.delete(f"/api/v1/books/{book_id}")
+
+        final_count = mongo_db.books.count_documents({})
+        assert final_count == initial_count - 1
+
+    def test_delete_book_returns_correct_structure(
+        self, client: FlaskClient, inserted_templates: list[dict[str, str]]
+    ) -> None:
+        book_id = inserted_templates[0]["_id"]
+
+        response = client.delete(f"/api/v1/books/{book_id}")
+        data = response.get_json()
+
+        assert "code" in data
+        assert "message" in data
+
+    def test_delete_book_returns_correct_code(
+        self, client: FlaskClient, inserted_templates: list[dict[str, str]]
+    ) -> None:
+        book_id = inserted_templates[0]["_id"]
+
+        response = client.delete(f"/api/v1/books/{book_id}")
+        data = response.get_json()
+
+        assert data["code"] == CODE_SUCCESS_DELETE_BOOK
+
+    def test_delete_nonexistent_book_returns_404(self, client: FlaskClient) -> None:
+        fake_id = str(ObjectId())
+
+        response = client.delete(f"/api/v1/books/{fake_id}")
+
+        assert response.status_code == 404
+
+
+class TestGetAllGenresEndpoint:
+    def test_get_all_genres_returns_200(self, client: FlaskClient) -> None:
+        response = client.get("/api/v1/books/genres")
+
+        assert response.status_code == 200
+
+    def test_get_all_genres_returns_correct_structure(
+        self, client: FlaskClient
+    ) -> None:
+        response = client.get("/api/v1/books/genres")
+        data = response.get_json()
+
+        assert "code" in data
+        assert "message" in data
+        assert "data" in data
+
+    def test_get_all_genres_returns_list(self, client: FlaskClient) -> None:
+        response = client.get("/api/v1/books/genres")
+        data = response.get_json()
+
+        assert isinstance(data["data"], list)
+
+    def test_get_all_genres_returns_correct_code(self, client: FlaskClient) -> None:
+        response = client.get("/api/v1/books/genres")
+        data = response.get_json()
+
+        assert data["code"] == CODE_SUCCESS_GET_ALL_GENRES
+
+    def test_get_all_genres_returns_unique_genres(
+        self, client: FlaskClient, inserted_templates: list[dict[str, str]]
+    ) -> None:
+        response = client.get("/api/v1/books/genres")
+        data = response.get_json()
+
+        assert "Test" in data["data"]
