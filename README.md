@@ -143,7 +143,7 @@ https://github.com/DiegoLibonati/Bookstore-Api-Rest-Page/assets/99032604/b9059c8
 
 ```ts
 APP VERSION: 0.0.1
-README UPDATED: 28/09/2025
+README UPDATED: 01/02/2026
 AUTHOR: Diego Libonati
 ```
 
