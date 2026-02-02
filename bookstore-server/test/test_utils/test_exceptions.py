@@ -5,6 +5,7 @@ from src.utils.exceptions import (
     BaseAPIError,
     BusinessAPIError,
     ConflictAPIError,
+    InternalAPIError,
     NotFoundAPIError,
     ValidationAPIError,
 )
@@ -73,22 +74,10 @@ class TestSpecificErrors:
         assert error.status_code == 422
 
     def test_internal_error_status_code(self) -> None:
-        from src.utils.exceptions import InternalAPIError
-
         error = InternalAPIError(code="INT", message="Internal")
         assert error.status_code == 500
 
     def test_all_errors_inherit_from_base(self) -> None:
-        from src.utils.exceptions import (
-            AuthenticationAPIError,
-            BaseAPIError,
-            BusinessAPIError,
-            ConflictAPIError,
-            InternalAPIError,
-            NotFoundAPIError,
-            ValidationAPIError,
-        )
-
         error_classes = [
             ValidationAPIError,
             AuthenticationAPIError,

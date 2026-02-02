@@ -132,14 +132,14 @@ class TestBookServiceGetAllBooks:
         assert result == []
 
     def test_get_all_books_returns_all(
-        self, app: Flask, inserted_templates: list[dict[str, str]]
+        self, app: Flask, inserted_books: list[dict[str, str]]
     ) -> None:
         result = BookService.get_all_books()
 
-        assert len(result) == len(inserted_templates)
+        assert len(result) == len(inserted_books)
 
     def test_get_all_books_returns_parsed_documents(
-        self, app: Flask, inserted_templates: list[dict[str, str]]
+        self, app: Flask, inserted_books: list[dict[str, str]]
     ) -> None:
         result = BookService.get_all_books()
 
@@ -149,21 +149,21 @@ class TestBookServiceGetAllBooks:
 
 class TestBookServiceGetAllBooksByGenre:
     def test_get_all_books_by_genre_returns_matching(
-        self, app: Flask, inserted_templates: list[dict[str, str]]
+        self, app: Flask, inserted_books: list[dict[str, str]]
     ) -> None:
         result = BookService.get_all_books_by_genre("Test")
 
-        assert len(result) == len(inserted_templates)
+        assert len(result) == len(inserted_books)
 
     def test_get_all_books_by_genre_returns_empty_for_nonexistent(
-        self, app: Flask, inserted_templates: list[dict[str, str]]
+        self, app: Flask, inserted_books: list[dict[str, str]]
     ) -> None:
         result = BookService.get_all_books_by_genre("NonExistentGenre")
 
         assert result == []
 
     def test_get_all_books_by_genre_is_case_sensitive(
-        self, app: Flask, inserted_templates: list[dict[str, str]]
+        self, app: Flask, inserted_books: list[dict[str, str]]
     ) -> None:
         result_lowercase = BookService.get_all_books_by_genre("test")
         result_uppercase = BookService.get_all_books_by_genre("TEST")
@@ -183,7 +183,7 @@ class TestBookServiceGetAllGenres:
         assert result == []
 
     def test_get_all_genres_returns_unique_genres(
-        self, app: Flask, inserted_templates: list[dict[str, str]]
+        self, app: Flask, inserted_books: list[dict[str, str]]
     ) -> None:
         result = BookService.get_all_genres()
 
@@ -191,7 +191,7 @@ class TestBookServiceGetAllGenres:
         assert len(result) == 1
 
     def test_get_all_genres_returns_list(
-        self, app: Flask, inserted_templates: list[dict[str, str]]
+        self, app: Flask, inserted_books: list[dict[str, str]]
     ) -> None:
         result = BookService.get_all_genres()
 
@@ -243,9 +243,9 @@ class TestBookServiceGetAllGenres:
 
 class TestBookServiceDeleteBookById:
     def test_delete_book_removes_document(
-        self, app: Flask, inserted_templates: list[dict[str, str]], mongo_db: Database
+        self, app: Flask, inserted_books: list[dict[str, str]], mongo_db: Database
     ) -> None:
-        book_id = inserted_templates[0]["_id"]
+        book_id = inserted_books[0]["_id"]
         initial_count = mongo_db.books.count_documents({})
 
         BookService.delete_book_by_id(book_id)
@@ -254,9 +254,9 @@ class TestBookServiceDeleteBookById:
         assert final_count == initial_count - 1
 
     def test_delete_book_returns_delete_result(
-        self, app: Flask, inserted_templates: list[dict[str, str]]
+        self, app: Flask, inserted_books: list[dict[str, str]]
     ) -> None:
-        book_id = inserted_templates[0]["_id"]
+        book_id = inserted_books[0]["_id"]
 
         result = BookService.delete_book_by_id(book_id)
 
@@ -273,9 +273,9 @@ class TestBookServiceDeleteBookById:
         assert exc_info.value.code == CODE_NOT_FOUND_BOOK
 
     def test_delete_book_only_removes_one(
-        self, app: Flask, inserted_templates: list[dict[str, str]], mongo_db: Database
+        self, app: Flask, inserted_books: list[dict[str, str]], mongo_db: Database
     ) -> None:
-        book_id = inserted_templates[0]["_id"]
+        book_id = inserted_books[0]["_id"]
         initial_count = mongo_db.books.count_documents({})
 
         BookService.delete_book_by_id(book_id)

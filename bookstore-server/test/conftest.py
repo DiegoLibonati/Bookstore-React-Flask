@@ -187,7 +187,7 @@ def sample_books() -> list[dict[str, str]]:
 
 
 @pytest.fixture
-def inserted_templates(
+def inserted_books(
     mongo_db: Database,
     sample_books: list[dict[str, str]],
 ) -> list[dict[str, str]]:

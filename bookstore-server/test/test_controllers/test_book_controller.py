@@ -58,12 +58,12 @@ class TestGetBooksEndpoint:
         assert data["data"] == []
 
     def test_get_books_returns_all_books(
-        self, client: FlaskClient, inserted_templates: list[dict[str, str]]
+        self, client: FlaskClient, inserted_books: list[dict[str, str]]
     ) -> None:
         response = client.get("/api/v1/books/")
         data = response.get_json()
 
-        assert len(data["data"]) == len(inserted_templates)
+        assert len(data["data"]) == len(inserted_books)
 
     def test_get_books_returns_correct_structure(self, client: FlaskClient) -> None:
         response = client.get("/api/v1/books/")
@@ -82,23 +82,23 @@ class TestGetBooksEndpoint:
 
 class TestGetBooksByGenreEndpoint:
     def test_get_books_by_genre_returns_200(
-        self, client: FlaskClient, inserted_templates: list[dict[str, str]]
+        self, client: FlaskClient, inserted_books: list[dict[str, str]]
     ) -> None:
         response = client.get("/api/v1/books/Test")
 
         assert response.status_code == 200
 
     def test_get_books_by_genre_filters_correctly(
-        self, client: FlaskClient, inserted_templates: list[dict[str, str]]
+        self, client: FlaskClient, inserted_books: list[dict[str, str]]
     ) -> None:
         response = client.get("/api/v1/books/Test")
         data = response.get_json()
 
-        # All inserted_templates have genre "Test"
-        assert len(data["data"]) == len(inserted_templates)
+        # All inserted_books have genre "Test"
+        assert len(data["data"]) == len(inserted_books)
 
     def test_get_books_by_genre_returns_empty_for_nonexistent_genre(
-        self, client: FlaskClient, inserted_templates: list[dict[str, str]]
+        self, client: FlaskClient, inserted_books: list[dict[str, str]]
     ) -> None:
         response = client.get("/api/v1/books/NonExistentGenre")
         data = response.get_json()
@@ -106,7 +106,7 @@ class TestGetBooksByGenreEndpoint:
         assert data["data"] == []
 
     def test_get_books_by_genre_returns_correct_structure(
-        self, client: FlaskClient, inserted_templates: list[dict[str, str]]
+        self, client: FlaskClient, inserted_books: list[dict[str, str]]
     ) -> None:
         response = client.get("/api/v1/books/Test")
         data = response.get_json()
@@ -177,9 +177,9 @@ class TestAddBookEndpoint:
 
 class TestDeleteBookEndpoint:
     def test_delete_book_returns_200(
-        self, client: FlaskClient, inserted_templates: list[dict[str, str]]
+        self, client: FlaskClient, inserted_books: list[dict[str, str]]
     ) -> None:
-        book_id = inserted_templates[0]["_id"]
+        book_id = inserted_books[0]["_id"]
 
         response = client.delete(f"/api/v1/books/{book_id}")
 
@@ -188,10 +188,10 @@ class TestDeleteBookEndpoint:
     def test_delete_book_removes_from_database(
         self,
         client: FlaskClient,
-        inserted_templates: list[dict[str, str]],
+        inserted_books: list[dict[str, str]],
         mongo_db: Database,
     ) -> None:
-        book_id = inserted_templates[0]["_id"]
+        book_id = inserted_books[0]["_id"]
         initial_count = mongo_db.books.count_documents({})
 
         client.delete(f"/api/v1/books/{book_id}")
@@ -200,9 +200,9 @@ class TestDeleteBookEndpoint:
         assert final_count == initial_count - 1
 
     def test_delete_book_returns_correct_structure(
-        self, client: FlaskClient, inserted_templates: list[dict[str, str]]
+        self, client: FlaskClient, inserted_books: list[dict[str, str]]
     ) -> None:
-        book_id = inserted_templates[0]["_id"]
+        book_id = inserted_books[0]["_id"]
 
         response = client.delete(f"/api/v1/books/{book_id}")
         data = response.get_json()
@@ -211,9 +211,9 @@ class TestDeleteBookEndpoint:
         assert "message" in data
 
     def test_delete_book_returns_correct_code(
-        self, client: FlaskClient, inserted_templates: list[dict[str, str]]
+        self, client: FlaskClient, inserted_books: list[dict[str, str]]
     ) -> None:
-        book_id = inserted_templates[0]["_id"]
+        book_id = inserted_books[0]["_id"]
 
         response = client.delete(f"/api/v1/books/{book_id}")
         data = response.get_json()
@@ -257,7 +257,7 @@ class TestGetAllGenresEndpoint:
         assert data["code"] == CODE_SUCCESS_GET_ALL_GENRES
 
     def test_get_all_genres_returns_unique_genres(
-        self, client: FlaskClient, inserted_templates: list[dict[str, str]]
+        self, client: FlaskClient, inserted_books: list[dict[str, str]]
     ) -> None:
         response = client.get("/api/v1/books/genres")
         data = response.get_json()

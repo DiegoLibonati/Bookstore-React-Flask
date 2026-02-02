@@ -53,14 +53,14 @@ class TestBookDAOFind:
         assert result == []
 
     def test_find_returns_all_documents(
-        self, app: Flask, inserted_templates: list[dict[str, str]]
+        self, app: Flask, inserted_books: list[dict[str, str]]
     ) -> None:
         result = BookDAO.find()
 
-        assert len(result) == len(inserted_templates)
+        assert len(result) == len(inserted_books)
 
     def test_find_returns_parsed_documents(
-        self, app: Flask, inserted_templates: list[dict[str, str]]
+        self, app: Flask, inserted_books: list[dict[str, str]]
     ) -> None:
         result = BookDAO.find()
 
@@ -70,28 +70,28 @@ class TestBookDAOFind:
 
 class TestBookDAOFindByGenre:
     def test_find_by_genre_returns_matching_documents(
-        self, app: Flask, inserted_templates: list[dict[str, str]]
+        self, app: Flask, inserted_books: list[dict[str, str]]
     ) -> None:
         result = BookDAO.find_by_genre("Test")
 
-        assert len(result) == len(inserted_templates)
+        assert len(result) == len(inserted_books)
 
     def test_find_by_genre_returns_empty_for_nonexistent_genre(
-        self, app: Flask, inserted_templates: list[dict[str, str]]
+        self, app: Flask, inserted_books: list[dict[str, str]]
     ) -> None:
         result = BookDAO.find_by_genre("NonExistentGenre")
 
         assert result == []
 
     def test_find_by_genre_returns_parsed_documents(
-        self, app: Flask, inserted_templates: list[dict[str, str]]
+        self, app: Flask, inserted_books: list[dict[str, str]]
     ) -> None:
         result = BookDAO.find_by_genre("Test")
 
         assert all(isinstance(doc["_id"], str) for doc in result)
 
     def test_find_by_genre_is_case_sensitive(
-        self, app: Flask, inserted_templates: list[dict[str, str]]
+        self, app: Flask, inserted_books: list[dict[str, str]]
     ) -> None:
         result_lowercase = BookDAO.find_by_genre("test")
         result_uppercase = BookDAO.find_by_genre("TEST")
@@ -102,15 +102,15 @@ class TestBookDAOFindByGenre:
 
 class TestBookDAOFindOneById:
     def test_find_one_by_id_returns_document(
-        self, app: Flask, inserted_templates: list[dict[str, str]]
+        self, app: Flask, inserted_books: list[dict[str, str]]
     ) -> None:
-        book_id = inserted_templates[0]["_id"]
+        book_id = inserted_books[0]["_id"]
 
         result = BookDAO.find_one_by_id(book_id)
 
         assert result is not None
         assert result["_id"] == book_id
-        assert result["title"] == inserted_templates[0]["title"]
+        assert result["title"] == inserted_books[0]["title"]
 
     def test_find_one_by_id_returns_none_for_nonexistent(
         self, app: Flask, mongo_db: Database
@@ -123,9 +123,9 @@ class TestBookDAOFindOneById:
         assert result is None
 
     def test_find_one_by_id_accepts_string_id(
-        self, app: Flask, inserted_templates: list[dict[str, str]]
+        self, app: Flask, inserted_books: list[dict[str, str]]
     ) -> None:
-        book_id = inserted_templates[0]["_id"]
+        book_id = inserted_books[0]["_id"]
 
         result = BookDAO.find_one_by_id(book_id)
 
@@ -135,9 +135,9 @@ class TestBookDAOFindOneById:
 
 class TestBookDAOFindOneByTitleAndAuthor:
     def test_find_one_by_title_and_author_returns_document(
-        self, app: Flask, inserted_templates: list[dict[str, str]]
+        self, app: Flask, inserted_books: list[dict[str, str]]
     ) -> None:
-        book = inserted_templates[0]
+        book = inserted_books[0]
 
         result = BookDAO.find_one_by_title_and_author(book["title"], book["author"])
 
@@ -157,9 +157,9 @@ class TestBookDAOFindOneByTitleAndAuthor:
         assert result is None
 
     def test_find_one_by_title_and_author_requires_both_match(
-        self, app: Flask, inserted_templates: list[dict[str, str]]
+        self, app: Flask, inserted_books: list[dict[str, str]]
     ) -> None:
-        book = inserted_templates[0]
+        book = inserted_books[0]
 
         result = BookDAO.find_one_by_title_and_author(book["title"], "Wrong Author")
         assert result is None
@@ -170,9 +170,9 @@ class TestBookDAOFindOneByTitleAndAuthor:
 
 class TestBookDAODelete:
     def test_delete_one_by_id_removes_document(
-        self, app: Flask, inserted_templates: list[dict[str, str]], mongo_db: Database
+        self, app: Flask, inserted_books: list[dict[str, str]], mongo_db: Database
     ) -> None:
-        book_id = inserted_templates[0]["_id"]
+        book_id = inserted_books[0]["_id"]
         initial_count = mongo_db.books.count_documents({})
 
         result = BookDAO.delete_one_by_id(book_id)
@@ -181,9 +181,9 @@ class TestBookDAODelete:
         assert mongo_db.books.count_documents({}) == initial_count - 1
 
     def test_delete_one_by_id_returns_delete_result(
-        self, app: Flask, inserted_templates: list[dict[str, str]]
+        self, app: Flask, inserted_books: list[dict[str, str]]
     ) -> None:
-        book_id = inserted_templates[0]["_id"]
+        book_id = inserted_books[0]["_id"]
 
         result = BookDAO.delete_one_by_id(book_id)
 
@@ -201,9 +201,9 @@ class TestBookDAODelete:
         assert result.deleted_count == 0
 
     def test_delete_one_by_id_only_removes_one(
-        self, app: Flask, inserted_templates: list[dict[str, str]], mongo_db: Database
+        self, app: Flask, inserted_books: list[dict[str, str]], mongo_db: Database
     ) -> None:
-        book_id = inserted_templates[0]["_id"]
+        book_id = inserted_books[0]["_id"]
         initial_count = mongo_db.books.count_documents({})
 
         BookDAO.delete_one_by_id(book_id)
