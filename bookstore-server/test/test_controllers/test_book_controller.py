@@ -94,7 +94,6 @@ class TestGetBooksByGenreEndpoint:
         response = client.get("/api/v1/books/Test")
         data = response.get_json()
 
-        # All inserted_books have genre "Test"
         assert len(data["data"]) == len(inserted_books)
 
     def test_get_books_by_genre_returns_empty_for_nonexistent_genre(
