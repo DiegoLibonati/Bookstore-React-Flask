@@ -3,7 +3,7 @@ from typing import Any
 from bson import ObjectId
 from pymongo.results import DeleteResult, InsertOneResult
 
-from config.mongo_config import mongo
+from src.configs.mongo_config import mongo
 
 
 class BookDAO:
@@ -25,9 +25,7 @@ class BookDAO:
 
     @staticmethod
     def find_one_by_title_and_author(title: str, author: str) -> dict[str, Any] | None:
-        return BookDAO.parse_book(
-            mongo.db.books.find_one({"title": title, "author": author})
-        )
+        return BookDAO.parse_book(mongo.db.books.find_one({"title": title, "author": author}))
 
     @staticmethod
     def delete_one_by_id(_id: ObjectId) -> DeleteResult:

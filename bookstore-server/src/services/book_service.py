@@ -44,8 +44,6 @@ class BookService:
         existing = BookDAO.find_one_by_id(_id)
 
         if not existing:
-            raise NotFoundAPIError(
-                code=CODE_NOT_FOUND_BOOK, message=MESSAGE_NOT_FOUND_BOOK
-            )
+            raise NotFoundAPIError(code=CODE_NOT_FOUND_BOOK, message=MESSAGE_NOT_FOUND_BOOK)
 
         return BookDAO.delete_one_by_id(_id)

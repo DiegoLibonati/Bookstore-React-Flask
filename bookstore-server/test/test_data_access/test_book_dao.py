@@ -7,9 +7,7 @@ from src.data_access.book_dao import BookDAO
 
 
 class TestBookDAOInsert:
-    def test_insert_one_creates_document(
-        self, app: Flask, mongo_db: Database, sample_book: dict[str, str]
-    ) -> None:
+    def test_insert_one_creates_document(self, app: Flask, mongo_db: Database, sample_book: dict[str, str]) -> None:
         mongo_db.books.delete_many({})
 
         result = BookDAO.insert_one(sample_book.copy())
@@ -20,9 +18,7 @@ class TestBookDAOInsert:
         assert doc is not None
         assert doc["title"] == sample_book["title"]
 
-    def test_insert_one_returns_insert_result(
-        self, app: Flask, mongo_db: Database, sample_book: dict[str, str]
-    ) -> None:
+    def test_insert_one_returns_insert_result(self, app: Flask, mongo_db: Database, sample_book: dict[str, str]) -> None:
         mongo_db.books.delete_many({})
 
         result = BookDAO.insert_one(sample_book.copy())
@@ -30,9 +26,7 @@ class TestBookDAOInsert:
         assert isinstance(result, InsertOneResult)
         assert result.acknowledged is True
 
-    def test_insert_multiple_documents(
-        self, app: Flask, mongo_db: Database, sample_books: list[dict[str, str]]
-    ) -> None:
+    def test_insert_multiple_documents(self, app: Flask, mongo_db: Database, sample_books: list[dict[str, str]]) -> None:
         mongo_db.books.delete_many({})
 
         for book in sample_books:
@@ -43,25 +37,19 @@ class TestBookDAOInsert:
 
 
 class TestBookDAOFind:
-    def test_find_returns_empty_list_when_no_documents(
-        self, app: Flask, mongo_db: Database
-    ) -> None:
+    def test_find_returns_empty_list_when_no_documents(self, app: Flask, mongo_db: Database) -> None:
         mongo_db.books.delete_many({})
 
         result = BookDAO.find()
 
         assert result == []
 
-    def test_find_returns_all_documents(
-        self, app: Flask, inserted_books: list[dict[str, str]]
-    ) -> None:
+    def test_find_returns_all_documents(self, app: Flask, inserted_books: list[dict[str, str]]) -> None:
         result = BookDAO.find()
 
         assert len(result) == len(inserted_books)
 
-    def test_find_returns_parsed_documents(
-        self, app: Flask, inserted_books: list[dict[str, str]]
-    ) -> None:
+    def test_find_returns_parsed_documents(self, app: Flask, inserted_books: list[dict[str, str]]) -> None:
         result = BookDAO.find()
 
         assert len(result) > 0
@@ -69,30 +57,22 @@ class TestBookDAOFind:
 
 
 class TestBookDAOFindByGenre:
-    def test_find_by_genre_returns_matching_documents(
-        self, app: Flask, inserted_books: list[dict[str, str]]
-    ) -> None:
+    def test_find_by_genre_returns_matching_documents(self, app: Flask, inserted_books: list[dict[str, str]]) -> None:
         result = BookDAO.find_by_genre("Test")
 
         assert len(result) == len(inserted_books)
 
-    def test_find_by_genre_returns_empty_for_nonexistent_genre(
-        self, app: Flask, inserted_books: list[dict[str, str]]
-    ) -> None:
+    def test_find_by_genre_returns_empty_for_nonexistent_genre(self, app: Flask, inserted_books: list[dict[str, str]]) -> None:
         result = BookDAO.find_by_genre("NonExistentGenre")
 
         assert result == []
 
-    def test_find_by_genre_returns_parsed_documents(
-        self, app: Flask, inserted_books: list[dict[str, str]]
-    ) -> None:
+    def test_find_by_genre_returns_parsed_documents(self, app: Flask, inserted_books: list[dict[str, str]]) -> None:
         result = BookDAO.find_by_genre("Test")
 
         assert all(isinstance(doc["_id"], str) for doc in result)
 
-    def test_find_by_genre_is_case_sensitive(
-        self, app: Flask, inserted_books: list[dict[str, str]]
-    ) -> None:
+    def test_find_by_genre_is_case_sensitive(self, app: Flask, inserted_books: list[dict[str, str]]) -> None:
         result_lowercase = BookDAO.find_by_genre("test")
         result_uppercase = BookDAO.find_by_genre("TEST")
 
@@ -101,9 +81,7 @@ class TestBookDAOFindByGenre:
 
 
 class TestBookDAOFindOneById:
-    def test_find_one_by_id_returns_document(
-        self, app: Flask, inserted_books: list[dict[str, str]]
-    ) -> None:
+    def test_find_one_by_id_returns_document(self, app: Flask, inserted_books: list[dict[str, str]]) -> None:
         book_id = inserted_books[0]["_id"]
 
         result = BookDAO.find_one_by_id(book_id)
@@ -112,9 +90,7 @@ class TestBookDAOFindOneById:
         assert result["_id"] == book_id
         assert result["title"] == inserted_books[0]["title"]
 
-    def test_find_one_by_id_returns_none_for_nonexistent(
-        self, app: Flask, mongo_db: Database
-    ) -> None:
+    def test_find_one_by_id_returns_none_for_nonexistent(self, app: Flask, mongo_db: Database) -> None:
         mongo_db.books.delete_many({})
         fake_id = str(ObjectId())
 
@@ -122,9 +98,7 @@ class TestBookDAOFindOneById:
 
         assert result is None
 
-    def test_find_one_by_id_accepts_string_id(
-        self, app: Flask, inserted_books: list[dict[str, str]]
-    ) -> None:
+    def test_find_one_by_id_accepts_string_id(self, app: Flask, inserted_books: list[dict[str, str]]) -> None:
         book_id = inserted_books[0]["_id"]
 
         result = BookDAO.find_one_by_id(book_id)
@@ -134,9 +108,7 @@ class TestBookDAOFindOneById:
 
 
 class TestBookDAOFindOneByTitleAndAuthor:
-    def test_find_one_by_title_and_author_returns_document(
-        self, app: Flask, inserted_books: list[dict[str, str]]
-    ) -> None:
+    def test_find_one_by_title_and_author_returns_document(self, app: Flask, inserted_books: list[dict[str, str]]) -> None:
         book = inserted_books[0]
 
         result = BookDAO.find_one_by_title_and_author(book["title"], book["author"])
@@ -145,20 +117,14 @@ class TestBookDAOFindOneByTitleAndAuthor:
         assert result["title"] == book["title"]
         assert result["author"] == book["author"]
 
-    def test_find_one_by_title_and_author_returns_none_for_nonexistent(
-        self, app: Flask, mongo_db: Database
-    ) -> None:
+    def test_find_one_by_title_and_author_returns_none_for_nonexistent(self, app: Flask, mongo_db: Database) -> None:
         mongo_db.books.delete_many({})
 
-        result = BookDAO.find_one_by_title_and_author(
-            "Nonexistent Title", "Nonexistent Author"
-        )
+        result = BookDAO.find_one_by_title_and_author("Nonexistent Title", "Nonexistent Author")
 
         assert result is None
 
-    def test_find_one_by_title_and_author_requires_both_match(
-        self, app: Flask, inserted_books: list[dict[str, str]]
-    ) -> None:
+    def test_find_one_by_title_and_author_requires_both_match(self, app: Flask, inserted_books: list[dict[str, str]]) -> None:
         book = inserted_books[0]
 
         result = BookDAO.find_one_by_title_and_author(book["title"], "Wrong Author")
@@ -169,9 +135,7 @@ class TestBookDAOFindOneByTitleAndAuthor:
 
 
 class TestBookDAODelete:
-    def test_delete_one_by_id_removes_document(
-        self, app: Flask, inserted_books: list[dict[str, str]], mongo_db: Database
-    ) -> None:
+    def test_delete_one_by_id_removes_document(self, app: Flask, inserted_books: list[dict[str, str]], mongo_db: Database) -> None:
         book_id = inserted_books[0]["_id"]
         initial_count = mongo_db.books.count_documents({})
 
@@ -180,9 +144,7 @@ class TestBookDAODelete:
         assert result.deleted_count == 1
         assert mongo_db.books.count_documents({}) == initial_count - 1
 
-    def test_delete_one_by_id_returns_delete_result(
-        self, app: Flask, inserted_books: list[dict[str, str]]
-    ) -> None:
+    def test_delete_one_by_id_returns_delete_result(self, app: Flask, inserted_books: list[dict[str, str]]) -> None:
         book_id = inserted_books[0]["_id"]
 
         result = BookDAO.delete_one_by_id(book_id)
@@ -190,9 +152,7 @@ class TestBookDAODelete:
         assert isinstance(result, DeleteResult)
         assert result.acknowledged is True
 
-    def test_delete_one_by_id_nonexistent_returns_zero(
-        self, app: Flask, mongo_db: Database
-    ) -> None:
+    def test_delete_one_by_id_nonexistent_returns_zero(self, app: Flask, mongo_db: Database) -> None:
         mongo_db.books.delete_many({})
         fake_id = str(ObjectId())
 
@@ -200,9 +160,7 @@ class TestBookDAODelete:
 
         assert result.deleted_count == 0
 
-    def test_delete_one_by_id_only_removes_one(
-        self, app: Flask, inserted_books: list[dict[str, str]], mongo_db: Database
-    ) -> None:
+    def test_delete_one_by_id_only_removes_one(self, app: Flask, inserted_books: list[dict[str, str]], mongo_db: Database) -> None:
         book_id = inserted_books[0]["_id"]
         initial_count = mongo_db.books.count_documents({})
 

@@ -109,10 +109,7 @@ pytest==8.4.2
 pytest-env==1.1.5
 pytest-cov==4.1.0
 pytest-timeout==2.3.1
-pytest-cov==4.1.0
 pytest-xdist==3.5.0
-
-pytest-timeout==2.3.1
 ```
 
 ## Portfolio Link
@@ -247,3 +244,6 @@ PORT=5050
 ---
 
 ## Known Issues
+
+None at the moment.
+

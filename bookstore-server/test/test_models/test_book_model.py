@@ -56,9 +56,7 @@ class TestBookModelRequiredFields:
 
     def test_image_is_required(self) -> None:
         with pytest.raises(ValidationError) as exc_info:
-            BookModel(
-                title="Title", author="Author", description="Description", genre="Genre"
-            )
+            BookModel(title="Title", author="Author", description="Description", genre="Genre")
 
         errors = exc_info.value.errors()
         assert any(e["loc"] == ("image",) for e in errors)
