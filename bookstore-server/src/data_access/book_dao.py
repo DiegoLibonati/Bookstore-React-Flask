@@ -8,7 +8,7 @@ from src.configs.mongo_config import mongo
 
 class BookDAO:
     @staticmethod
-    def insert_one(book: dict) -> InsertOneResult:
+    def insert_one(book: dict[str, Any]) -> InsertOneResult:
         return mongo.db.books.insert_one(book)
 
     @staticmethod
