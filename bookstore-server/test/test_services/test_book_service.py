@@ -4,7 +4,7 @@ from flask import Flask
 from pymongo.database import Database
 from pymongo.results import DeleteResult, InsertOneResult
 
-from src.constants.codes import CODE_ERROR_BOOK_ALREADY_EXISTS, CODE_NOT_FOUND_BOOK
+from src.constants.codes import CODE_ALREADY_EXISTS_BOOK, CODE_NOT_FOUND_BOOK
 from src.models.book_model import BookModel
 from src.services.book_service import BookService
 from src.utils.exceptions import ConflictAPIError, NotFoundAPIError
@@ -62,7 +62,7 @@ class TestBookServiceAddBook:
             BookService.add_book(book)
 
         assert exc_info.value.status_code == 409
-        assert exc_info.value.code == CODE_ERROR_BOOK_ALREADY_EXISTS
+        assert exc_info.value.code == CODE_ALREADY_EXISTS_BOOK
 
     def test_add_book_allows_same_title_different_author(self, app: Flask, mongo_db: Database) -> None:
         mongo_db.books.delete_many({})

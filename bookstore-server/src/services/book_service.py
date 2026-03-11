@@ -3,9 +3,9 @@ from typing import Any
 from bson import ObjectId
 from pymongo.results import DeleteResult, InsertOneResult
 
-from src.constants.codes import CODE_ERROR_BOOK_ALREADY_EXISTS, CODE_NOT_FOUND_BOOK
+from src.constants.codes import CODE_ALREADY_EXISTS_BOOK, CODE_NOT_FOUND_BOOK
 from src.constants.messages import (
-    MESSAGE_ERROR_BOOK_ALREADY_EXISTS,
+    MESSAGE_ALREADY_EXISTS_BOOK,
     MESSAGE_NOT_FOUND_BOOK,
 )
 from src.data_access.book_dao import BookDAO
@@ -19,8 +19,8 @@ class BookService:
         existing = BookDAO.find_one_by_title_and_author(book.title, book.author)
         if existing:
             raise ConflictAPIError(
-                code=CODE_ERROR_BOOK_ALREADY_EXISTS,
-                message=MESSAGE_ERROR_BOOK_ALREADY_EXISTS,
+                code=CODE_ALREADY_EXISTS_BOOK,
+                message=MESSAGE_ALREADY_EXISTS_BOOK,
             )
         return BookDAO.insert_one(book.model_dump())
 
