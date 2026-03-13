@@ -14,10 +14,10 @@ from src.constants.messages import (
 )
 from src.models.book_model import BookModel
 from src.services.book_service import BookService
-from src.utils.error_handler import handle_exceptions
+from src.utils.exceptions_handler import exceptions_handler
 
 
-@handle_exceptions
+@exceptions_handler
 def alive() -> Response:
     response = {
         "message": "I am Alive!",
@@ -29,7 +29,7 @@ def alive() -> Response:
     return jsonify(response), 200
 
 
-@handle_exceptions
+@exceptions_handler
 def add_book() -> Response:
     body = request.json
     book = BookModel(**body)
@@ -47,7 +47,7 @@ def add_book() -> Response:
     return jsonify(response), 201
 
 
-@handle_exceptions
+@exceptions_handler
 def get_books() -> Response:
     books = BookService.get_all_books()
 
@@ -60,7 +60,7 @@ def get_books() -> Response:
     return jsonify(response), 200
 
 
-@handle_exceptions
+@exceptions_handler
 def get_books_by_genre(genre: str) -> Response:
     books = BookService.get_all_books_by_genre(genre)
 
@@ -73,7 +73,7 @@ def get_books_by_genre(genre: str) -> Response:
     return jsonify(response), 200
 
 
-@handle_exceptions
+@exceptions_handler
 def delete_book(id: str) -> Response:
     BookService.delete_book_by_id(id)
 
@@ -85,7 +85,7 @@ def delete_book(id: str) -> Response:
     return jsonify(response), 200
 
 
-@handle_exceptions
+@exceptions_handler
 def get_all_genres() -> Response:
     genres = BookService.get_all_genres()
 

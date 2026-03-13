@@ -22,6 +22,15 @@ NOTE: Install **pre-commit** inside: `bookstore-server` folder.
 1. Once you're inside the virtual environment, let's install the hooks specified in the pre-commit. Execute: `pre-commit install`
 2. Now every time you try to commit, the pre-commit lint will run. If you want to do it manually, you can run the command: `pre-commit run --all-files`
 
+## Security Audit (Python)
+
+You can check your dependencies for known vulnerabilities using **pip-audit**.
+
+1. Go to the repository folder
+2. Activate your virtual environment
+3. Execute: `pip install -r requirements.dev.txt`
+4. Execute: `pip-audit -r requirements.txt`
+
 ## Description
 
 This time I made a page about a Bookstore. It is made with the following technologies:
@@ -95,11 +104,17 @@ Database:
 #### Requirements.txt
 
 ```
-flask==3.1.2
+flask==3.1.3
 pymongo==4.16.0
 pydantic==2.11.9
 gunicorn==23.0.0
+```
+
+#### Requirements.dev.txt
+
+```
 pre-commit==4.3.0
+pip-audit==2.7.3
 ```
 
 #### Requirements.test.txt
