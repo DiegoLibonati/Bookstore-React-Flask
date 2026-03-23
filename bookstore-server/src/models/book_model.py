@@ -1,9 +1,13 @@
-from pydantic import BaseModel, constr
+from typing import Annotated
+
+from pydantic import BaseModel, StringConstraints
+
+ConstrainedStr = Annotated[str, StringConstraints(min_length=1, strip_whitespace=True)]
 
 
 class BookModel(BaseModel):
-    title: constr(min_length=1, strip_whitespace=True)
-    image: constr(min_length=1, strip_whitespace=True)
-    author: constr(min_length=1, strip_whitespace=True)
-    description: constr(min_length=1, strip_whitespace=True)
-    genre: constr(min_length=1, strip_whitespace=True)
+    title: ConstrainedStr
+    image: ConstrainedStr
+    author: ConstrainedStr
+    description: ConstrainedStr
+    genre: ConstrainedStr
