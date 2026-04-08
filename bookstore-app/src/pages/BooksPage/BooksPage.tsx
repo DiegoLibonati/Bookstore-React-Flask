@@ -70,7 +70,7 @@ const BooksPage = (): JSX.Element => {
             onClick={() => {
               handleHide();
             }}
-            aria-label="filters"
+            aria-label="Toggle book filters"
             className="filters__btn"
           >
             Filters

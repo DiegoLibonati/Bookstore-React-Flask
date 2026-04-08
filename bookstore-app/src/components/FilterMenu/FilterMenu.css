@@ -1,11 +1,11 @@
 .filter-menu {
-  font-size: 1.5rem;
+  font-size: 0.9375rem;
   background-color: var(--color-secondary);
-  padding: 1rem;
-  margin-right: 1rem;
+  padding: 0.625rem;
+  margin-right: 0.625rem;
   color: var(--color-white);
-  margin-bottom: 0.5rem;
-  margin-top: 0.5rem;
+  margin-bottom: 0.3125rem;
+  margin-top: 0.3125rem;
   cursor: pointer;
   transition: background-color 1s;
 }

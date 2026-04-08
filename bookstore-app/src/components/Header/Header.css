@@ -3,12 +3,12 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 10rem;
+  height: 6.25rem;
   background-color: var(--color-secondary);
-  box-shadow: 0 0.938rem 0.625rem -0.938rem var(--color-secondary);
+  box-shadow: 0 0.586rem 0.391rem -0.586rem var(--color-secondary);
 }
 
 .header-wrapper__logo {
-  height: 8rem;
-  width: 14rem;
+  height: 5rem;
+  width: 8.75rem;
 }

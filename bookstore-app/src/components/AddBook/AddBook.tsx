@@ -43,7 +43,7 @@ const AddBook = ({ books, genres, setBooks, setGenres }: AddBookProps): JSX.Elem
     <article className="add-book">
       <button
         type="button"
-        aria-label="add book"
+        aria-label="Open add book form"
         className="add-book__btn"
         onClick={() => {
           handleHide();
@@ -54,7 +54,7 @@ const AddBook = ({ books, genres, setBooks, setGenres }: AddBookProps): JSX.Elem
 
       {hide ? (
         <form
-          aria-label="form add book"
+          aria-label="Add new book form"
           className="add-book__form"
           onSubmit={(e) => {
             handleSubmit(e);
@@ -129,7 +129,7 @@ const AddBook = ({ books, genres, setBooks, setGenres }: AddBookProps): JSX.Elem
               onInputChange(e);
             }}
           ></input>
-          <button type="submit" aria-label="submit" className="add-book__form-submit">
+          <button type="submit" aria-label="Submit new book" className="add-book__form-submit">
             Submit
           </button>
         </form>
