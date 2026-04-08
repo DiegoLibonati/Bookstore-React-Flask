@@ -13,10 +13,10 @@
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
-  color: var(--primary-color);
+  color: var(--color-primary);
   cursor: pointer;
   font-weight: 900;
-  background-color: var(--secondary-color);
+  background-color: var(--color-secondary);
   margin: 1rem;
   border-radius: 100%;
   height: 3rem;

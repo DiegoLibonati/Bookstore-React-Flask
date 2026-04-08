@@ -4,8 +4,8 @@
   justify-content: center;
   width: 100%;
   height: 10rem;
-  background-color: var(--secondary-color);
-  box-shadow: 0 0.938rem 0.625rem -0.938rem var(--secondary-color);
+  background-color: var(--color-secondary);
+  box-shadow: 0 0.938rem 0.625rem -0.938rem var(--color-secondary);
 }
 
 .header-wrapper__logo {

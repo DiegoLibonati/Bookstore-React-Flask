@@ -1,25 +1,28 @@
-import React from "react";
+import type { JSX } from "react";
+import type { FilterItemProps } from "@/types/props";
 
-import { FilterItemProps } from "@src/entities/props";
+import bookService from "@/services/bookService";
 
-import { getBooksByGenre } from "@src/api/get/getBooksByGenre";
+import "@/components/FilterItem/FilterItem.css";
 
-import "@src/components/FilterItem/FilterItem.css";
-
-export const FilterItem = ({
-  genre,
-  setBooks,
-}: FilterItemProps): JSX.Element => {
-  const handleFilter: React.MouseEventHandler<HTMLLIElement> = async () => {
-    const response = await getBooksByGenre(genre);
+const FilterItem = ({ genre, setBooks }: FilterItemProps): JSX.Element => {
+  const handleFilter = async (): Promise<void> => {
+    const response = await bookService.getAllByGenre(genre);
     const books = response.data;
 
     setBooks(books);
   };
 
   return (
-    <li onClick={(e) => handleFilter(e)} className="filter-item">
+    <li
+      onClick={() => {
+        void handleFilter();
+      }}
+      className="filter-item"
+    >
       {genre}
     </li>
   );
 };
+
+export default FilterItem;

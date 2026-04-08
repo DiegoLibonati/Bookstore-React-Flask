@@ -1,8 +1,10 @@
 import { Fragment } from "react/jsx-runtime";
 
-import { Header } from "@src/components/Header/Header";
+import type { JSX } from "react";
 
-import { BooksPage } from "@src/pages/BooksPage/BooksPage";
+import Header from "@/components/Header/Header";
+
+import BooksPage from "@/pages/BooksPage/BooksPage";
 
 function App(): JSX.Element {
   return (

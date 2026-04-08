@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { UseHide } from "@src/entities/hooks";
+import type { UseHide } from "@/types/hooks";
 
 export const useHide = (): UseHide => {
   const [hide, setHide] = useState<boolean>(false);

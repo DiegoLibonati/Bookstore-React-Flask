@@ -22,15 +22,6 @@ NOTE: Install **pre-commit** inside: `bookstore-server` folder.
 1. Once you're inside the virtual environment, let's install the hooks specified in the pre-commit. Execute: `pre-commit install`
 2. Now every time you try to commit, the pre-commit lint will run. If you want to do it manually, you can run the command: `pre-commit run --all-files`
 
-## Security Audit (Python)
-
-You can check your dependencies for known vulnerabilities using **pip-audit**.
-
-1. Go to the repository folder
-2. Activate your virtual environment
-3. Execute: `pip install -r requirements.dev.txt`
-4. Execute: `pip-audit -r requirements.txt`
-
 ## Description
 
 This time I made a page about a Bookstore. It is made with the following technologies:
@@ -44,7 +35,7 @@ In which you can add books in the main section of the page with title, author, g
 
 FrontEnd:
 
-1. React
+1. React JS
 2. Typescript
 3. CSS3
 4. HTML5
@@ -71,32 +62,38 @@ Database:
 #### Dependencies
 
 ```
-"react": "^18.2.0"
-"react-dom": "^18.2.0"
+"react": "^19.2.4"
+"react-dom": "^19.2.4"
 "react-icons": "^4.4.0"
-"web-vitals": "^2.1.4"
 ```
 
 #### devDependencies
 
 ```
+"@eslint/js": "^9.0.0"
 "@testing-library/dom": "^10.4.0"
-"@testing-library/jest-dom": "^6.6.2"
+"@testing-library/jest-dom": "^6.6.3"
 "@testing-library/react": "^16.0.1"
 "@testing-library/user-event": "^14.5.2"
-"@types/jest": "^29.5.13"
-"@types/node": "^20.10.6"
-"@types/react": "^18.3.11"
-"@types/react-dom": "^18.3.1"
+"@types/jest": "^30.0.0"
+"@types/react": "^19.2.14"
+"@types/react-dom": "^19.2.3"
 "@vitejs/plugin-react": "^5.0.2"
-"jest": "^29.7.0"
-"jest-environment-jsdom": "^29.7.0"
-"jest-fixed-jsdom": "^0.0.9"
-"msw": "^2.4.11"
-"ts-jest": "^29.2.5"
-"ts-node": "^10.9.2"
-"typescript": "^4.9.5"
-"vite": "^7.1.7"
+"eslint": "^9.0.0"
+"eslint-config-prettier": "^9.0.0"
+"eslint-plugin-prettier": "^5.5.5"
+"eslint-plugin-react-hooks": "^5.0.0"
+"eslint-plugin-react-refresh": "^0.4.0"
+"globals": "^15.0.0"
+"husky": "^9.0.0"
+"jest": "^30.3.0"
+"jest-environment-jsdom": "^30.3.0"
+"lint-staged": "^15.0.0"
+"prettier": "^3.0.0"
+"ts-jest": "^29.4.6"
+"typescript": "^5.2.2"
+"typescript-eslint": "^8.0.0"
+"vite": "^7.1.6"
 ```
 
 ### Backend
@@ -140,8 +137,14 @@ https://github.com/DiegoLibonati/Bookstore-Api-Rest-Page/assets/99032604/b9059c8
 
 ### Frontend
 
-1. Join to `bookstore-app` folder
-2. Execute: `yarn test` or `npm test`
+1. Navigate to the project folder
+2. Execute: `npm test`
+
+For coverage report:
+
+```bash
+npm run test:coverage
+```
 
 ### Backend
 
@@ -151,6 +154,41 @@ https://github.com/DiegoLibonati/Bookstore-Api-Rest-Page/assets/99032604/b9059c8
 4. Execute: `pip install -r requirements.txt`
 5. Execute: `pip install -r requirements.test.txt`
 6. Execute: `pytest --log-cli-level=INFO`
+
+## Security Audit (Python)
+
+You can check your dependencies for known vulnerabilities using **pip-audit**.
+
+1. Go to the repository folder
+2. Activate your virtual environment
+3. Execute: `pip install -r requirements.dev.txt`
+4. Execute: `pip-audit -r requirements.txt`
+
+## Security Audit (Frontend)
+
+### npm audit
+
+Check for vulnerabilities in dependencies:
+
+```bash
+npm audit
+```
+
+### React Doctor (Frontend)
+
+Run a health check on the project (security, performance, dead code, architecture):
+
+```bash
+npm run doctor
+```
+
+Use `--verbose` to see specific files and line numbers:
+
+```bash
+npm run doctor -- --verbose
+```
+
+## Documentation API
 
 ### **Version**
 

@@ -1,4 +1,4 @@
-import libraryLogo from "@src/assets/images/libreria.png";
+import libraryLogo from "@/assets/images/libreria.png";
 
 const assets = {
   images: { libraryLogo: libraryLogo },

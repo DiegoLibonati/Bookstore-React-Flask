@@ -1,21 +1,19 @@
-import { BookProps } from "@src/entities/props";
+import type { JSX } from "react";
+import type { BookProps } from "@/types/props";
 
-import { useHide } from "@src/hooks/useHide";
+import { useHide } from "@/hooks/useHide";
 
-import "@src/components/Book/Book.css";
+import "@/components/Book/Book.css";
 
-export const Book = ({
-  image,
-  title,
-  author,
-  description,
-}: BookProps): JSX.Element => {
+const Book = ({ image, title, author, description }: BookProps): JSX.Element => {
   const { hide, handleHide } = useHide();
 
   return (
     <article className="book">
       <img
-        onClick={() => handleHide()}
+        onClick={() => {
+          handleHide();
+        }}
         src={image}
         alt={title}
         className="book__img"
@@ -31,3 +29,5 @@ export const Book = ({
     </article>
   );
 };
+
+export default Book;

@@ -1,15 +1,15 @@
-import assets from "@src/assets/export";
+import type { JSX } from "react";
 
-import "@src/components/Header/Header.css";
+import assets from "@/assets/export";
 
-export const Header = (): JSX.Element => {
+import "@/components/Header/Header.css";
+
+const Header = (): JSX.Element => {
   return (
     <header className="header-wrapper">
-      <img
-        className="header-wrapper__logo"
-        src={assets.images.libraryLogo}
-        alt="logo"
-      ></img>
+      <img className="header-wrapper__logo" src={assets.images.libraryLogo} alt="logo"></img>
     </header>
   );
 };
+
+export default Header;

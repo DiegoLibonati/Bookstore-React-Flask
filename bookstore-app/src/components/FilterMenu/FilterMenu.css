@@ -1,9 +1,9 @@
 .filter-menu {
   font-size: 1.5rem;
-  background-color: var(--secondary-color);
+  background-color: var(--color-secondary);
   padding: 1rem;
   margin-right: 1rem;
-  color: var(--white-color);
+  color: var(--color-white);
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
   cursor: pointer;

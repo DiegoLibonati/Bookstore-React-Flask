@@ -1,24 +1,25 @@
 import { useEffect, useState } from "react";
 
-import { Book as BookT } from "@src/entities/app";
+import type { JSX } from "react";
+import type { Book as BookT } from "@/types/app";
 
-import { Book } from "@src/components/Book/Book";
-import { Pagination } from "@src/components/Pagination/Pagination";
-import { FilterMenu } from "@src/components/FilterMenu/FilterMenu";
-import { AddBook } from "@src/components/AddBook/AddBook";
+import Book from "@/components/Book/Book";
+import Pagination from "@/components/Pagination/Pagination";
+import FilterMenu from "@/components/FilterMenu/FilterMenu";
+import AddBook from "@/components/AddBook/AddBook";
 
-import { useHide } from "@src/hooks/useHide";
+import { useHide } from "@/hooks/useHide";
 
-import { getBooks } from "@src/api/get/getBooks";
-import { getGenres } from "@src/api/get/getGenres";
+import bookService from "@/services/bookService";
+import genreService from "@/services/genreService";
 
-import "@src/assets/css/Filters.css";
-import "@src/assets/css/Books.css";
-import "@src/assets/css/Pagination.css";
+import "@/styles/Filters.css";
+import "@/styles/Books.css";
+import "@/styles/Pagination.css";
 
-import "@src/pages/BooksPage/BooksPage.css";
+import "@/pages/BooksPage/BooksPage.css";
 
-export const BooksPage = (): JSX.Element => {
+const BooksPage = (): JSX.Element => {
   const [books, setBooks] = useState<BookT[]>([]);
   const [genres, setGenres] = useState<BookT["genre"][]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -32,20 +33,20 @@ export const BooksPage = (): JSX.Element => {
   const indexOfFirstBook: number = indexOfLastBook - booksPerPage;
   const currentBooks: BookT[] = books.slice(indexOfFirstBook, indexOfLastBook);
 
-  const handleGetBooks = async () => {
+  const handleGetBooks = async (): Promise<void> => {
     if (!loading) setLoading(true);
 
-    const responseBooks = await getBooks();
+    const responseBooks = await bookService.getAll();
     const books = responseBooks.data;
 
     setBooks(books);
     setLoading(false);
   };
 
-  const handleGetGenres = async () => {
+  const handleGetGenres = async (): Promise<void> => {
     if (!loading) setLoading(true);
 
-    const response = await getGenres();
+    const response = await genreService.getAll();
     const genres = response.data;
 
     setGenres(genres);
@@ -53,8 +54,8 @@ export const BooksPage = (): JSX.Element => {
   };
 
   useEffect(() => {
-    handleGetBooks();
-    handleGetGenres();
+    void handleGetBooks();
+    void handleGetGenres();
   }, []);
 
   if (loading) {
@@ -66,7 +67,9 @@ export const BooksPage = (): JSX.Element => {
       <section className="filters-wrapper">
         <article className="filters">
           <button
-            onClick={() => handleHide()}
+            onClick={() => {
+              handleHide();
+            }}
             aria-label="filters"
             className="filters__btn"
           >
@@ -75,15 +78,16 @@ export const BooksPage = (): JSX.Element => {
 
           {hide ? (
             <ul className="filters__menus">
-              <li onClick={handleGetBooks} className="filters__show-all">
+              <li
+                onClick={() => {
+                  void handleGetBooks();
+                }}
+                className="filters__show-all"
+              >
                 Show All
               </li>
-              {genres?.length > 0 && (
-                <FilterMenu
-                  genres={genres}
-                  filterName="Genres"
-                  setBooks={setBooks}
-                ></FilterMenu>
+              {genres.length > 0 && (
+                <FilterMenu genres={genres} filterName="Genres" setBooks={setBooks}></FilterMenu>
               )}
             </ul>
           ) : null}
@@ -95,12 +99,7 @@ export const BooksPage = (): JSX.Element => {
           <Book key={book._id} {...book}></Book>
         ))}
 
-        <AddBook
-          books={books}
-          genres={genres}
-          setBooks={setBooks}
-          setGenres={setGenres}
-        ></AddBook>
+        <AddBook books={books} genres={genres} setBooks={setBooks} setGenres={setGenres}></AddBook>
       </section>
 
       <section className="pagination">
@@ -113,3 +112,5 @@ export const BooksPage = (): JSX.Element => {
     </main>
   );
 };
+
+export default BooksPage;
