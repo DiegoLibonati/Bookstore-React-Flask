@@ -1,4 +1,4 @@
-# Bookstore React Flask
+# Virbooks
 
 ## Educational Purpose
 
@@ -9,7 +9,7 @@ The main goal is to explore and demonstrate best practices, patterns, and techno
 ## Getting Started
 
 1. Clone the repository with `git clone "repository link"`
-2. Join to `bookstore-app` folder and execute: `npm install` or `yarn install` in the terminal
+2. Join to `virbooks-app` folder and execute: `npm install` or `yarn install` in the terminal
 3. Go to the previous folder and execute: `docker-compose -f dev.docker-compose.yml build --no-cache` in the terminal
 4. Once built, you must execute the command: `docker-compose -f dev.docker-compose.yml up --force-recreate` in the terminal
 
@@ -17,19 +17,30 @@ NOTE: You have to be standing in the folder containing the: `dev.docker-compose.
 
 ### Pre-Commit for Development (Python)
 
-NOTE: Install **pre-commit** inside: `bookstore-server` folder.
+NOTE: Install **pre-commit** inside: `virbooks-api` folder.
 
 1. Once you're inside the virtual environment, let's install the hooks specified in the pre-commit. Execute: `pre-commit install`
 2. Now every time you try to commit, the pre-commit lint will run. If you want to do it manually, you can run the command: `pre-commit run --all-files`
 
 ## Description
 
-This time I made a page about a Bookstore. It is made with the following technologies:
+**Virbooks** is a full-stack bookstore management application that lets users catalog, browse, and manage a personal book collection through a clean, responsive web interface.
 
-1. The API-REST with flask, python, mongodb
-2. The FRONT-END with React JS - Typescript
+### What it does
 
-In which you can add books in the main section of the page with title, author, genre, description and an image. In addition you can visualize the loaded books that are stored in Mongo DB with the above mentioned features.
+The application provides a single-page interface where users can add new books to their collection by filling out a form with the book's title, author, genre, description, and a cover image URL. Every book added is immediately persisted to a MongoDB database and displayed on the main page alongside the rest of the collection. Books can be removed at any time via a delete action directly from the book card.
+
+The collection can be filtered by genre: the interface exposes a filter menu populated dynamically from the genres already present in the database, so the list of available filters always reflects the actual state of the collection without any manual configuration.
+
+### Architecture overview
+
+The frontend is a React 19 + TypeScript SPA bundled with Vite. It communicates exclusively with the backend through a versioned REST API (`/api/v1/books/`). In development, Vite's proxy forwards those requests to the Flask server, so no CORS configuration is needed. In production, Nginx serves the static build and acts as a reverse proxy to the Gunicorn/Flask process.
+
+The backend is a Flask 3 application structured in clear layers: blueprints handle routing, controllers parse requests and build responses, services contain the business logic (including duplicate-book detection before insertion), and data access objects (DAOs) execute all PyMongo queries. Input validation is handled by Pydantic v2 models, and a centralized decorator catches both Pydantic `ValidationError` and PyMongo errors, mapping them to structured JSON error responses with appropriate HTTP status codes.
+
+Data is stored in MongoDB. Each book document holds title, author, genre, description, and image. The DAO layer serializes MongoDB's `ObjectId` to a plain string before returning data to the client, keeping the API transport format clean and predictable.
+
+The entire stack runs in Docker via a single Compose file for development. A separate test Compose file spins up an isolated MongoDB instance on a different port exclusively for the test suite, ensuring the development database is never touched during testing.
 
 ## Technologies used
 
@@ -127,11 +138,7 @@ pytest-xdist==3.5.0
 
 ## Portfolio Link
 
-[`https://www.diegolibonati.com.ar/#/project/Bookstore-React-Flask`](https://www.diegolibonati.com.ar/#/project/Bookstore-React-Flask)
-
-## Video
-
-https://github.com/DiegoLibonati/Bookstore-Api-Rest-Page/assets/99032604/b9059c86-eecd-4e2f-a5c6-f891257cea32
+[`https://www.diegolibonati.com.ar/#/project/virbooks`](https://www.diegolibonati.com.ar/#/project/virbooks)
 
 ## Testing
 
@@ -148,7 +155,7 @@ npm run test:coverage
 
 ### Backend
 
-1. Join to the correct path of the clone and join to: `bookstore-server`
+1. Join to the correct path of the clone and join to: `virbooks-api`
 2. Execute: `python -m venv venv`
 3. Execute in Windows: `venv\Scripts\activate`
 4. Execute: `pip install -r requirements.txt`
@@ -224,14 +231,14 @@ MONGO_HOST=host.docker.internal
 MONGO_PORT=27017
 MONGO_USER=admin
 MONGO_PASS=secret123
-MONGO_DB_NAME=bookstore
+MONGO_DB_NAME=books
 MONGO_AUTH_SOURCE=admin
 
 HOST=0.0.0.0
 PORT=5050
 ```
 
-### **Bookstore Endpoints API**
+### **Virbooks Endpoints API**
 
 ---
 

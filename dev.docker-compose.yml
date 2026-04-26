@@ -1,39 +1,39 @@
 services:
-  bookstore-app:
+  virbooks-app:
     build:
-      context: ./bookstore-app
+      context: ./virbooks-app
       dockerfile: Dockerfile.development
     restart: always
     env_file:
-      - ./bookstore-app/.env
+      - ./virbooks-app/.env
     volumes:
-      - ./bookstore-app:/home/app
+      - ./virbooks-app:/home/app
       - /home/app/node_modules
     depends_on:
-      - bookstore-db
+      - virbooks-db
     ports:
       - "3000:3000"
     networks:
-     - bookstore-net
+     - virbooks-net
     tty: true
 
-  bookstore-server:
+  virbooks-api:
     build:
-      context: ./bookstore-server
+      context: ./virbooks-api
       dockerfile: Dockerfile.development
     restart: always
     env_file:
-      - ./bookstore-server/.env
+      - ./virbooks-api/.env
     volumes:
-      - "./bookstore-server:/home/app"
+      - "./virbooks-api:/home/app"
     depends_on:
-      - bookstore-db
+      - virbooks-db
     ports:
       - "5050:5050"
     networks:
-      - bookstore-net
+      - virbooks-net
 
-  bookstore-db:
+  virbooks-db:
     image: mongo
     restart: always
     ports:
@@ -41,11 +41,11 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: secret123
-      MONGO_INITDB_DATABASE: bookstore
+      MONGO_INITDB_DATABASE: books
     volumes:
       - db-data:/data/db
     networks:
-      - bookstore-net
+      - virbooks-net
 
   mongo-express:
     image: mongo-express
@@ -53,18 +53,18 @@ services:
     ports:
       - "8081:8081"
     environment:
-      ME_CONFIG_MONGODB_URL: mongodb://admin:secret123@bookstore-db:27017/bookstore?authSource=admin
+      ME_CONFIG_MONGODB_URL: mongodb://admin:secret123@virbooks-db:27017/virbooks?authSource=admin
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: admin123
     depends_on:
-      - bookstore-db
+      - virbooks-db
     networks:
-      - bookstore-net
+      - virbooks-net
 
 volumes:
   db-data:
     driver: local
 
 networks:
-  bookstore-net:
+  virbooks-net:
     driver: bridge

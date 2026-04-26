@@ -1,27 +1,27 @@
 #!/bin/sh
-# Pre-commit hook for Bookstore monorepo.
-# Runs the Python pre-commit (ruff) when bookstore-server files are staged.
-# Runs husky/lint-staged when bookstore-app files are staged.
+# Pre-commit hook for Virbooks monorepo.
+# Runs the Python pre-commit (ruff) when virbooks-api files are staged.
+# Runs husky/lint-staged when virbooks-app files are staged.
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 STAGED_FILES=$(git diff --cached --name-only)
 
-API_FILES=$(echo "$STAGED_FILES" | grep "^bookstore-server/")
-APP_FILES=$(echo "$STAGED_FILES" | grep "^bookstore-app/")
+API_FILES=$(echo "$STAGED_FILES" | grep "^virbooks-api/")
+APP_FILES=$(echo "$STAGED_FILES" | grep "^virbooks-app/")
 
 EXIT_CODE=0
 
 if [ -n "$API_FILES" ]; then
-    echo "[pre-commit] Running ruff checks for bookstore-server..."
-    INSTALL_PYTHON="$REPO_ROOT/bookstore-server/venv/Scripts/python.exe"
+    echo "[pre-commit] Running ruff checks for virbooks-api..."
+    INSTALL_PYTHON="$REPO_ROOT/virbooks-api/venv/Scripts/python.exe"
     if [ -x "$INSTALL_PYTHON" ]; then
         "$INSTALL_PYTHON" -mpre_commit run \
-            --config="$REPO_ROOT/bookstore-server/.pre-commit-config.yaml" \
-            --hook-type=pre-commit
+            --config="$REPO_ROOT/virbooks-api/.pre-commit-config.yaml" \
+            --hook-stage=pre-commit
     elif command -v pre-commit > /dev/null; then
         pre-commit run \
-            --config="$REPO_ROOT/bookstore-server/.pre-commit-config.yaml" \
-            --hook-type=pre-commit
+            --config="$REPO_ROOT/virbooks-api/.pre-commit-config.yaml" \
+            --hook-stage=pre-commit
     else
         echo '[pre-commit] `pre-commit` not found. Did you forget to activate your virtualenv?' 1>&2
         exit 1
@@ -30,8 +30,8 @@ if [ -n "$API_FILES" ]; then
 fi
 
 if [ -n "$APP_FILES" ]; then
-    echo "[pre-commit] Running husky/lint-staged for bookstore-app..."
-    cd "$REPO_ROOT/bookstore-app" && sh .husky/pre-commit
+    echo "[pre-commit] Running husky/lint-staged for virbooks-app..."
+    cd "$REPO_ROOT/virbooks-app" && sh .husky/pre-commit
     EXIT_CODE=$((EXIT_CODE + $?))
 fi
 
