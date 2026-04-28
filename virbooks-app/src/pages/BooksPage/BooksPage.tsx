@@ -13,11 +13,11 @@ import { useHide } from "@/hooks/useHide";
 import bookService from "@/services/bookService";
 import genreService from "@/services/genreService";
 
-import "@/styles/Filters.css";
-import "@/styles/Books.css";
-import "@/styles/Pagination.css";
-
 import "@/pages/BooksPage/BooksPage.css";
+
+import "@/styles/filters.css";
+import "@/styles/books.css";
+import "@/styles/pagination.css";
 
 const BooksPage = (): JSX.Element => {
   const [books, setBooks] = useState<BookT[]>([]);
