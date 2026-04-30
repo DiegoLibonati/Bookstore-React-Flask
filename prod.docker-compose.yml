@@ -21,14 +21,15 @@ services:
     env_file:
       - ./virbooks-api/.env
     depends_on:
-      - virbooks-db
+      virbooks-db:
+        condition: service_healthy
     ports:
       - "5050"
     networks:
       - virbooks-net
 
   virbooks-db:
-    image: mongo:6
+    image: mongo:7.0
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
@@ -36,6 +37,12 @@ services:
       MONGO_INITDB_DATABASE: books
     volumes:
       - db-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
     networks:
       - virbooks-net
 
