@@ -15,6 +15,7 @@ services:
       - "3000:3000"
     networks:
      - virbooks-net
+    stdin_open: true
     tty: true
 
   virbooks-api:

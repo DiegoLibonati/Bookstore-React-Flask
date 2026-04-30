@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   virbooks-app:
     build:
@@ -25,7 +23,7 @@ services:
     depends_on:
       - virbooks-db
     ports:
-      - "5050:5050"
+      - "5050"
     networks:
       - virbooks-net
 
