@@ -1,11 +1,8 @@
 import type { Book } from "@/types/app";
+import type { ResponseWithData } from "@/types/responses";
 
 const genreService = {
-  getAll: async (): Promise<{
-    message: string;
-    code: string;
-    data: Book["genre"][];
-  }> => {
+  getAll: async (): Promise<ResponseWithData<Book["genre"][]>> => {
     const response = await fetch(`/api/v1/books/genres`, {
       method: "GET",
       headers: {
@@ -16,11 +13,7 @@ const genreService = {
 
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-    return (await response.json()) as {
-      message: string;
-      code: string;
-      data: Book["genre"][];
-    };
+    return (await response.json()) as ResponseWithData<Book["genre"][]>;
   },
 };
 

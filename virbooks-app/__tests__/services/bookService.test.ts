@@ -1,4 +1,4 @@
-import type { FormBook } from "@/types/forms";
+import type { BookAdd } from "@/types/payloads";
 
 import bookService from "@/services/bookService";
 
@@ -11,14 +11,14 @@ const mockFetchSuccess = (data: unknown): void => {
   global.fetch = jest.fn().mockResolvedValue({
     ok: true,
     json: async () => await data,
-  } as Response);
+  });
 };
 
 const mockFetchError = (status: number): void => {
   global.fetch = jest.fn().mockResolvedValue({
     ok: false,
     status,
-  } as Response);
+  });
 };
 
 const mockFetchNetworkError = (message = "Network error"): void => {
@@ -114,7 +114,7 @@ describe("bookService", () => {
   });
 
   describe("add", () => {
-    const mockFormBook: FormBook = {
+    const mockFormBook: BookAdd = {
       title: mockBook.title,
       author: mockBook.author,
       genre: mockBook.genre,

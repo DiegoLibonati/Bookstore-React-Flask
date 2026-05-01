@@ -1,12 +1,9 @@
 import type { Book } from "@/types/app";
-import type { FormBook } from "@/types/forms";
+import type { BookAdd } from "@/types/payloads";
+import type { ResponseWithData } from "@/types/responses";
 
 const bookService = {
-  getAll: async (): Promise<{
-    message: string;
-    code: string;
-    data: Book[];
-  }> => {
+  getAll: async (): Promise<ResponseWithData<Book[]>> => {
     const response = await fetch(`/api/v1/books/`, {
       method: "GET",
       headers: {
@@ -17,19 +14,9 @@ const bookService = {
 
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-    return (await response.json()) as {
-      message: string;
-      code: string;
-      data: Book[];
-    };
+    return (await response.json()) as ResponseWithData<Book[]>;
   },
-  getAllByGenre: async (
-    genre: string
-  ): Promise<{
-    message: string;
-    code: string;
-    data: Book[];
-  }> => {
+  getAllByGenre: async (genre: string): Promise<ResponseWithData<Book[]>> => {
     const response = await fetch(`/api/v1/books/${genre}`, {
       method: "GET",
       headers: {
@@ -40,19 +27,9 @@ const bookService = {
 
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-    return (await response.json()) as {
-      message: string;
-      code: string;
-      data: Book[];
-    };
+    return (await response.json()) as ResponseWithData<Book[]>;
   },
-  add: async (
-    body: FormBook
-  ): Promise<{
-    message: string;
-    code: string;
-    data: Book;
-  }> => {
+  add: async (body: BookAdd): Promise<ResponseWithData<Book>> => {
     const response = await fetch(`/api/v1/books/`, {
       method: "POST",
       body: JSON.stringify(body),
@@ -64,11 +41,7 @@ const bookService = {
 
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-    return (await response.json()) as {
-      message: string;
-      code: string;
-      data: Book;
-    };
+    return (await response.json()) as ResponseWithData<Book>;
   },
 };
 
