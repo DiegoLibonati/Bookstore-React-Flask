@@ -1,4 +1,4 @@
-import type { BookAdd } from "@/types/payloads";
+import type { BookAddPayload } from "@/types/payloads";
 
 import bookService from "@/services/bookService";
 
@@ -114,7 +114,7 @@ describe("bookService", () => {
   });
 
   describe("add", () => {
-    const mockFormBook: BookAdd = {
+    const mockFormBook: BookAddPayload = {
       title: mockBook.title,
       author: mockBook.author,
       genre: mockBook.genre,

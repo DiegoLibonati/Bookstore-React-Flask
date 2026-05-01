@@ -1,5 +1,5 @@
 import type { Book } from "@/types/app";
-import type { BookAdd } from "@/types/payloads";
+import type { BookAddPayload } from "@/types/payloads";
 import type { ResponseWithData } from "@/types/responses";
 
 const bookService = {
@@ -29,7 +29,7 @@ const bookService = {
 
     return (await response.json()) as ResponseWithData<Book[]>;
   },
-  add: async (body: BookAdd): Promise<ResponseWithData<Book>> => {
+  add: async (body: BookAddPayload): Promise<ResponseWithData<Book>> => {
     const response = await fetch(`/api/v1/books/`, {
       method: "POST",
       body: JSON.stringify(body),
