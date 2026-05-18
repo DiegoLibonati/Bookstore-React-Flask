@@ -7,10 +7,13 @@ from src.constants.messages import (
     MESSAGE_ERROR_INTERNAL_SERVER,
     MESSAGE_ERROR_PYDANTIC,
     MESSAGE_NOT_FOUND_BOOK,
+    MESSAGE_NOT_FOUND_ROUTE,
     MESSAGE_SUCCESS_ADD_BOOK,
     MESSAGE_SUCCESS_DELETE_BOOK,
     MESSAGE_SUCCESS_GET_ALL_BOOKS,
     MESSAGE_SUCCESS_GET_ALL_GENRES,
+    MESSAGE_SUCCESS_HEALTH,
+    MESSAGE_SUCCESS_READY,
 )
 
 
@@ -27,6 +30,12 @@ class TestSuccessMessages:
 
     def test_message_success_delete_book_value(self) -> None:
         assert MESSAGE_SUCCESS_DELETE_BOOK == "Book was successfully deleted."
+
+    def test_message_success_health_value(self) -> None:
+        assert MESSAGE_SUCCESS_HEALTH == "The application is healthy."
+
+    def test_message_success_ready_value(self) -> None:
+        assert MESSAGE_SUCCESS_READY == "The application is ready to serve requests."
 
 
 @pytest.mark.unit
@@ -52,6 +61,9 @@ class TestConflictAndNotFoundMessages:
     def test_message_not_found_book_value(self) -> None:
         assert MESSAGE_NOT_FOUND_BOOK == "No book found."
 
+    def test_message_not_found_route_value(self) -> None:
+        assert MESSAGE_NOT_FOUND_ROUTE == "The requested route does not exist."
+
 
 @pytest.mark.unit
 class TestMessagesUniqueness:
@@ -61,11 +73,14 @@ class TestMessagesUniqueness:
             MESSAGE_SUCCESS_GET_ALL_BOOKS,
             MESSAGE_SUCCESS_GET_ALL_GENRES,
             MESSAGE_SUCCESS_DELETE_BOOK,
+            MESSAGE_SUCCESS_HEALTH,
+            MESSAGE_SUCCESS_READY,
             MESSAGE_ERROR_INTERNAL_SERVER,
             MESSAGE_ERROR_PYDANTIC,
             MESSAGE_ERROR_DATABASE,
             MESSAGE_ERROR_GENERIC,
             MESSAGE_ALREADY_EXISTS_BOOK,
             MESSAGE_NOT_FOUND_BOOK,
+            MESSAGE_NOT_FOUND_ROUTE,
         ]
         assert len(all_messages) == len(set(all_messages))

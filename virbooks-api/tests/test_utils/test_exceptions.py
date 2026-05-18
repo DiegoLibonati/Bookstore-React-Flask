@@ -1,6 +1,7 @@
 from typing import Any
 
 import pytest
+from flask import Flask
 
 from src.utils.exceptions import (
     AuthenticationAPIError,
@@ -11,6 +12,13 @@ from src.utils.exceptions import (
     NotFoundAPIError,
     ValidationAPIError,
 )
+
+
+@pytest.fixture()
+def flask_app_context() -> Any:
+    app: Flask = Flask(__name__)
+    with app.app_context():
+        yield
 
 
 @pytest.mark.unit
@@ -93,3 +101,49 @@ class TestExceptionSubclasses:
     def test_custom_code_overrides_subclass_default(self) -> None:
         error: ConflictAPIError = ConflictAPIError(code="CUSTOM_CODE")
         assert error.code == "CUSTOM_CODE"
+
+
+@pytest.mark.unit
+class TestBaseAPIErrorFlaskResponse:
+    def test_flask_response_returns_status_code(self, flask_app_context: None) -> None:
+        error: BaseAPIError = BaseAPIError(code="X", message="msg", status_code=418)
+
+        _, status_code = error.flask_response()
+
+        assert status_code == 418
+
+    def test_flask_response_body_contains_code_and_message(self, flask_app_context: None) -> None:
+        error: ConflictAPIError = ConflictAPIError(code="C", message="conflict")
+
+        response, _ = error.flask_response()
+        data: dict[str, Any] = response.get_json()
+
+        assert data["code"] == "C"
+        assert data["message"] == "conflict"
+
+    def test_flask_response_body_includes_payload_when_present(self, flask_app_context: None) -> None:
+        error: ValidationAPIError = ValidationAPIError(
+            code="V",
+            message="invalid",
+            payload={"details": [{"field": "title"}]},
+        )
+
+        response, _ = error.flask_response()
+        data: dict[str, Any] = response.get_json()
+
+        assert data["payload"] == {"details": [{"field": "title"}]}
+
+    def test_flask_response_omits_payload_when_empty(self, flask_app_context: None) -> None:
+        error: BaseAPIError = BaseAPIError(code="X", message="msg")
+
+        response, _ = error.flask_response()
+        data: dict[str, Any] = response.get_json()
+
+        assert "payload" not in data
+
+    def test_flask_response_uses_subclass_default_status(self, flask_app_context: None) -> None:
+        error: NotFoundAPIError = NotFoundAPIError(code="NF", message="missing")
+
+        _, status_code = error.flask_response()
+
+        assert status_code == 404

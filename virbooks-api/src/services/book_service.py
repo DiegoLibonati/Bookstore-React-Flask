@@ -1,6 +1,5 @@
 from typing import Any
 
-from bson import ObjectId
 from pymongo.results import DeleteResult, InsertOneResult
 
 from src.constants.codes import CODE_ALREADY_EXISTS_BOOK, CODE_NOT_FOUND_BOOK
@@ -36,11 +35,11 @@ class BookService:
     def get_all_genres() -> list[str]:
         books = BookDAO.find()
 
-        genres = {book.get("genre") for book in books if book.get("genre")}
+        genres: set[str] = {book["genre"] for book in books if book.get("genre")}
         return list(genres)
 
     @staticmethod
-    def delete_book_by_id(_id: ObjectId) -> DeleteResult:
+    def delete_book_by_id(_id: str) -> DeleteResult:
         existing = BookDAO.find_one_by_id(_id)
 
         if not existing:

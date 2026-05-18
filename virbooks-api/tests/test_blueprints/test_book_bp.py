@@ -47,11 +47,17 @@ class TestBookBlueprintRoutes:
         assert "GET" in rule_methods.get("/api/v1/books/genres", set())
 
     def test_variable_route_supports_get(self, app_with_book_bp: Flask) -> None:
-        get_supported: bool = any("GET" in rule.methods for rule in app_with_book_bp.url_map.iter_rules() if "<" in rule.rule and "/api/v1/books" in rule.rule)
+        get_supported: bool = any(
+            "GET" in rule.methods
+            for rule in app_with_book_bp.url_map.iter_rules()
+            if "<" in rule.rule and "/api/v1/books" in rule.rule
+        )
         assert get_supported
 
     def test_variable_route_supports_delete(self, app_with_book_bp: Flask) -> None:
         delete_supported: bool = any(
-            "DELETE" in rule.methods for rule in app_with_book_bp.url_map.iter_rules() if "<" in rule.rule and "/api/v1/books" in rule.rule
+            "DELETE" in rule.methods
+            for rule in app_with_book_bp.url_map.iter_rules()
+            if "<" in rule.rule and "/api/v1/books" in rule.rule
         )
         assert delete_supported

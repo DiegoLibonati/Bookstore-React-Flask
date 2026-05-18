@@ -1,4 +1,5 @@
-from flask import Response, jsonify, request
+from flask import jsonify, request
+from flask.typing import ResponseReturnValue
 
 from src.constants.codes import (
     CODE_SUCCESS_ADD_BOOK,
@@ -14,11 +15,11 @@ from src.constants.messages import (
 )
 from src.models.book_model import BookModel
 from src.services.book_service import BookService
-from src.utils.exceptions_handler import exceptions_handler
+from src.utils.exceptions_decorator import exceptions_decorator
 
 
-@exceptions_handler
-def alive() -> Response:
+@exceptions_decorator
+def alive() -> ResponseReturnValue:
     response = {
         "message": "I am Alive!",
         "version_bp": "2.0.0",
@@ -29,8 +30,8 @@ def alive() -> Response:
     return jsonify(response), 200
 
 
-@exceptions_handler
-def add_book() -> Response:
+@exceptions_decorator
+def add_book() -> ResponseReturnValue:
     body = request.json
     book = BookModel(**body)
 
@@ -47,8 +48,8 @@ def add_book() -> Response:
     return jsonify(response), 201
 
 
-@exceptions_handler
-def get_books() -> Response:
+@exceptions_decorator
+def get_books() -> ResponseReturnValue:
     books = BookService.get_all_books()
 
     response = {
@@ -60,8 +61,8 @@ def get_books() -> Response:
     return jsonify(response), 200
 
 
-@exceptions_handler
-def get_books_by_genre(genre: str) -> Response:
+@exceptions_decorator
+def get_books_by_genre(genre: str) -> ResponseReturnValue:
     books = BookService.get_all_books_by_genre(genre)
 
     response = {
@@ -73,8 +74,8 @@ def get_books_by_genre(genre: str) -> Response:
     return jsonify(response), 200
 
 
-@exceptions_handler
-def delete_book(id: str) -> Response:
+@exceptions_decorator
+def delete_book(id: str) -> ResponseReturnValue:
     BookService.delete_book_by_id(id)
 
     response = {
@@ -85,8 +86,8 @@ def delete_book(id: str) -> Response:
     return jsonify(response), 200
 
 
-@exceptions_handler
-def get_all_genres() -> Response:
+@exceptions_decorator
+def get_all_genres() -> ResponseReturnValue:
     genres = BookService.get_all_genres()
 
     response = {

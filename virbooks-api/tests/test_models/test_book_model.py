@@ -63,3 +63,18 @@ class TestBookModel:
         data: dict[str, str | None] = {**VALID_BOOK_DATA, "title": None}
         with pytest.raises(ValidationError):
             BookModel(**data)
+
+    def test_extra_field_raises_validation_error(self) -> None:
+        data: dict[str, Any] = {**VALID_BOOK_DATA, "unexpected": "value"}
+        with pytest.raises(ValidationError):
+            BookModel(**data)
+
+    def test_title_longer_than_max_length_raises_validation_error(self) -> None:
+        data: dict[str, str] = {**VALID_BOOK_DATA, "title": "x" * 501}
+        with pytest.raises(ValidationError):
+            BookModel(**data)
+
+    def test_genre_longer_than_max_length_raises_validation_error(self) -> None:
+        data: dict[str, str] = {**VALID_BOOK_DATA, "genre": "x" * 101}
+        with pytest.raises(ValidationError):
+            BookModel(**data)

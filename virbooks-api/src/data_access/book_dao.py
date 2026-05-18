@@ -20,7 +20,7 @@ class BookDAO:
         return BookDAO.parse_books(list(mongo.db.books.find({"genre": genre})))
 
     @staticmethod
-    def find_one_by_id(_id: ObjectId) -> dict[str, Any] | None:
+    def find_one_by_id(_id: str) -> dict[str, Any] | None:
         return BookDAO.parse_book(mongo.db.books.find_one({"_id": ObjectId(_id)}))
 
     @staticmethod
@@ -28,15 +28,15 @@ class BookDAO:
         return BookDAO.parse_book(mongo.db.books.find_one({"title": title, "author": author}))
 
     @staticmethod
-    def delete_one_by_id(_id: ObjectId) -> DeleteResult:
+    def delete_one_by_id(_id: str) -> DeleteResult:
         return mongo.db.books.delete_one({"_id": ObjectId(_id)})
 
     @staticmethod
     def parse_books(books: list[dict[str, Any]]) -> list[dict[str, Any]]:
-        return [BookDAO.parse_book(book) for book in books]
+        return [parsed for book in books if (parsed := BookDAO.parse_book(book)) is not None]
 
     @staticmethod
-    def parse_book(book: dict[str, Any]) -> dict[str, Any]:
+    def parse_book(book: dict[str, Any] | None) -> dict[str, Any] | None:
         if not book:
             return None
 

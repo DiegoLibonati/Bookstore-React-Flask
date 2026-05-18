@@ -71,20 +71,21 @@ Database:
 "eslint-plugin-react-hooks": "^5.0.0"
 "eslint-plugin-react-refresh": "^0.4.0"
 "globals": "^15.0.0"
-"husky": "^9.0.0"
 "jest": "^30.3.0"
 "jest-environment-jsdom": "^30.3.0"
 "lint-staged": "^15.0.0"
+"msw": "^2.10.4"
 "prettier": "^3.0.0"
 "ts-jest": "^29.4.6"
 "typescript": "^5.2.2"
 "typescript-eslint": "^8.0.0"
+"undici": "^7.25.0"
 "vite": "^7.1.6"
 ```
 
 ### Backend
 
-#### Requirements.txt
+#### Runtime (`[project.dependencies]`)
 
 ```
 flask==3.1.3
@@ -93,18 +94,19 @@ pydantic==2.11.9
 gunicorn==23.0.0
 ```
 
-#### Requirements.dev.txt
+#### Dev (`[project.optional-dependencies]` dev)
 
 ```
 pre-commit==4.3.0
 pip-audit==2.7.3
 ruff==0.11.12
+mypy==1.13.0
 ```
 
-#### Requirements.test.txt
+#### Test (`[project.optional-dependencies]` test)
 
 ```
-pytest==8.4.2
+pytest==9.0.3
 pytest-env==1.1.5
 pytest-cov==4.1.0
 pytest-timeout==2.3.1
@@ -123,12 +125,26 @@ With the stack and dependencies in mind, here's how to bring the project up loca
 
 NOTE: You have to be standing in the folder containing the: `dev.docker-compose.yml` and you need to install `Docker Desktop` if you are in Windows.
 
-### Pre-Commit for Development (Python)
+### Pre-Commit Hooks
 
-NOTE: Install **pre-commit** inside: `virbooks-api` folder.
+The repository ships a single shared Git hook at `.githooks/pre-commit` that runs:
 
-1. Once you're inside the virtual environment, let's install the hooks specified in the pre-commit. Execute: `pre-commit install`
-2. Now every time you try to commit, the pre-commit lint will run. If you want to do it manually, you can run the command: `pre-commit run --all-files`
+- **Backend (when `virbooks-api/` files are staged)**: Ruff (lint + format) via `pre-commit` and `mypy` for static type checking.
+- **Frontend (when `virbooks-app/` files are staged)**: `lint-staged` (ESLint + Prettier on the staged files).
+
+To enable the hooks you just need to run `npm install` inside `virbooks-app/`: the `prepare` script will point Git at `.githooks` (`git config core.hooksPath .githooks`). Alternatively, you can wire it up manually:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+To run the backend hooks manually against all files:
+
+```bash
+cd virbooks-api
+pre-commit run --all-files
+mypy --config-file=pyproject.toml .
+```
 
 ## Env Keys
 
@@ -144,6 +160,8 @@ The setup steps above reference these variables. Each one is consumed either by 
 8. `MONGO_AUTH_SOURCE`: Defines the database where the user credentials will be verified. Typically set to `admin` when the credentials were created in that database.
 9. `HOST`: Refers to the network interface where the backend API listens (e.g., 0.0.0.0 to allow external connections).
 10. `PORT`: Refers to the port on which the backend API is exposed.
+11. `MAX_CONTENT_LENGTH`: Maximum allowed size (in bytes) for incoming request bodies on the Flask backend. Defaults to `1048576` (1 MiB).
+12. `SEED_DEFAULT_DATA`: When `true`, the backend seeds the database with default data on startup. Useful in development; should remain `false` in production.
 
 ```ts
 # Frontend Envs
@@ -163,6 +181,8 @@ MONGO_AUTH_SOURCE=admin
 
 HOST=0.0.0.0
 PORT=5050
+MAX_CONTENT_LENGTH=1048576
+SEED_DEFAULT_DATA=false
 ```
 
 ## Architecture & Design Patterns
@@ -178,6 +198,14 @@ Data is stored in MongoDB. Each book document holds title, author, genre, descri
 The entire stack runs in Docker via a single Compose file for development. A separate test Compose file spins up an isolated MongoDB instance on a different port exclusively for the test suite, ensuring the development database is never touched during testing.
 
 ### Virbooks Endpoints API
+
+---
+
+- **Endpoint Name**: Health Check
+- **Endpoint Method**: GET
+- **Endpoint Prefix**: /api/v1/health/
+- **Endpoint Fn**: This endpoint reports whether the application is healthy. Used by Docker `HEALTHCHECK` and external monitoring.
+- **Endpoint Params**: None
 
 ---
 
@@ -261,9 +289,97 @@ npm run test:coverage
 1. Join to the correct path of the clone and join to: `virbooks-api`
 2. Execute: `python -m venv venv`
 3. Execute in Windows: `venv\Scripts\activate`
-4. Execute: `pip install -r requirements.txt`
-5. Execute: `pip install -r requirements.test.txt`
-6. Execute: `pytest --log-cli-level=INFO`
+4. Execute: `pip install -e ".[test]"` (installs the package in editable mode together with the `test` optional dependencies; the runtime deps come from `pyproject.toml`)
+5. Execute: `pytest --log-cli-level=INFO`
+
+## Continuous Integration
+
+The repository ships with a **GitHub Actions** pipeline defined in [`.github/workflows/ci.yml`](.github/workflows/ci.yml). It runs automatically on every `push` and `pull_request` targeting the `main` branch. The workflow is **validation only** — it does not publish releases or registry images; every job either passes or fails and the artifacts stay inside the runner.
+
+### Pipeline overview
+
+```
+                       ┌─── PR or push to main ───┐
+                       ▼                          ▼
+              ┌────────────────────────────┐
+              │   backend-lint-and-audit   │
+              │  ruff · mypy · pip-audit   │
+              └─────────────┬──────────────┘
+                            ▼
+              ┌────────────────────────────┐
+              │        backend-test        │
+              │      pytest --tb=short     │
+              └─────────────┬──────────────┘
+                            ▼
+              ┌────────────────────────────┐
+              │  frontend-lint-and-audit   │
+              │ eslint · tsc · npm audit   │
+              └─────────────┬──────────────┘
+                            ▼
+              ┌────────────────────────────┐
+              │       frontend-test        │
+              │            jest            │
+              └─────────────┬──────────────┘
+                            ▼
+              ┌────────────────────────────┐
+              │       frontend-build       │
+              │   tsc + vite production    │
+              └─────────────┬──────────────┘
+                            ▼
+              ┌────────────────────────────┐
+              │   docker-build (matrix)    │
+              │ api dev/prod · app dev/prod│
+              └────────────────────────────┘
+```
+
+Each job `needs` the previous one, so a failure short-circuits the whole pipeline. The `docker-build` step is a single job that fans out across four images via a build matrix (`fail-fast: false`), so a broken `Dockerfile.production` will not mask a broken `Dockerfile.development`.
+
+### Validation jobs (run on every PR and push)
+
+1. **`backend-lint-and-audit`** — installs `virbooks-api` with the `[dev]` extras, then runs `ruff check .`, `ruff format --check .`, `mypy --config-file=pyproject.toml .`, and `pip-audit --skip-editable` (with a curated list of `--ignore-vuln` flags for transitive vulnerabilities already triaged).
+2. **`backend-test`** — installs `virbooks-api` with the `[test]` extras and runs `python -m pytest --tb=short` against the Flask code base.
+3. **`frontend-lint-and-audit`** — `npm ci --ignore-scripts` under Node `22` (from `.nvmrc`), then `npm run lint`, `npm run type-check` and `npm audit --audit-level=high`. The audit step uses `continue-on-error: true` so newly disclosed vulnerabilities surface in the logs without breaking the pipeline.
+4. **`frontend-test`** — runs the Jest suite (`npm run test`), which uses MSW to mock the backend.
+5. **`frontend-build`** — runs `npm run build` (`tsc -p tsconfig.app.json && vite build`) to make sure the production bundle compiles.
+6. **`docker-build`** — uses `docker/setup-buildx-action` + `docker/build-push-action` (with `push: false`) to verify that all four images build cleanly: `virbooks-api:dev`, `virbooks-api:prod`, `virbooks-app:dev` and `virbooks-app:prod`.
+
+### Where the build outputs live
+
+| Output | Location |
+|---|---|
+| Validation logs (lint, tests, audit, build) | **Actions** tab on GitHub |
+| Frontend `dist/` bundle | Ephemeral, inside the runner |
+| Docker images | Ephemeral, inside the runner (`push: false`) |
+
+> **Note:** the pipeline never pushes images to a registry nor creates GitHub Releases. If you need a published artifact, build and push it from your own machine.
+
+### Running the same checks locally
+
+```bash
+# Backend
+cd virbooks-api
+pip install -e ".[dev]" -e ".[test]"
+ruff check .
+ruff format --check .
+mypy --config-file=pyproject.toml .
+pip-audit --skip-editable
+pytest --tb=short
+
+# Frontend
+cd ../virbooks-app
+npm ci --ignore-scripts
+npm run lint
+npm run type-check
+npm audit --audit-level=high
+npm run test
+npm run build
+
+# Docker (one image at a time)
+docker build -f virbooks-api/Dockerfile.development -t virbooks-api:dev virbooks-api
+docker build -f virbooks-api/Dockerfile.production  -t virbooks-api:prod virbooks-api
+docker build -f virbooks-app/Dockerfile.development -t virbooks-app:dev virbooks-app
+docker build -f virbooks-app/Dockerfile.production  -t virbooks-app:prod virbooks-app
+```
 
 ## Security Audit
 
@@ -273,10 +389,10 @@ Beyond running the test suite, both sides of the stack ship with tools to scan d
 
 You can check your dependencies for known vulnerabilities using **pip-audit**.
 
-1. Go to the repository folder
+1. Go to the `virbooks-api` folder
 2. Activate your virtual environment
-3. Execute: `pip install -r requirements.dev.txt`
-4. Execute: `pip-audit -r requirements.txt`
+3. Execute: `pip install -e ".[dev]"` (installs Ruff, mypy, pre-commit and pip-audit on top of the runtime dependencies)
+4. Execute: `pip-audit`
 
 ### Frontend
 

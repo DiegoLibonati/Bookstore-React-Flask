@@ -38,9 +38,11 @@ class TestBookServiceAddBook:
         book: BookModel = BookModel(**VALID_BOOK_DATA)
         existing_book: dict[str, str] = {"title": "Clean Code", "author": "Robert Martin"}
 
-        with patch("src.services.book_service.BookDAO.find_one_by_title_and_author", return_value=existing_book):
-            with pytest.raises(ConflictAPIError):
-                BookService.add_book(book=book)
+        with (
+            patch("src.services.book_service.BookDAO.find_one_by_title_and_author", return_value=existing_book),
+            pytest.raises(ConflictAPIError),
+        ):
+            BookService.add_book(book=book)
 
 
 @pytest.mark.unit
@@ -135,6 +137,8 @@ class TestBookServiceDeleteBookById:
     def test_delete_book_raises_not_found_when_book_does_not_exist(self) -> None:
         book_id: str = str(ObjectId())
 
-        with patch("src.services.book_service.BookDAO.find_one_by_id", return_value=None):
-            with pytest.raises(NotFoundAPIError):
-                BookService.delete_book_by_id(book_id)
+        with (
+            patch("src.services.book_service.BookDAO.find_one_by_id", return_value=None),
+            pytest.raises(NotFoundAPIError),
+        ):
+            BookService.delete_book_by_id(book_id)

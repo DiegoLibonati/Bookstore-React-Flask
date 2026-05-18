@@ -26,7 +26,11 @@ services:
     env_file:
       - ./virbooks-api/.env
     volumes:
-      - "./virbooks-api:/home/app"
+      - ./virbooks-api:/home/app
+      - /home/app/venv
+      - /home/app/.pytest_cache
+      - /home/app/.ruff_cache
+      - /home/app/__pycache__
     depends_on:
       - virbooks-db
     ports:

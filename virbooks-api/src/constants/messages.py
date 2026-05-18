@@ -1,4 +1,6 @@
 # ##### SUCCESS #####
+MESSAGE_SUCCESS_HEALTH = "The application is healthy."
+MESSAGE_SUCCESS_READY = "The application is ready to serve requests."
 MESSAGE_SUCCESS_ADD_BOOK = "The book was successfully added."
 MESSAGE_SUCCESS_GET_ALL_BOOKS = "Books were successfully obtained."
 MESSAGE_SUCCESS_GET_ALL_GENRES = "The book genres were successfully obtained."
@@ -21,4 +23,5 @@ MESSAGE_ERROR_GENERIC = "Error: {e}"
 MESSAGE_ALREADY_EXISTS_BOOK = "Book already exists."
 
 # ##### NOT_FOUND #####
+MESSAGE_NOT_FOUND_ROUTE = "The requested route does not exist."
 MESSAGE_NOT_FOUND_BOOK = "No book found."

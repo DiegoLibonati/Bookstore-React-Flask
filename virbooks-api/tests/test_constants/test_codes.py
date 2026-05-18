@@ -7,10 +7,13 @@ from src.constants.codes import (
     CODE_ERROR_INTERNAL_SERVER,
     CODE_ERROR_PYDANTIC,
     CODE_NOT_FOUND_BOOK,
+    CODE_NOT_FOUND_ROUTE,
     CODE_SUCCESS_ADD_BOOK,
     CODE_SUCCESS_DELETE_BOOK,
     CODE_SUCCESS_GET_ALL_BOOKS,
     CODE_SUCCESS_GET_ALL_GENRES,
+    CODE_SUCCESS_HEALTH,
+    CODE_SUCCESS_READY,
 )
 
 
@@ -27,6 +30,12 @@ class TestSuccessCodes:
 
     def test_code_success_delete_book_value(self) -> None:
         assert CODE_SUCCESS_DELETE_BOOK == "SUCCESS_DELETE_BOOK"
+
+    def test_code_success_health_value(self) -> None:
+        assert CODE_SUCCESS_HEALTH == "SUCCESS_HEALTH"
+
+    def test_code_success_ready_value(self) -> None:
+        assert CODE_SUCCESS_READY == "SUCCESS_READY"
 
 
 @pytest.mark.unit
@@ -52,6 +61,9 @@ class TestConflictAndNotFoundCodes:
     def test_code_not_found_book_value(self) -> None:
         assert CODE_NOT_FOUND_BOOK == "NOT_FOUND_BOOK"
 
+    def test_code_not_found_route_value(self) -> None:
+        assert CODE_NOT_FOUND_ROUTE == "NOT_FOUND_ROUTE"
+
 
 @pytest.mark.unit
 class TestCodesUniqueness:
@@ -61,11 +73,14 @@ class TestCodesUniqueness:
             CODE_SUCCESS_GET_ALL_BOOKS,
             CODE_SUCCESS_GET_ALL_GENRES,
             CODE_SUCCESS_DELETE_BOOK,
+            CODE_SUCCESS_HEALTH,
+            CODE_SUCCESS_READY,
             CODE_ERROR_INTERNAL_SERVER,
             CODE_ERROR_PYDANTIC,
             CODE_ERROR_DATABASE,
             CODE_ERROR_GENERIC,
             CODE_ALREADY_EXISTS_BOOK,
             CODE_NOT_FOUND_BOOK,
+            CODE_NOT_FOUND_ROUTE,
         ]
         assert len(all_codes) == len(set(all_codes))

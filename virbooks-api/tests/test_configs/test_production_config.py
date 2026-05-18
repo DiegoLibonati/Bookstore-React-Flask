@@ -20,3 +20,6 @@ class TestProductionConfig:
 
     def test_json_as_ascii_inherited_as_false(self) -> None:
         assert ProductionConfig.JSON_AS_ASCII is False
+
+    def test_seed_default_data_is_false(self) -> None:
+        assert ProductionConfig.SEED_DEFAULT_DATA is False

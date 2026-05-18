@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 
-import assets from "@/assets/export";
+import assets from "@/assets/index";
 
 import "@/components/Header/Header.css";
 

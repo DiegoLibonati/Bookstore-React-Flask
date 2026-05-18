@@ -12,9 +12,14 @@ class TestMongoClass:
         m: Mongo = Mongo()
         assert m.client is None
 
-    def test_initial_db_is_none(self) -> None:
+    def test_initial_db_property_raises_runtime_error(self) -> None:
         m: Mongo = Mongo()
-        assert m.db is None
+        with pytest.raises(RuntimeError):
+            _ = m.db
+
+    def test_initial_underlying_db_is_none(self) -> None:
+        m: Mongo = Mongo()
+        assert m._db is None
 
     def test_init_app_sets_client(self) -> None:
         m: Mongo = Mongo()
@@ -56,7 +61,36 @@ class TestMongoClass:
             mock_mongo_client.return_value = MagicMock()
             m.init_app(app)
 
-        mock_mongo_client.assert_called_once_with(expected_uri)
+        args, kwargs = mock_mongo_client.call_args
+        assert args[0] == expected_uri
+
+    def test_init_app_pings_admin_database(self) -> None:
+        m: Mongo = Mongo()
+        app: Flask = Flask(__name__)
+        app.config["MONGO_URI"] = "mongodb://localhost:27017"
+        app.config["MONGO_DB_NAME"] = "test_db"
+
+        with patch("src.configs.mongo_config.MongoClient") as mock_mongo_client:
+            mock_client: MagicMock = MagicMock()
+            mock_mongo_client.return_value = mock_client
+            m.init_app(app)
+
+        mock_client.admin.command.assert_called_once_with("ping")
+
+    def test_db_property_returns_db_after_init_app(self) -> None:
+        m: Mongo = Mongo()
+        app: Flask = Flask(__name__)
+        app.config["MONGO_URI"] = "mongodb://localhost:27017"
+        app.config["MONGO_DB_NAME"] = "test_db"
+
+        with patch("src.configs.mongo_config.MongoClient") as mock_mongo_client:
+            mock_client: MagicMock = MagicMock()
+            mock_db: MagicMock = MagicMock()
+            mock_client.__getitem__.return_value = mock_db
+            mock_mongo_client.return_value = mock_client
+            m.init_app(app)
+
+        assert m.db is mock_db
 
 
 @pytest.mark.unit
