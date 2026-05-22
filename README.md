@@ -97,7 +97,6 @@ gunicorn==23.0.0
 #### Dev (`[project.optional-dependencies]` dev)
 
 ```
-pre-commit==4.3.0
 pip-audit==2.7.3
 ruff==0.11.12
 mypy==1.13.0
@@ -127,22 +126,25 @@ NOTE: You have to be standing in the folder containing the: `dev.docker-compose.
 
 ### Pre-Commit Hooks
 
-The repository ships a single shared Git hook at `.githooks/pre-commit` that runs:
+The repository ships a single shared Git hook at `.githooks/pre-commit` (a plain POSIX shell script — no `pre-commit` framework). When you commit it runs:
 
-- **Backend (when `virbooks-api/` files are staged)**: Ruff (lint + format) via `pre-commit` and `mypy` for static type checking.
+- **Backend (when `virbooks-api/` files are staged)**: `ruff check --fix`, `ruff format`, and `mypy --config-file=pyproject.toml` invoked directly from `virbooks-api/venv/`.
 - **Frontend (when `virbooks-app/` files are staged)**: `lint-staged` (ESLint + Prettier on the staged files).
 
-To enable the hooks you just need to run `npm install` inside `virbooks-app/`: the `prepare` script will point Git at `.githooks` (`git config core.hooksPath .githooks`). Alternatively, you can wire it up manually:
+To enable the hooks you just need to run `npm install` inside `virbooks-app/`: the `prepare` script will point Git at `.githooks` (`git config core.hooksPath .githooks`). Alternatively, wire it up manually once:
 
 ```bash
 git config core.hooksPath .githooks
 ```
 
-To run the backend hooks manually against all files:
+The backend block expects `virbooks-api/venv/` to exist with the `[dev]` extras installed (`pip install -e ".[dev]"`). The script auto-detects `venv/Scripts/python.exe` on Windows and `venv/bin/python` on Unix.
+
+To run the backend tools manually against all files:
 
 ```bash
 cd virbooks-api
-pre-commit run --all-files
+ruff check --fix .
+ruff format .
 mypy --config-file=pyproject.toml .
 ```
 
@@ -391,7 +393,7 @@ You can check your dependencies for known vulnerabilities using **pip-audit**.
 
 1. Go to the `virbooks-api` folder
 2. Activate your virtual environment
-3. Execute: `pip install -e ".[dev]"` (installs Ruff, mypy, pre-commit and pip-audit on top of the runtime dependencies)
+3. Execute: `pip install -e ".[dev]"` (installs Ruff, mypy and pip-audit on top of the runtime dependencies)
 4. Execute: `pip-audit`
 
 ### Frontend

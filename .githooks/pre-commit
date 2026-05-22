@@ -1,10 +1,11 @@
 #!/bin/sh
-# Pre-commit hook for Virbooks monorepo.
-# Runs ruff (via pre-commit) and mypy when virbooks-api files are staged.
-# Runs lint-staged (eslint + prettier) when virbooks-app files are staged.
+# Pre-commit hook for the Virbooks monorepo.
+# Runs ruff (check + format) and mypy when virbooks-api files are staged.
+# Runs lint-staged when virbooks-app files are staged.
+# POSIX sh; works on Git Bash, WSL, macOS, and Linux.
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-STAGED_FILES=$(git diff --cached --name-only)
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACMR)
 
 API_FILES=$(echo "$STAGED_FILES" | grep "^virbooks-api/")
 APP_FILES=$(echo "$STAGED_FILES" | grep "^virbooks-app/")
@@ -12,31 +13,29 @@ APP_FILES=$(echo "$STAGED_FILES" | grep "^virbooks-app/")
 EXIT_CODE=0
 
 if [ -n "$API_FILES" ]; then
-    INSTALL_PYTHON="$REPO_ROOT/virbooks-api/venv/Scripts/python.exe"
+    API_DIR="$REPO_ROOT/virbooks-api"
 
-    echo "[pre-commit] Running ruff for virbooks-api..."
-    if [ -x "$INSTALL_PYTHON" ]; then
-        "$INSTALL_PYTHON" -mpre_commit run \
-            --config="$REPO_ROOT/virbooks-api/.pre-commit-config.yaml" \
-            --hook-stage=pre-commit
-    elif command -v pre-commit > /dev/null; then
-        pre-commit run \
-            --config="$REPO_ROOT/virbooks-api/.pre-commit-config.yaml" \
-            --hook-stage=pre-commit
+    if [ -x "$API_DIR/venv/Scripts/python.exe" ]; then
+        PYTHON="$API_DIR/venv/Scripts/python.exe"
+    elif [ -x "$API_DIR/venv/bin/python" ]; then
+        PYTHON="$API_DIR/venv/bin/python"
     else
-        echo '[pre-commit] `pre-commit` not found. Did you forget to activate your virtualenv?' 1>&2
+        echo '[pre-commit] venv python not found at virbooks-api/venv/. Create it with: python -m venv virbooks-api/venv && pip install -e "virbooks-api[dev]"' 1>&2
         exit 1
     fi
+
+    echo "[pre-commit] Running ruff check --fix for virbooks-api..."
+    "$PYTHON" -m ruff check --fix "$API_DIR"
+    EXIT_CODE=$((EXIT_CODE + $?))
+
+    echo "[pre-commit] Running ruff format for virbooks-api..."
+    "$PYTHON" -m ruff format "$API_DIR"
     EXIT_CODE=$((EXIT_CODE + $?))
 
     echo "[pre-commit] Running mypy for virbooks-api..."
-    if [ -x "$INSTALL_PYTHON" ]; then
-        "$INSTALL_PYTHON" -m mypy \
-            --config-file="$REPO_ROOT/virbooks-api/pyproject.toml" \
-            "$REPO_ROOT/virbooks-api"
-    else
-        echo '[pre-commit] venv python not found, skipping mypy.' 1>&2
-    fi
+    "$PYTHON" -m mypy \
+        --config-file="$API_DIR/pyproject.toml" \
+        "$API_DIR"
     EXIT_CODE=$((EXIT_CODE + $?))
 fi
 
@@ -44,11 +43,11 @@ if [ -n "$APP_FILES" ]; then
     echo "[pre-commit] Running lint-staged for virbooks-app..."
     if command -v npx > /dev/null; then
         (cd "$REPO_ROOT/virbooks-app" && npx --no-install lint-staged)
+        EXIT_CODE=$((EXIT_CODE + $?))
     else
-        echo '[pre-commit] `npx` not found. Install Node.js to enable the frontend hook.' 1>&2
+        echo '[pre-commit] `npx` not found. Did you install Node.js?' 1>&2
         exit 1
     fi
-    EXIT_CODE=$((EXIT_CODE + $?))
 fi
 
 exit $EXIT_CODE
