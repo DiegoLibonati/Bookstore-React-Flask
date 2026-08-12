@@ -92,6 +92,7 @@ flask==3.1.3
 pymongo==4.16.0
 pydantic==2.11.9
 gunicorn==23.0.0
+python-dotenv==1.2.2
 ```
 
 #### Dev (`[project.optional-dependencies]` dev)
@@ -124,6 +125,18 @@ With the stack and dependencies in mind, here's how to bring the project up loca
 
 NOTE: You have to be standing in the folder containing the: `dev.docker-compose.yml` and you need to install `Docker Desktop` if you are in Windows.
 
+### Running the backend without Docker
+
+The backend also runs directly on your machine — `virbooks-api/.env` is loaded automatically via `python-dotenv`, so the same file works with or without Compose:
+
+1. Join to `virbooks-api` and create the environment: `python -m venv venv`, then activate it (`venv\Scripts\activate` on Windows, `source venv/bin/activate` on Unix)
+2. Execute: `pip install -e .`
+3. Copy `.env.example` to `.env` if you have not already. Set `MONGO_HOST=localhost` (the `virbooks-db` hostname only resolves inside the Compose network) and point `MONGO_PORT` at a reachable MongoDB instance
+4. Execute: `python app.py` (or `gunicorn -c src/configs/gunicorn_config.py wsgi:app` on Unix)
+5. Check `http://localhost:5050/api/v1/health/` responds
+
+If MongoDB is unreachable the app still boots: the [startup connection check](#startup-connection-checks) logs warnings and continues.
+
 ### Pre-Commit Hooks
 
 The repository ships a single shared Git hook at `.githooks/pre-commit` (a plain POSIX shell script — no `pre-commit` framework). When you commit it runs:
@@ -152,6 +165,13 @@ mypy --config-file=pyproject.toml .
 
 The setup steps above reference these variables. Each one is consumed either by the frontend (Vite) or the backend (Flask + PyMongo) at startup.
 
+The backend picks them up through two paths:
+
+- **With Docker**: Compose injects `virbooks-api/.env` as real environment variables via `env_file`.
+- **Without Docker**: `load_dotenv()` runs at the top of `src/configs/default_config.py` (and of `src/configs/gunicorn_config.py`, which gunicorn loads without going through Flask), reading `virbooks-api/.env` directly.
+
+Precedence in both cases: **real environment variables > `.env` values > coded defaults** (`load_dotenv()` never overrides variables that are already set). CI defines no `.env`, so the coded defaults apply there.
+
 1. `TZ`: Refers to the timezone setting for the container.
 2. `VITE_API_URL`: Refers to the base URL of the backend API the frontend consumes.
 3. `MONGO_HOST`: Specifies the hostname or address where the MongoDB server is located. In this case, `host.docker.internal` allows a Docker container to connect to the host machine.
@@ -163,7 +183,6 @@ The setup steps above reference these variables. Each one is consumed either by 
 9. `HOST`: Refers to the network interface where the backend API listens (e.g., 0.0.0.0 to allow external connections).
 10. `PORT`: Refers to the port on which the backend API is exposed.
 11. `MAX_CONTENT_LENGTH`: Maximum allowed size (in bytes) for incoming request bodies on the Flask backend. Defaults to `1048576` (1 MiB).
-12. `SEED_DEFAULT_DATA`: When `true`, the backend seeds the database with default data on startup. Useful in development; should remain `false` in production.
 
 ```ts
 # Frontend Envs
@@ -184,8 +203,9 @@ MONGO_AUTH_SOURCE=admin
 HOST=0.0.0.0
 PORT=5050
 MAX_CONTENT_LENGTH=1048576
-SEED_DEFAULT_DATA=false
 ```
+
+> Note: `SEED_DEFAULT_DATA` and `CHECK_CONNECTIONS` are not environment variables — they are fixed per config class in `src/configs/`.
 
 ## Architecture & Design Patterns
 
@@ -198,6 +218,12 @@ The backend is a Flask 3 application structured in clear layers: blueprints hand
 Data is stored in MongoDB. Each book document holds title, author, genre, description, and image. The DAO layer serializes MongoDB's `ObjectId` to a plain string before returning data to the client, keeping the API transport format clean and predictable.
 
 The entire stack runs in Docker via a single Compose file for development. A separate test Compose file spins up an isolated MongoDB instance on a different port exclusively for the test suite, ensuring the development database is never touched during testing.
+
+### Startup connection checks
+
+At the end of `create_app`, the backend verifies its external connections (`src/startup/check_connections.py`). For MongoDB it attempts a lightweight `ping` up to 5 times, sleeping 2 seconds between attempts, with a 3-second server-selection timeout per attempt. Each failed attempt logs a warning (`attempt X/5`); a success logs the attempt it succeeded on. **The app never fails to boot because a service is down**: after 5 failures it logs a final warning and keeps serving — MongoDB-dependent endpoints will fail until the connection recovers, but the health endpoint stays available.
+
+The check is gated by the `CHECK_CONNECTIONS` config flag (enabled by default, disabled in `TestingConfig` so the test suite performs no real network calls or sleeps).
 
 ### Virbooks Endpoints API
 

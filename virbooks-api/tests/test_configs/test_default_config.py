@@ -38,6 +38,9 @@ class TestDefaultConfig:
     def test_seed_default_data_is_false(self) -> None:
         assert DefaultConfig.SEED_DEFAULT_DATA is False
 
+    def test_check_connections_is_true(self) -> None:
+        assert DefaultConfig.CHECK_CONNECTIONS is True
+
     def test_mongo_port_is_integer(self) -> None:
         assert isinstance(DefaultConfig.MONGO_PORT, int)
 

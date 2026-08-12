@@ -9,6 +9,7 @@ from src.configs.logger_config import setup_logger
 from src.configs.mongo_config import init_mongo
 from src.constants.codes import CODE_ERROR_INTERNAL_SERVER, CODE_NOT_FOUND_ROUTE
 from src.constants.messages import MESSAGE_ERROR_INTERNAL_SERVER, MESSAGE_NOT_FOUND_ROUTE
+from src.startup.check_connections import check_connections
 from src.utils.exceptions import BaseAPIError
 
 logger = setup_logger()
@@ -58,6 +59,9 @@ def create_app(config_name="development") -> Flask:
 
     register_routes(app)
     logger.info("Routes initialized successfully.")
+
+    if app.config.get("CHECK_CONNECTIONS", False):
+        check_connections(app)
 
     if app.config.get("SEED_DEFAULT_DATA", False):
         logger.info("Default data initialized successfully.")

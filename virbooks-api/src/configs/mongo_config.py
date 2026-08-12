@@ -2,10 +2,6 @@ from flask import Flask
 from pymongo import MongoClient
 from pymongo.database import Database
 
-from src.configs.logger_config import setup_logger
-
-logger = setup_logger(__name__)
-
 
 class Mongo:
     def __init__(self) -> None:
@@ -24,9 +20,6 @@ class Mongo:
 
         self.client = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000)
         self._db = self.client[db_name]
-
-        self.client.admin.command("ping")
-        logger.info("MongoDB connection verified.")
 
 
 mongo = Mongo()

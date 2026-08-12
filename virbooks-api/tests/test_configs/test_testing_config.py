@@ -15,6 +15,9 @@ class TestTestingConfig:
     def test_env_is_testing(self) -> None:
         assert TestingConfig.ENV == "testing"
 
+    def test_check_connections_is_false(self) -> None:
+        assert TestingConfig.CHECK_CONNECTIONS is False
+
     def test_inherits_from_default_config(self) -> None:
         assert issubclass(TestingConfig, DefaultConfig)
 

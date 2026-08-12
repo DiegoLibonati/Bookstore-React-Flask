@@ -64,7 +64,7 @@ class TestMongoClass:
         args, kwargs = mock_mongo_client.call_args
         assert args[0] == expected_uri
 
-    def test_init_app_pings_admin_database(self) -> None:
+    def test_init_app_does_not_ping_admin_database(self) -> None:
         m: Mongo = Mongo()
         app: Flask = Flask(__name__)
         app.config["MONGO_URI"] = "mongodb://localhost:27017"
@@ -75,7 +75,7 @@ class TestMongoClass:
             mock_mongo_client.return_value = mock_client
             m.init_app(app)
 
-        mock_client.admin.command.assert_called_once_with("ping")
+        mock_client.admin.command.assert_not_called()
 
     def test_db_property_returns_db_after_init_app(self) -> None:
         m: Mongo = Mongo()
