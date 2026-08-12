@@ -31,7 +31,7 @@ class TestCheckMongoConnection:
 
         with (
             patch("src.startup.check_connections.MongoClient") as mock_mongo_client,
-            patch("src.startup.check_connections.time.sleep") as mock_sleep,
+            patch("src.startup.check_connections.sleep") as mock_sleep,
             caplog.at_level(logging.DEBUG, logger=LOGGER_NAME),
         ):
             result: bool = check_mongo_connection(app)
@@ -50,7 +50,7 @@ class TestCheckMongoConnection:
 
         with (
             patch("src.startup.check_connections.MongoClient") as mock_mongo_client,
-            patch("src.startup.check_connections.time.sleep") as mock_sleep,
+            patch("src.startup.check_connections.sleep") as mock_sleep,
             caplog.at_level(logging.DEBUG, logger=LOGGER_NAME),
         ):
             mock_client: MagicMock = MagicMock()
@@ -76,7 +76,7 @@ class TestCheckMongoConnection:
 
         with (
             patch("src.startup.check_connections.MongoClient") as mock_mongo_client,
-            patch("src.startup.check_connections.time.sleep") as mock_sleep,
+            patch("src.startup.check_connections.sleep") as mock_sleep,
             caplog.at_level(logging.DEBUG, logger=LOGGER_NAME),
         ):
             mock_client: MagicMock = MagicMock()

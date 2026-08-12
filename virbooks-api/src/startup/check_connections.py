@@ -1,5 +1,5 @@
-import time
 from collections.abc import Callable
+from time import sleep
 
 from flask import Flask
 from pymongo import MongoClient
@@ -31,7 +31,7 @@ def check_mongo_connection(app: Flask) -> bool:
         except PyMongoError:
             logger.warning("Could not connect to %s (attempt %d/%d).", MONGO_SERVICE_NAME, attempt, MAX_ATTEMPTS)
             if attempt < MAX_ATTEMPTS:
-                time.sleep(RETRY_DELAY_SECONDS)
+                sleep(RETRY_DELAY_SECONDS)
         finally:
             client.close()
 
